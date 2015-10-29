@@ -24,8 +24,8 @@
           
             // Call once to set the object's font size based on current window size, then call as
             // resize or orientation-change events are triggered.
-            textResizer();
-            $(window).on('resize.textresize orientationchange.textresize', textResizer);
+            resizer();
+            $(window).on('resize.textresize orientationchange.textresize', resizer);
         });
     };
     
@@ -33,13 +33,13 @@
     // following statement if you are going to utilize this plugin on your own site).
     $(document).ready(function () {
         $('section.article-header div.header-content h1').each(function () {
-            $(this).textResizer(1.277142857142857);
+            $(this).textResize(1.277142857142857, {'minFontSize' : '34.8'});
         });
         $('section.article-header div.header-content h2').each(function () {
-            $(this).textResizer(1.847840465639262);
+            $(this).textResize(1.847840465639262, {'minFontSize' : '24.0'});
         });
         $('section.article-header div.header-content h3').each(function () {
-            $(this).textResizer(4.110097222222222);
+            $(this).textResize(4.110097222222222, {'minFontSize' : '10.7'});
         });
-    );
+    });
 })(jQuery);

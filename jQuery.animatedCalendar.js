@@ -11,34 +11,34 @@
             var d = new Date();
             var n = d.toDateString();
             if (d.getFullYear() < 2015) { // <---- ***FUTURE UPDATES WILL BE NEEDED | Current academic year***
-                $toTodayShorcut.href = "#Aug17";
+                $toTodayShorcut.attr('href', '#Aug17');
             }
             else if (d.getFullYear() == 2015) { // <---- ***UPDATE***
                 if (d.getMonth() == 7){
                     if (d.getDate() < 17) { // <---- ***UPDATE***
-                        $toTodayShorcut.href = "#Aug17"; // <---- ***UPDATE***
+                        $toTodayShorcut.attr('href', '#Aug17'); // <---- ***UPDATE***
                     }
                     else{
-                        $toTodayShorcut.href = "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1)) );
+                        $toTodayShorcut.attr('href', "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1))));
                     }
                 }
                 else if (d.getMonth() > 7 && d.getMonth() < 12) {
-                    $toTodayShorcut.href = "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1)) );
+                    $toTodayShorcut.attr('href', "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1))));
                 }
                 else if (d.getMonth() == 12) {
                     if (d.getDate() <= 18) { // <---- ***FUTURE UPDATES WILL BE NEEDED | Ending day of current Spring semester***
-                        $toTodayShorcut.href = "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1)) );
+                        $toTodayShorcut.attr('href', "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1))));
                     }
                     else{
-                        $toTodayShorcut.href = "#Dec18"; // <---- ***UPDATE***
+                        $toTodayShorcut.attr('href', '#Dec18'); // <---- ***UPDATE***
                     }
                 }
                 else{
-                    $toTodayShorcut.href = "#Aug17"; // <---- ***UPDATE***
+                    $toTodayShorcut.attr('href', '#Aug17'); // <---- ***UPDATE***
                 }
             }
             else{
-                $toTodayShorcut.href = "#Dec18"; // <---- ***UPDATE***
+                $toTodayShorcut.attr('href', '#Dec18"'); // <---- ***UPDATE***
             }
 
             var calendarCell;

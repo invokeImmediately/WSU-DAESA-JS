@@ -5,7 +5,6 @@
 */
 /* cycle2 core engine */
 ;(function($) {
-    "use strict";
     if($('.cycle2-slideshow').length !== 0) {
         var version = '2.1.5';
         $.fn.cycle2 = function( options ) {

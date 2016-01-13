@@ -10,13 +10,13 @@
 			$('div.column > h2:not(.fancy), div.column > section > h2:not(.fancy)').each(function () {
 					var $this = $(this);
                     $this.addClass('no-top-margin');
-                    $this.prev('hr:not(.subSection)').addClass('narrow-bottom-margin dark-gray thicker');
+                    $this.prev('hr:not(.subSection)').addClass('narrow-bottom-margin dark-gray thicker', 250);
 			});
 			$('div.column > h2.fancy, div.column > section > h2.fancy').each(function () {
-					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin dark-gray thicker encroach-horizontal');
+					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin dark-gray thicker encroach-horizontal', 250);
 			});
 			$('div.column > h3:not(.fancy), div.column > section > h3:not(.fancy)').each(function () {
-					$(this).prev('hr:not(.subSection)').addClass('narrow-bottom-margin crimson');
+					$(this).prev('hr:not(.subSection)').addClass('narrow-bottom-margin crimson', 250);
 			});
 			$('div.column > h3.fancy, div.column > section > h3.fancy').each(function () {
 					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin crimson encroach-horizontal', 250);

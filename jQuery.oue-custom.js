@@ -7,11 +7,19 @@
 			/**********************************************************************************************
 			 * As desired, tweak the CSS of the previous sibling of certain selected elements in the DOM  *
 			 **********************************************************************************************/
-			$('div.column > h2, div.column > section > h2').each(function () {
-					$(this).prev('hr').addClass('narrow-bottom-margin dark-gray thicker');
+			$('div.column > h2:not(.fancy), div.column > section > h2:not(.fancy)').each(function () {
+					var $this = $(this);
+                    $this.addClass('no-top-margin');
+                    $this.prev('hr:not(.subSection)').addClass('narrow-bottom-margin dark-gray thicker');
 			});
-			$('div.column > h3, div.column > section > h3').each(function () {
+			$('div.column > h2.fancy, div.column > section > h2.fancy').each(function () {
+					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin dark-gray thicker encroach-horizontal');
+			});
+			$('div.column > h3:not(.fancy), div.column > section > h3:not(.fancy)').each(function () {
 					$(this).prev('hr:not(.subSection)').addClass('narrow-bottom-margin crimson');
+			});
+			$('div.column > h3:not(.fancy), div.column > section > h3:not(.fancy)').each(function () {
+					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin crimson encroach-horizontal');
 			});
 
 			/**********************************************************************************************

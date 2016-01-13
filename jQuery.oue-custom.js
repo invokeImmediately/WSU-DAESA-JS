@@ -18,7 +18,7 @@
 			$('div.column > h3:not(.fancy), div.column > section > h3:not(.fancy)').each(function () {
 					$(this).prev('hr:not(.subSection)').addClass('narrow-bottom-margin crimson');
 			});
-			$('div.column > h3:not(.fancy), div.column > section > h3:not(.fancy)').each(function () {
+			$('div.column > h3.fancy, div.column > section > h3.fancy').each(function () {
 					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin crimson encroach-horizontal');
 			});
 

@@ -25,9 +25,6 @@
 			/**********************************************************************************************
 			 * Set column heights on fluid-width containters                                              *
 			 **********************************************************************************************/
-            $('.large-format-friendly > div.column.two').each(function () {
-                    $(this).hide();
-            });
             $(window).load(function () {
                 if($(window).width() >= 1051) {
                     $('.large-format-friendly > div.column.two').each(function () {

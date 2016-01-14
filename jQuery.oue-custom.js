@@ -38,6 +38,10 @@
             $(window).resize(function () {
                 $('.large-format-friendly > div.column.two').each(function () {
 					var $this = $(this);
+                    var crrntOpacity = $this.css("opacity");
+                    if (crrntOpacity == 0) {
+                        $this.animate({opacity: 1.0}, 100);
+                    }
                     var $thisPrev = $this.prev('div.column.one');
                     if($this.height() != $thisPrev.height() ) {
                         $this.height($thisPrev.height());

@@ -25,11 +25,15 @@
 			/**********************************************************************************************
 			 * Set column heights on fluid-width containters                                              *
 			 **********************************************************************************************/
+            $('.large-format-friendly > div.column.two').each(function () {
+                    $(this).hide();
+            });
             $(window).load(function () {
                 $('.large-format-friendly > div.column.two').each(function () {
                         var $this = $(this);
-                        // $this.height($this.prev('div.column.one').height());
-                        $this.animate({height: $this.prev('div.column.one').height() + "px"}, 250 / 758 * $this.prev('div.column.one').height());
+                        $this.height($this.prev('div.column.one').height());
+                        // $this.animate({height: $this.prev('div.column.one').height() + "px"}, 250 / 758 * $this.prev('div.column.one').height());
+                        $this.show(100);
                 });
             });
             $(window).resize(function () {

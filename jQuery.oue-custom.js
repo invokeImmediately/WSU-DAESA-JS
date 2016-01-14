@@ -31,7 +31,7 @@
                             var $this = $(this);
                             $this.height($this.prev('div.column.one').height());
                             // $this.animate({height: $this.prev('div.column.one').height() + "px"}, 250 / 758 * $this.prev('div.column.one').height());
-                            $this.animate({opacity: 1.0, 100);
+                            $this.animate({opacity: 1.0}, 100);
                     });
                 }
             });

@@ -29,12 +29,14 @@
                     $(this).hide();
             });
             $(window).load(function () {
-                $('.large-format-friendly > div.column.two').each(function () {
-                        var $this = $(this);
-                        $this.height($this.prev('div.column.one').height());
-                        // $this.animate({height: $this.prev('div.column.one').height() + "px"}, 250 / 758 * $this.prev('div.column.one').height());
-                        $this.show(100);
-                });
+                if($(window).width() >= 1051) {
+                    $('.large-format-friendly > div.column.two').each(function () {
+                            var $this = $(this);
+                            $this.height($this.prev('div.column.one').height());
+                            // $this.animate({height: $this.prev('div.column.one').height() + "px"}, 250 / 758 * $this.prev('div.column.one').height());
+                            $this.fadeIn(250);
+                    });
+                }
             });
             $(window).resize(function () {
                 $('.large-format-friendly > div.column.two').each(function () {

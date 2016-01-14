@@ -25,6 +25,7 @@
 			/**********************************************************************************************
 			 * Set column heights on fluid-width containters                                              *
 			 **********************************************************************************************/
+            // TODO: Move the code below to document.ready + replace it with a check to ensure image loading hasn't changed the heights we are working with
             $(window).load(function () {
                 if($(window).width() >= 1051) {
                     $('.large-format-friendly > div.column.two').each(function () {

@@ -9,12 +9,14 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
 (function ($) {
     $(document).ready(function () {
         var qTipContentSource;
+        var qTipStyle;
         var $this;
         $('.has-tool-tip').each(function () {
             $this = $(this);
+            $this.hasClass('blue') ? qTipStyle = 'qtip-blue' : qTipStyle = 'qtip-dark';
             if ($this.hasClass('parental-neighbor-is-source')) {
                 $this.qtip({
-                    style: 'qtip-dark',
+                    style: qTipStyle,
                     content: { text: $this.parent().next('div')},
                     position: {
                         target: 'mouse', // Track the mouse as the positioning target
@@ -34,7 +36,7 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
             } else {
                 $this.hasClass('span-is-source') ? qTipContentSource = 'span' : qTipContentSource = 'div';
                 $this.qtip({
-                    style: 'qtip-dark',
+                    style: qTipStyle,
                     content: { text: $this.next(qTipContentSource)},
                     position: {
                         target: 'mouse', // Track the mouse as the positioning target

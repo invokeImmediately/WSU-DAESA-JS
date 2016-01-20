@@ -9,7 +9,7 @@
         hghlghtRqrdChckbxs('.oue-gf-rqrd-checkbox');
         hghlghtRqrdTxtAreas('.oue-gf-rqrd-txtarea');
         setupActvtrChckbxs('.oue-gf-actvtr-checkbox');
-    }
+    });
     
     /******************************************************************************************\
     | Via CSS, highlight required inputs until a value has been properly entered               |

@@ -109,11 +109,8 @@
         if ($.type(selector) === "string") {
             $('gform_body').on('change', selector + ' input', function () {
                 var $thisChild = $(this);
-                var $thisParent, $parentSiblings;
-                $thisParent = $thisChild.parents(selector);
-                $parentSiblings = $thisParent.siblings(selector);
+                var $thisParent = $thisChild.parents(selector);
                 $thisParent.addClass('gf-activated');
-                $parentSiblings
             });
         }
     }

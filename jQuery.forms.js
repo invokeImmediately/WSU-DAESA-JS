@@ -107,17 +107,13 @@
     \******************************************************************************************/
     function setupActvtrChckbxs (selector) {
         if ($.type(selector) === "string") {
-            $(selector).each(function () {
-                var $this = $(this);
-                var $inputs = $this.find('input');
-                $inputs.each(function () {
-                    var $thisChild = $(this);
-                    $thisChild.change(function () {
-                        var $thisParent;                        
-                        $thisParent = $thisChild.parents(selector);
-                        $thisParent.addClass('gf-activated');
-                    });
-                });
+            $('gform_body').on('change', selector + ' input', function () {
+                var $thisChild = $(this);
+                var $thisParent, $parentSiblings;
+                $thisParent = $thisChild.parents(selector);
+                $parentSiblings = $thisParent.siblings(selector);
+                $thisParent.addClass('gf-activated');
+                $parentSiblings
             });
         }
     }

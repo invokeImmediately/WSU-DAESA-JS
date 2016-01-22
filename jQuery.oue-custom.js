@@ -7,6 +7,13 @@
 			/**********************************************************************************************
 			 * As desired, tweak the CSS of the previous sibling of certain selected elements in the DOM  *
 			 **********************************************************************************************/
+            var $lrgFrmtSnglSctns = $('.single.large-format-friendly');
+            if ($lrgFrmtSnglSctns.length > 0) {
+                var $mainHeader = $('header.main-header');
+                $mainHeader.addClass('centered');
+                var $mnHdrChldDiv = $mainHeader.find('div.header-group');
+                $mnHdrChldDiv.addClass('centered');
+            }
 			$('.column > h2:not(.fancy), .column > section > h2:not(.fancy)').each(function () {
 					var $this = $(this);
                     $this.addClass('no-top-margin');
@@ -31,7 +38,6 @@
                     $('.large-format-friendly > div.column.two').each(function () {
                             var $this = $(this);
                             $this.height($this.prev('div.column.one').height());
-                            // $this.animate({height: $this.prev('div.column.one').height() + "px"}, 250 / 758 * $this.prev('div.column.one').height());
                             $this.animate({opacity: 1.0}, 100);
                     });
                 }

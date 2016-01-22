@@ -107,7 +107,7 @@
     \******************************************************************************************/
     function setupActvtrChckbxs (selector) {
         if ($.type(selector) === "string") {
-            $('gform_body').on('change', selector + ' input', function () {
+            $('.gform_body').on('change', selector + ' input', function () {
                 var $thisChild = $(this);
                 var $thisParent = $thisChild.parents(selector);
                 $thisParent.addClass('gf-activated');

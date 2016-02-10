@@ -120,7 +120,7 @@
     | Setup a chain of activator checkboxes, wherein once a checkbox is activated/deactivated, |
     | only its closest previous sibling is hidden/shown.                                       |
     \******************************************************************************************/
-    function setupActvtrChckbxs (selector) {
+    function setupActvtrChain (selector) {
         if ($.type(selector) === "string") {
             $('.gform_body').on('change', selector + ' input', function () {
                 var $thisChild = $(this);

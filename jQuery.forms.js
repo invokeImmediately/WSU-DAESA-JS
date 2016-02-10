@@ -9,10 +9,11 @@
         hghlghtRqrdChckbxs('.oue-gf-rqrd-checkbox');
         hghlghtRqrdTxtAreas('.oue-gf-rqrd-txtarea');
         setupActvtrChckbxs('.oue-gf-actvtr-checkbox');
+        setupActvtrChain('.oue-gf-actvtr-chain');
     });
     
     /******************************************************************************************\
-    | Via CSS, highlight required inputs until a value has been properly entered               |
+    | Highlight required INPUTS until a value has been properly entered                        |
     \******************************************************************************************/
     function hghlghtRqrdInpts (selector) {
         if ($.type(selector) === "string") {
@@ -41,7 +42,7 @@
     }
 
     /******************************************************************************************\
-    | Via CSS, highlight required checkboxes until at least one has been checked               |
+    | Highlight required CHECKBOXES until at least one has been checked                        |
     \******************************************************************************************/
     function hghlghtRqrdChckbxs (selector) {
         if ($.type(selector) === "string") {
@@ -74,7 +75,7 @@
     }
 
     /******************************************************************************************\
-    | Via CSS, highlight required text are inputs until a value has been properly entered      |
+    | Highlight required TEXT AREA inputs until a value has been properly entered              |
     \******************************************************************************************/
     function hghlghtRqrdTxtAreas (selector) {
         if ($.type(selector) === "string") {
@@ -115,4 +116,24 @@
         }
     }
     
-})(jQuery);
+    /******************************************************************************************\
+    | Setup a chain of activator checkboxes, wherein once a checkbox is activated/deactivated, |
+    | only its closest previous sibling is hidden/shown.                                       |
+    \******************************************************************************************/
+    function setupActvtrChckbxs (selector) {
+        if ($.type(selector) === "string") {
+            $('.gform_body').on('change', selector + ' input', function () {
+                var $thisChild = $(this);
+                var $thisParent = $thisChild.parents(selector);
+                var $parentPrevSblngs = $thisParent.prevAll(selector);
+                if($thisChild.prop('checked')) {
+                    $parentPrevSblngs.first().addClass('gf-hidden');
+                }
+                else {
+                    $parentPrevSblngs.first().removeClass('gf-hidden');
+                }
+            });
+        }
+    }
+    
+ })(jQuery);

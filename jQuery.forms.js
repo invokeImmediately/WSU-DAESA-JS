@@ -5,11 +5,14 @@
     "use strict";
     
 	$(document).ready(function () {
-        hghlghtRqrdInpts('.oue-gf-rqrd-input');
-        hghlghtRqrdChckbxs('.oue-gf-rqrd-checkbox');
-        hghlghtRqrdTxtAreas('.oue-gf-rqrd-txtarea');
-        setupActvtrChckbxs('.oue-gf-actvtr-checkbox');
-        setupActvtrChain('.oue-gf-actvtr-chain');
+        if($('div.gform_body').length > 0) {
+            hghlghtRqrdInpts('.oue-gf-rqrd-input');
+            hghlghtRqrdChckbxs('.oue-gf-rqrd-checkbox');
+            hghlghtRqrdTxtAreas('.oue-gf-rqrd-txtarea');
+            setupActvtrChckbxs('.oue-gf-actvtr-checkbox');
+            setupActvtrChain('.oue-gf-actvtr-chain');
+            setupUploadChain('.oue-gf-upload-chain');
+        }
     });
     
     /******************************************************************************************\
@@ -131,6 +134,25 @@
                 }
                 else {
                     $parentPrevSblngs.first().removeClass('gf-hidden');
+                }
+            });
+        }
+    }
+
+    /******************************************************************************************\
+    | Setup a chain of file uploading inputs, wherein only the left-most input in the tree is  |
+    | visible. As the user uploads files in sequence, the next nearest neighbor is unveiled.   |
+    \******************************************************************************************/
+    function setupUploadChain (selector) {
+        if ($.type(selector) === "string") {
+            $('.gform_body').on('change', selector + ' input', function () {
+                var $thisChild = $(this);
+                if($thisChild.attr('type') == 'file') {
+                    if($thisChild.prop('files').length > 0) {
+                        var $thisParent = $thisChild.parents(selector);
+                        var $parentNextSblngs = $thisParent.nextAll(selector);
+                        $parentNextSblngs.first().removeClass('gf-hidden');
+                    }
                 }
             });
         }

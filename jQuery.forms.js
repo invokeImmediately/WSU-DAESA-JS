@@ -149,9 +149,13 @@
                 var $thisChild = $(this);
                 if($thisChild.attr('type') == 'file') {
                     if($thisChild.prop('files').length > 0) {
+                        $thisChild.addClass('gf-value-entered');
                         var $thisParent = $thisChild.parents(selector);
                         var $parentNextSblngs = $thisParent.nextAll(selector);
                         $parentNextSblngs.first().removeClass('gf-hidden');
+                    }
+                    else {
+                        $thisChild.removeClass('gf-value-entered');
                     }
                 }
             });

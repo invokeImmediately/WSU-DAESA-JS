@@ -156,7 +156,7 @@
                 var $thisInput = $(this);
                 var $nextDiv = $thisInput.nextAll("div[id]").first();
                 if($nextDiv.length > 0) {
-                    $thisChild.addClass("gf-value-entered");
+                    $thisInput.addClass("gf-value-entered");
                     var $thisParent = $thisChild.parents(selector).first();
                     $thisParent.removeClass("gf-hidden");
                     var $parentNextSblngs = $thisParent.nextAll(selector).first();

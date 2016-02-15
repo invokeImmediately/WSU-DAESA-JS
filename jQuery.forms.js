@@ -157,20 +157,20 @@
                 var $nextDiv = $thisInput.nextAll("div[id]").first();
                 if($nextDiv.length > 0) {
                     $thisInput.addClass("gf-value-entered");
-                    var $thisParent = $thisChild.parents(selector).first();
-                    $thisParent.removeClass("gf-hidden");
-                    var $parentNextSblngs = $thisParent.nextAll(selector).first();
+                    var $parentOfInput = $thisInput.parents(selector).first();
+                    $parentOfInput.removeClass("gf-hidden");
+                    var $parentNextSblngs = $parentOfInput.nextAll(selector).first();
                     $parentNextSblngs.removeClass("gf-hidden");
                 }
             });
             $(".gform_body").on("change", selector + " input[type='file']", function () {
-                var $thisChild = $(this);
+                var $thisInput = $(this);
 //                if($thisChild.attr('type') == 'file') {
-                if($thisChild.prop("files").length > 0) {
-                    $thisChild.addClass("gf-value-entered");
-                    var $thisParent = $thisChild.parents(selector).first();
-                    var $parentNextSblngs = $thisParent.nextAll(selector).first();
-                    $parentNextSblngs.first().removeClass("gf-hidden");
+                if($thisInput.prop("files").length > 0) {
+                    $thisInput.addClass("gf-value-entered");
+                    var $parentOfInput = $thisInput.parents(selector).first();
+                    var $parentNextSblngs = $parentOfInput.nextAll(selector).first();
+                    $parentNextSblngs.removeClass("gf-hidden");
                 }
                 else {
                     $thisChild.removeClass("gf-value-entered");

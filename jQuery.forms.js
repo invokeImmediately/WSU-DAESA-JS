@@ -145,19 +145,36 @@
     \******************************************************************************************/
     function setupUploadChain (selector) {
         if ($.type(selector) === "string") {
-            $('.gform_body').on('change', selector + ' input', function () {
-                var $thisChild = $(this);
-                if($thisChild.attr('type') == 'file') {
-                    if($thisChild.prop('files').length > 0) {
-                        $thisChild.addClass('gf-value-entered');
-                        var $thisParent = $thisChild.parents(selector);
-                        var $parentNextSblngs = $thisParent.nextAll(selector);
-                        $parentNextSblngs.first().removeClass('gf-hidden');
-                    }
-                    else {
-                        $thisChild.removeClass('gf-value-entered');
-                    }
+            /* CHECK IF UPLOADS ALREADY EXIST:
+             *  It is possible to arrive at this point in execution after the user has submitted a
+             *  form containing errors that also already contains transcripts uploaded to input
+             *  fields that will be hidden by default. The following blocks of code resolve this
+             *  situation by showing such fields, as well as their nearest neighbors.
+             */
+            var $inputs = $(selector + ' input[type=file]');
+            $inputs.each(function () {
+                var $thisInput = $(this);
+                if($thisInput.prop('files').length > 0) {
+                    $thisChild.addClass('gf-value-entered');
+                    var $thisParent = $thisChild.parents(selector).first();
+                    $thisParent.removeClass('gf-hidden');
+                    var $parentNextSblngs = $thisParent.nextAll(selector).first();
+                    $parentNextSblngs.removeClass('gf-hidden');
                 }
+            });
+            $('.gform_body').on('change', selector + ' input[type=file]', function () {
+                var $thisChild = $(this);
+//                if($thisChild.attr('type') == 'file') {
+                if($thisChild.prop('files').length > 0) {
+                    $thisChild.addClass('gf-value-entered');
+                    var $thisParent = $thisChild.parents(selector).first();
+                    var $parentNextSblngs = $thisParent.nextAll(selector).first();
+                    $parentNextSblngs.first().removeClass('gf-hidden');
+                }
+                else {
+                    $thisChild.removeClass('gf-value-entered');
+                }
+//                }
             });
         }
     }

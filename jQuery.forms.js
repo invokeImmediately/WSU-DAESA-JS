@@ -5,13 +5,13 @@
     "use strict";
     
 	$(document).ready(function () {
-        if($('div.gform_body').length > 0) {
-            hghlghtRqrdInpts('.oue-gf-rqrd-input');
-            hghlghtRqrdChckbxs('.oue-gf-rqrd-checkbox');
-            hghlghtRqrdTxtAreas('.oue-gf-rqrd-txtarea');
-            setupActvtrChckbxs('.oue-gf-actvtr-checkbox');
-            setupActvtrChain('.oue-gf-actvtr-chain');
-            setupUploadChain('.oue-gf-upload-chain');
+        if($("div.gform_body").length > 0) {
+            hghlghtRqrdInpts(".oue-gf-rqrd-input");
+            hghlghtRqrdChckbxs(".oue-gf-rqrd-checkbox");
+            hghlghtRqrdTxtAreas(".oue-gf-rqrd-txtarea");
+            setupActvtrChckbxs(".oue-gf-actvtr-checkbox");
+            setupActvtrChain(".oue-gf-actvtr-chain");
+            setupUploadChain(".oue-gf-upload-chain");
         }
     });
     
@@ -22,21 +22,21 @@
         if ($.type(selector) === "string") {
             $(selector).each(function () {
                 var $this = $(this);
-                var $inputs = $this.find('input');
+                var $inputs = $this.find("input");
                 $inputs.each(function () {
                     var $thisChild = $(this);
                     if ($thisChild.val() == "") {
-                        $thisChild.removeClass('gf-value-entered');
+                        $thisChild.removeClass("gf-value-entered");
                     }
                     else {
-                        $thisChild.addClass('gf-value-entered');
+                        $thisChild.addClass("gf-value-entered");
                     }
                     $thisChild.blur(function () {
                         if ($thisChild.val() == "") {
-                            $thisChild.removeClass('gf-value-entered');
+                            $thisChild.removeClass("gf-value-entered");
                         }
                         else {
-                            $thisChild.addClass('gf-value-entered');
+                            $thisChild.addClass("gf-value-entered");
                         }
                     });
                 });
@@ -51,25 +51,25 @@
         if ($.type(selector) === "string") {
             $(selector).each(function () {
                 var $this = $(this);
-                var $inputs = $this.find('input');
+                var $inputs = $this.find("input");
                 $inputs.each(function () {
                     var $thisChild = $(this);
                     $thisChild.change(function () {
                         var $thisParent, $parentsInputs;
                         var inputReady = false;
                         
-                        $thisParent = $thisChild.parents('ul.gfield_checkbox');
-                        $parentsInputs = $thisParent.find('input');
+                        $thisParent = $thisChild.parents("ul.gfield_checkbox");
+                        $parentsInputs = $thisParent.find("input");
                         $parentsInputs.each(function () {
-                            if ($(this).prop('checked') == true && !inputReady) {
+                            if ($(this).prop("checked") == true && !inputReady) {
                                 inputReady = true;
                             }
                         });
                         if (inputReady) {
-                            $thisParent.addClass('gf-value-entered');
+                            $thisParent.addClass("gf-value-entered");
                         }
                         else {
-                            $thisParent.removeClass('gf-value-entered');
+                            $thisParent.removeClass("gf-value-entered");
                         }
                     });
                 });
@@ -84,21 +84,21 @@
         if ($.type(selector) === "string") {
             $(selector).each(function () {
                 var $this = $(this);
-                var $inputs = $this.find('textarea');
+                var $inputs = $this.find("textarea");
                 $inputs.each(function () {
                     var $thisChild = $(this);
                     if ($thisChild.val() == "") {
-                        $thisChild.removeClass('gf-value-entered');
+                        $thisChild.removeClass("gf-value-entered");
                     }
                     else {
-                        $thisChild.addClass('gf-value-entered');
+                        $thisChild.addClass("gf-value-entered");
                     }
                     $thisChild.change(function () {
                         if ($thisChild.val() == "") {
-                            $thisChild.removeClass('gf-value-entered');
+                            $thisChild.removeClass("gf-value-entered");
                         }
                         else {
-                            $thisChild.addClass('gf-value-entered');
+                            $thisChild.addClass("gf-value-entered");
                         }
                     });
                 });
@@ -111,10 +111,10 @@
     \******************************************************************************************/
     function setupActvtrChckbxs (selector) {
         if ($.type(selector) === "string") {
-            $('.gform_body').on('change', selector + ' input', function () {
+            $(".gform_body").on("change", selector + " input", function () {
                 var $thisChild = $(this);
                 var $thisParent = $thisChild.parents(selector);
-                $thisParent.addClass('gf-activated');
+                $thisParent.addClass("gf-activated");
             });
         }
     }
@@ -125,15 +125,15 @@
     \******************************************************************************************/
     function setupActvtrChain (selector) {
         if ($.type(selector) === "string") {
-            $('.gform_body').on('change', selector + ' input', function () {
+            $(".gform_body").on("change", selector + " input", function () {
                 var $thisChild = $(this);
                 var $thisParent = $thisChild.parents(selector);
                 var $parentPrevSblngs = $thisParent.prevAll(selector);
-                if($thisChild.prop('checked')) {
-                    $parentPrevSblngs.first().addClass('gf-hidden');
+                if($thisChild.prop("checked")) {
+                    $parentPrevSblngs.first().addClass("gf-hidden");
                 }
                 else {
-                    $parentPrevSblngs.first().removeClass('gf-hidden');
+                    $parentPrevSblngs.first().removeClass("gf-hidden");
                 }
             });
         }
@@ -151,28 +151,28 @@
              *  fields that will be hidden by default. The following blocks of code resolve this
              *  situation by showing such fields, as well as their nearest neighbors.
              */
-            var $inputs = $(selector + ' input[type=file]');
+            var $inputs = $(selector + " input[type='file']");
             $inputs.each(function () {
                 var $thisInput = $(this);
-                if($thisInput.prop('files').length > 0) {
-                    $thisChild.addClass('gf-value-entered');
+                if($thisInput.prop("files").length > 0) {
+                    $thisChild.addClass("gf-value-entered");
                     var $thisParent = $thisChild.parents(selector).first();
-                    $thisParent.removeClass('gf-hidden');
+                    $thisParent.removeClass("gf-hidden");
                     var $parentNextSblngs = $thisParent.nextAll(selector).first();
-                    $parentNextSblngs.removeClass('gf-hidden');
+                    $parentNextSblngs.removeClass("gf-hidden");
                 }
             });
-            $('.gform_body').on('change', selector + ' input[type=file]', function () {
+            $(".gform_body").on("change", selector + " input[type='file']", function () {
                 var $thisChild = $(this);
 //                if($thisChild.attr('type') == 'file') {
                 if($thisChild.prop('files').length > 0) {
-                    $thisChild.addClass('gf-value-entered');
+                    $thisChild.addClass("gf-value-entered");
                     var $thisParent = $thisChild.parents(selector).first();
                     var $parentNextSblngs = $thisParent.nextAll(selector).first();
-                    $parentNextSblngs.first().removeClass('gf-hidden');
+                    $parentNextSblngs.first().removeClass("gf-hidden");
                 }
                 else {
-                    $thisChild.removeClass('gf-value-entered');
+                    $thisChild.removeClass("gf-value-entered");
                 }
 //                }
             });

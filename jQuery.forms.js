@@ -154,7 +154,8 @@
             var $inputs = $(selector + " input[type='file']");
             $inputs.each(function () {
                 var $thisInput = $(this);
-                if($thisInput.prop("files").length > 0) {
+                var $nextDiv = $thisInput.nextAll("div[id]").first();
+                if($nextDiv.length > 0) {
                     $thisChild.addClass("gf-value-entered");
                     var $thisParent = $thisChild.parents(selector).first();
                     $thisParent.removeClass("gf-hidden");
@@ -165,7 +166,7 @@
             $(".gform_body").on("change", selector + " input[type='file']", function () {
                 var $thisChild = $(this);
 //                if($thisChild.attr('type') == 'file') {
-                if($thisChild.prop('files').length > 0) {
+                if($thisChild.prop("files").length > 0) {
                     $thisChild.addClass("gf-value-entered");
                     var $thisParent = $thisChild.parents(selector).first();
                     var $parentNextSblngs = $thisParent.nextAll(selector).first();

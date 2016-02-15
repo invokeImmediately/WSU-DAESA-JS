@@ -166,7 +166,7 @@
             $(".gform_body").on("change", selector + " input[type='file']", function () {
                 var $thisInput = $(this);
 //                if($thisChild.attr('type') == 'file') {
-                if($thisInput.prop("files").length > 0) {
+                if($thisInput.prop("files") !== undefined) {
                     var valuePassed = true;
                     var $parentOfInput = $thisInput.parents(selector).first();
                     var $parentNextSblngs = $parentOfInput.nextAll(selector);
@@ -178,7 +178,7 @@
                             if(valuePassed) {
                                 var $thisSblng = $(this);
                                 var $thisSblngInput = $thisSblng.children("input[type='file']").first();
-                                if($thisSblngInput.prop("files").length > 0) {
+                                if($thisSblngInput.prop("files") !== undefined) {
                                     var thisFileName = $thisSblngInput.prop("files").item(0).name;
                                     valuePassed = originalFileName != thisFileName;
                                 }
@@ -188,7 +188,7 @@
                             if(valuePassed) {
                                 var $thisSblng = $(this);
                                 var $thisSblngInput = $thisSblng.children("input[type='file']").first();
-                                if($thisSblngInput.prop("files").length > 0) {
+                                if($thisSblngInput.prop("files") !== undefined) {
                                     var thisFileName = $thisSblngInput.prop("files").item(0).name;
                                     valuePassed = originalFileName != thisFileName;
                                 }

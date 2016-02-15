@@ -167,10 +167,43 @@
                 var $thisInput = $(this);
 //                if($thisChild.attr('type') == 'file') {
                 if($thisInput.prop("files").length > 0) {
-                    $thisInput.addClass("gf-value-entered");
+                    var valuePassed = true;
                     var $parentOfInput = $thisInput.parents(selector).first();
-                    var $parentNextSblngs = $parentOfInput.nextAll(selector).first();
-                    $parentNextSblngs.removeClass("gf-hidden");
+                    var $parentNextSblngs = $parentOfInput.nextAll(selector);
+                    var $parentPrevSblngs = $parentOfInput.prevAll(selector);
+                    if($parentNextSblngs.length != 0 || $parentPrevSblngs.length != 0)
+                    {
+                        var originalFileName = $thisInput.prop("files").item(0).name;
+                        $parentPrevSblngs.each(function () {
+                            if(valuePassed) {
+                                var $thisSblng = $(this);
+                                var $thisSblngInput = $thisSblng.children("input[type='file']").first();
+                                if($thisSblngInput.prop("files").length > 0) {
+                                    var thisFileName = $thisSblngInput.prop("files").item(0).name;
+                                    valuePassed = originalFileName != thisFileName;
+                                }
+                            }
+                        });
+                        $parentNextSblngs.each(function () {
+                            if(valuePassed) {
+                                var $thisSblng = $(this);
+                                var $thisSblngInput = $thisSblng.children("input[type='file']").first();
+                                if($thisSblngInput.prop("files").length > 0) {
+                                    var thisFileName = $thisSblngInput.prop("files").item(0).name;
+                                    valuePassed = originalFileName != thisFileName;
+                                }
+                            }
+                        });
+                    }
+                    if(valuePassed) {                      
+                        $thisInput.addClass("gf-value-entered");
+                        $parentNextSblngs.first().removeClass("gf-hidden");
+                    }
+                    else
+                    {
+                        alert("You already uploaded a file with that name; please choose a different file.");
+                        $thisInput.get(0).value = "";
+                    }
                 }
                 else {
                     $thisChild.removeClass("gf-value-entered");

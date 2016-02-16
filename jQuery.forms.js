@@ -173,25 +173,21 @@
                     if($parentNextSblngs.length != 0 || $parentPrevSblngs.length != 0) {
                         var originalFileName = $thisInput.prop("files").item(0).name;
                         $parentPrevSblngs.each(function () {
-                            alert('Searching prev...');
                             if(valuePassed) {
                                 var $thisSblng = $(this);
                                 var $thisSblngInput = $thisSblng.find("input[type='file']").first();
                                 if($thisSblngInput.prop("files") != null && $thisSblngInput.prop("files").length > 0) {
                                     var thisFileName = $thisSblngInput.prop("files").item(0).name;
-                                    alert("Found previously uploaded file: " + thisFileName);
                                     valuePassed = originalFileName != thisFileName;
                                 }
                             }
                         });
                         $parentNextSblngs.each(function () {
-                            alert('Searching next...');
                             if(valuePassed) {
                                 var $thisSblng = $(this);
                                 var $thisSblngInput = $thisSblng.find("input[type='file']").first();
                                 if($thisSblngInput.prop("files") != null && $thisSblngInput.prop("files").length > 0) {
                                     var thisFileName = $thisSblngInput.prop("files").item(0).name;
-                                    alert("Found previously uploaded file: " + thisFileName);
                                     valuePassed = originalFileName != thisFileName;
                                 }
                             }
@@ -203,7 +199,6 @@
                     }
                     else
                     {
-                        alert("You already uploaded a file with that name; please choose a different file.");
                         $thisInput.get(0).value = "";
                     }
                 }

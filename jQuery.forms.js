@@ -179,6 +179,7 @@
                                 var $thisSblngInput = $thisSblng.children("input[type='file']").first();
                                 if($thisSblngInput.prop("files") != null && $thisSblngInput.prop("files").length > 0) {
                                     var thisFileName = $thisSblngInput.prop("files").item(0).name;
+                                    alert(thisFileName);
                                     valuePassed = originalFileName != thisFileName;
                                 }
                             }
@@ -190,6 +191,7 @@
                                 var $thisSblngInput = $thisSblng.children("input[type='file']").first();
                                 if($thisSblngInput.prop("files") != null && $thisSblngInput.prop("files").length > 0) {
                                     var thisFileName = $thisSblngInput.prop("files").item(0).name;
+                                    alert(thisFileName);
                                     valuePassed = originalFileName != thisFileName;
                                 }
                             }

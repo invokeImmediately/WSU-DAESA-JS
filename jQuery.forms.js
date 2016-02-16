@@ -199,6 +199,7 @@
                     }
                     else
                     {
+                        alert("A file with the same name has already been uploaded; please choose a different file.");
                         $thisInput.get(0).value = "";
                     }
                 }

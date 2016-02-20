@@ -116,15 +116,15 @@
                 var $this = $(this);
                 var $inputs = $this.find("select");
                 $inputs.each(function () {
-                    var $thisChild = $(this);
-                    $thisChild.change(function () {
-                        var $childSlctdOptn = $thisChild.find("option:selected");
+                    var $thisInput = $(this);
+                    $thisInput.change(function () {
+                        var $childSlctdOptn = $thisInput.find("option:selected");
                         var optionVal = $childSlctdOptn.text();                        
                         if (optionVal != "") {
-                            $thisParent.addClass("gf-value-entered");
+                            $thisInput.addClass("gf-value-entered");
                         }
                         else {
-                            $thisParent.removeClass("gf-value-entered");
+                            $thisInput.removeClass("gf-value-entered");
                         }
                     });
                 });

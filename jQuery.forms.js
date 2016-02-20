@@ -9,6 +9,7 @@
             hghlghtRqrdInpts(".oue-gf-rqrd-input");
             hghlghtRqrdChckbxs(".oue-gf-rqrd-checkbox");
             hghlghtRqrdTxtAreas(".oue-gf-rqrd-txtarea");
+            hghlghtRqrdSelects(".oue-gf-rqrd-select");
             setupActvtrChckbxs(".oue-gf-actvtr-checkbox");
             setupActvtrChain(".oue-gf-actvtr-chain");
             setupUploadChain(".oue-gf-upload-chain");
@@ -99,6 +100,31 @@
                         }
                         else {
                             $thisChild.addClass("gf-value-entered");
+                        }
+                    });
+                });
+            });
+        }
+    }
+
+    /******************************************************************************************\
+    | Highlight required SELECTS until at least one has been checked                           |
+    \******************************************************************************************/
+    function hghlghtRqrdSelects (selector) {
+        if ($.type(selector) === "string") {
+            $(selector).each(function () {
+                var $this = $(this);
+                var $inputs = $this.find("select");
+                $inputs.each(function () {
+                    var $thisChild = $(this);
+                    $thisChild.change(function () {
+                        var $childSlctdOptn = $thisChild.find("option:selected");
+                        var optionVal = $childSlctdOptn.text();                        
+                        if (optionVal != "") {
+                            $thisParent.addClass("gf-value-entered");
+                        }
+                        else {
+                            $thisParent.removeClass("gf-value-entered");
                         }
                     });
                 });

@@ -59,7 +59,7 @@
                         var $thisParent, $parentsInputs;
                         var inputReady = false;
                         
-                        $thisParent = $thisChild.parents("ul.gfield_checkbox");
+                        $thisParent = $thisChild.parents("ul.gfield_checkbox, ul.gfield_radio");
                         $parentsInputs = $thisParent.find("input");
                         $parentsInputs.each(function () {
                             if ($(this).prop("checked") == true && !inputReady) {

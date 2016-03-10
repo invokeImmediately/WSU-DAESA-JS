@@ -6,6 +6,8 @@
     
 	$(document).ready(function () {
         if($("div.gform_body").length > 0) {
+            //TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine 
+            //       how to handle object by finding div children with gfield_container_class.
             hghlghtRqrdInpts(".oue-gf-rqrd-input");
             hghlghtRqrdChckbxs(".oue-gf-rqrd-checkbox");
             hghlghtRqrdTxtAreas(".oue-gf-rqrd-txtarea");

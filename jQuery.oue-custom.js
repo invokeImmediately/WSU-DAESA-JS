@@ -98,7 +98,7 @@
                     $prntNxt.animate({height: $parent.css('height')}, 100);
                 });
             });
-            $("dd").hide();           
+            $("dl.toggled dd").hide();           
             
 	});
 })(jQuery);

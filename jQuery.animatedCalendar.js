@@ -8,9 +8,10 @@
     }
     
 	$(document).ready(function() {
-        if ($('table.calendar').getLength !== 0) {
+        if ($('table.calendar').length > 0) {
             var $toTodayShortcut = $('#jumpToToday');
-            if ($toTodayShortcut.getLength !== 0) {
+            if ($toTodayShortcut.length > 0) {
+                var d = new Date();
                 var fallYear = 2016;
                 var fallStartDay = 15;
                 var fallStartLink = "#Aug15";

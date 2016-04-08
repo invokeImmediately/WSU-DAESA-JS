@@ -5,42 +5,137 @@
     BEHAVIOR: If the date falls outside of the current or upcoming semester, the script will simply jump to the first or last
         day as is most appropriate.
     */
+    function oueSetDateShorcut(var $targetElement) {
+        if ($targetElement && ($targetElement instanceof $ || $targetElement.constructor.prototype.jquery)) {
+            var d = new Date();
+            var n = d.toDateString();
+            $targetElement.attr('href', "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1))));
+        }        
+    }
+    
 	$(document).ready(function() {
         if ($('table.calendar').getLength !== 0) {
             var $toTodayShortcut = $('#jumpToToday');
-            var d = new Date();
-            var n = d.toDateString();
-            if (d.getFullYear() < 2016) { // <---- ***FUTURE UPDATES WILL BE NEEDED | Current academic year***
-                $toTodayShortcut.attr('href', '#Jan11');
+            if ($toTodayShortcut.getLength !== 0) {
+                var fallYear = 2016;
+                var fallStartDay = 15;
+                var fallStartLink = "#Aug15";
+                var fallEndDay = 16;
+                var fallEndLink = "#Dec16";
+                var springYear = 2017;
+                var springStartDay = 9;
+                var springStartLink = "#Jan09";
+                var springEndDay = 5;
+                var springEndLink = "#May05";
+                
+                if (fallYear == springYear || fallYear == springYear - 1) {
+                    if (fallYear < springYear) {
+                        if (d.getFullYear() < fallYear) {
+                            $toTodayShortcut.attr('href', fallStartLink);
+                        }
+                        else if (d.getFullYear() == fallYear) {
+                            if (d.getMonth() < 7){
+                                    $toTodayShortcut.attr('href', fallStartLink);
+                            }
+                            else if (d.getMonth() == 7){
+                                if (d.getDate() < fallStartDay) {
+                                    $toTodayShortcut.attr('href', fallStartLink);
+                                }
+                                else{
+                                    oueSetDateShorcut($toTodayShortcut);
+                                }
+                            }
+                            else if (d.getMonth() > 7 && d.getMonth() < 11) {
+                                oueSetDateShorcut($toTodayShortcut);
+                            }
+                            else {
+                                if (d.getDate() <= fallEndDay) {
+                                    oueSetDateShorcut($toTodayShortcut);
+                                }
+                                else{
+                                    $toTodayShortcut.attr('href', fallEndLink);
+                                }
+                            }
+                        }
+                        else if (d.getFullYear() == springYear) {
+                            if (d.getMonth() == 0){
+                                if (d.getDate() < springStartDay) {
+                                    $toTodayShortcut.attr('href', springStartLink);
+                                }
+                                else{
+                                    oueSetDateShorcut($toTodayShortcut);
+                                }
+                            }
+                            else if (d.getMonth() > 0 && d.getMonth() < 4) {
+                                oueSetDateShorcut($toTodayShortcut);
+                            }
+                            else {
+                                if (d.getDate() <= springEndDay) {
+                                    oueSetDateShorcut($toTodayShortcut);
+                                }
+                                else{
+                                    $toTodayShortcut.attr('href', springEndLink);
+                                }
+                            }
+                        }
+                        else {
+                            $toTodayShortcut.attr('href', springEndLink);
+                        }
+                    }
+                    else {
+                        if (d.getFullYear() < fallYear) {
+                            $toTodayShortcut.attr('href', fallStartLink);
+                        }
+                        else if (d.getFullYear() == fallYear) {
+                            if (d.getMonth() == 0){
+                                if (d.getDate() < springStartDay) {
+                                    $toTodayShortcut.attr('href', springStartLink);
+                                }
+                                else{
+                                    oueSetDateShorcut($toTodayShortcut);
+                                }
+                            }
+                            else if (d.getMonth() > 0 && d.getMonth() < 4) {
+                                oueSetDateShorcut($toTodayShortcut);
+                            }
+                            else if (d.getMonth() == 4) {
+                                if (d.getDate() <= springEndDay) {
+                                    oueSetDateShorcut($toTodayShortcut);
+                                }
+                                else{
+                                    $toTodayShortcut.attr('href', springEndLink);
+                                }
+                            }
+                            else if (d.getMonth() > 4 && d.getMonth() < 7){
+                                    $toTodayShortcut.attr('href', fallStartLink);
+                            }
+                            else if (d.getMonth() == 7){
+                                if (d.getDate() < fallStartDay) {
+                                    $toTodayShortcut.attr('href', fallStartLink);
+                                }
+                                else{
+                                    oueSetDateShorcut($toTodayShortcut);
+                                }
+                            }
+                            else if (d.getMonth() > 7 && d.getMonth() < 11) {
+                                oueSetDateShorcut($toTodayShortcut);
+                            }
+                            else {
+                                if (d.getDate() <= fallEndDay) {
+                                    oueSetDateShorcut($toTodayShortcut);
+                                }
+                                else{
+                                    $toTodayShortcut.attr('href', fallEndLink);
+                                }
+                            }
+                        }
+                        else {
+                            $toTodayShortcut.attr('href', springEndLink);
+                        }
+                    }
+                }
             }
-            else if (d.getFullYear() == 2016) { // <---- ***UPDATE***
-                if (d.getMonth() == 0){
-                    if (d.getDate() < 11) { // <---- ***UPDATE***
-                        $toTodayShortcut.attr('href', '#Jan11'); // <---- ***UPDATE***
-                    }
-                    else{
-                        $toTodayShortcut.attr('href', "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1))));
-                    }
-                }
-                else if (d.getMonth() > 0 && d.getMonth() < 4) {
-                    $toTodayShortcut.attr('href', "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1))));
-                }
-                else if (d.getMonth() == 4) {
-                    if (d.getDate() <= 6) { // <---- ***FUTURE UPDATES WILL BE NEEDED | Ending day of current Spring semester***
-                        $toTodayShortcut.attr('href', "#" + (n.substring(n.indexOf(" ")+1,n.indexOf(" ",n.indexOf(" ")+1)) ) + (n.substring(n.indexOf(" ",n.indexOf(" ")+1)+1,n.indexOf(" ", n.indexOf(" ", n.indexOf(" ")+1)+1))));
-                    }
-                    else{
-                        $toTodayShortcut.attr('href', '#May06'); // <---- ***UPDATE***
-                    }
-                }
-                else{
-                    $toTodayShortcut.attr('href', '#May06'); // <---- ***UPDATE***
-                }
-            }
-            else{
-                $toTodayShortcut.attr('href', '#May06'); // <---- ***UPDATE***
-            }
-
+            
             var calendarCell;
             var calendarCellLinks;
             var calendarCellLinkHref;

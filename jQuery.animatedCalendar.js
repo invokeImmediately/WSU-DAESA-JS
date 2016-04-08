@@ -1,11 +1,5 @@
 (function ($) {
-    /*	SCRIPT DESCRIPTION: Obtains the current dait and modifies the "Today's Date" hyperlink above as appropriate. The calendar
-        below is specifically coded to accomodate navigation to each work-week calendar day within the main WSU semesters.
-    AUTHORED BY: DC Rieck | Designed for further Use with: Notepad++
-    BEHAVIOR: If the date falls outside of the current or upcoming semester, the script will simply jump to the first or last
-        day as is most appropriate.
-    */
-    function oueSetDateShorcut(var $targetElement) {
+    function oueSetDateShorcut($targetElement) {
         if ($targetElement && ($targetElement instanceof $ || $targetElement.constructor.prototype.jquery)) {
             var d = new Date();
             var n = d.toDateString();
@@ -233,6 +227,7 @@
                             }
                         }
                     });
+                    // TODO: Find a way to base this off of styled colors using jQuery color.
                     $legendPanelsBlack.hover(function() {
                         $('td.has-an-event.black').animate({ backgroundColor: "#30303f" },200);
                     }, function() {

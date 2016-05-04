@@ -3,6 +3,7 @@
  *********************************************************************************************************************/
 (function ($) {
     "use strict";
+    
 	$(document).ready(function () {
 			/**********************************************************************************************
 			 * As desired, tweak the CSS of the previous sibling of certain selected elements in the DOM  *
@@ -29,6 +30,26 @@
 					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin crimson encroach-horizontal', 250);
 			});
 
+            /**********************************************************************************************
+             * Fix bug wherein the wrong items in the spine become dogeared                               *
+             **********************************************************************************************/
+            var $dogearedItems = $("#spine-sitenav").find("li.dogeared");
+            if ($dogearedItems.length > 1) {
+                var currentURL = window.location.href;
+                var currentPage = currentURL.substring(currentURL.substring(0, currentURL.length - 1).lastIndexOf("/") + 1, currentURL.length - 1);
+                $dogearedItems.each(function () {
+                    var $this = $(this);
+                    var $navLink = $this.children("a");
+                    if ($navLink.length == 1) {
+                        var navLinkURL = $navLink.attr("href");
+                        var navLinkPage = navLinkURL.substring(navLinkURL.substring(0, navLinkURL.length - 1).lastIndexOf("/") + 1, navLinkURL.length - 1);
+                        if (navLinkPage != currentPage) {
+                            $this.removeClass("dogeared");
+                        }
+                    }
+                });
+            }
+            
 			/**********************************************************************************************
 			 * Set column heights on fluid-width containters                                              *
 			 **********************************************************************************************/

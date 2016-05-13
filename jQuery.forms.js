@@ -8,10 +8,10 @@
         if($("div.gform_body").length > 0) {
             //TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine 
             //       how to handle object by finding div children with gfield_container_class.
-            hghlghtRqrdInpts(".oue-gf-rqrd-input");
-            hghlghtRqrdChckbxs(".oue-gf-rqrd-checkbox");
-            hghlghtRqrdTxtAreas(".oue-gf-rqrd-txtarea");
-            hghlghtRqrdSelects(".oue-gf-rqrd-select");
+            hghlghtRqrdInpts(".oue-gf-rqrd-input, .oue-gf-hghlghts-rqrd");
+            hghlghtRqrdChckbxs(".oue-gf-rqrd-checkbox, .oue-gf-hghlghts-rqrd-checkbox");
+            hghlghtRqrdTxtAreas(".oue-gf-rqrd-txtarea, .oue-gf-hghlghts-rqrd-txtarea");
+            hghlghtRqrdSelects(".oue-gf-rqrd-select, .oue-gf-hghlghts-rqrd-select");
             setupActvtrChckbxs(".oue-gf-actvtr-checkbox");
             setupActvtrChain(".oue-gf-actvtr-chain");
             setupUploadChain(".oue-gf-upload-chain");

@@ -56,7 +56,7 @@
             // TODO: Move the code below to document.ready + replace it with a check to ensure image loading hasn't changed the heights we are working with
             $(window).load(function () {
                 if($(window).width() >= 1051) {
-                    $('.large-format-friendly > div.column.two').each(function () {
+                    $('.side-right.large-format-friendly > div.column.two').each(function () {
                             var $this = $(this);
                             $this.height($this.prev('div.column.one').height());
                             $this.animate({opacity: 1.0}, 100);
@@ -64,7 +64,7 @@
                 }
             });
             $(window).resize(function () {
-                $('.large-format-friendly > div.column.two').each(function () {
+                $('.side-right.large-format-friendly > div.column.two').each(function () {
 					var $this = $(this);
                     var crrntOpacity = $this.css("opacity");
                     if (crrntOpacity == 0 && $(window).width() >= 1051) {

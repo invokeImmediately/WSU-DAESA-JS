@@ -4,122 +4,171 @@
 (function ($) {
     "use strict";
     
-	$(document).ready(function () {
-			/**********************************************************************************************
-			 * As desired, tweak the CSS of the previous sibling of certain selected elements in the DOM  *
-			 **********************************************************************************************/
-            var $lrgFrmtSnglSctns = $('.single.large-format-friendly');
-            if ($lrgFrmtSnglSctns.length > 0) {
-                var $mainHeader = $('header.main-header');
-                $mainHeader.addClass('centered');
-                var $mnHdrChldDiv = $mainHeader.find('div.header-group');
-                $mnHdrChldDiv.addClass('centered');
-            }
-			$('.column > h2:not(.fancy), .column > section > h2:not(.fancy)').each(function () {
-					var $this = $(this);
-                    $this.addClass('no-top-margin');
-                    $this.prev('hr:not(.subSection)').addClass('narrow-bottom-margin dark-gray thicker', 250);
-			});
-			$('.column > h2.fancy, .column > section > h2.fancy').each(function () {
-					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin dark-gray thicker encroach-horizontal', 250);
-			});
-			$('.column > h3:not(.fancy), .column > section > h3:not(.fancy)').each(function () {
-					$(this).prev('hr:not(.subSection)').addClass('narrow-bottom-margin crimson', 250);
-			});
-			$('.column > h3.fancy, .column > section > h3.fancy').each(function () {
-					$(this).prev('hr:not(.subSection)').addClass('no-bottom-margin crimson encroach-horizontal', 250);
-			});
-
-            /**********************************************************************************************
-             * Fix bug wherein the wrong items in the spine become dogeared                               *
-             **********************************************************************************************/
-            var $dogearedItems = $("#spine-sitenav").find("li.current.active.dogeared");
-            if ($dogearedItems.length > 1) {
-                var currentURL = window.location.href;
-                var currentPage = currentURL.substring(currentURL.substring(0, currentURL.length - 1).lastIndexOf("/") + 1, currentURL.length - 1);
-                $dogearedItems.each(function () {
-                    var $this = $(this);
-                    var $navLink = $this.children("a");
-                    if ($navLink.length == 1) {
-                        var navLinkURL = $navLink.attr("href");
-                        var navLinkPage = navLinkURL.substring(navLinkURL.substring(0, navLinkURL.length - 1).lastIndexOf("/") + 1, navLinkURL.length - 1);
-                        if (navLinkPage != currentPage) {
-                            $this.removeClass("current active dogeared");
-                        }
-                    }
-                });
-            }
-            
-			/**********************************************************************************************
-			 * Set column heights on fluid-width containters                                              *
-			 **********************************************************************************************/
-            // TODO: Move the code below to document.ready + replace it with a check to ensure image loading hasn't changed the heights we are working with
-            $(window).load(function () {
-                if($(window).width() >= 1051) {
-                    $('.side-right.large-format-friendly > div.column.two').each(function () {
-                            var $this = $(this);
-                            $this.height($this.prev('div.column.one').height());
-                            $this.animate({opacity: 1.0}, 100);
-                    });
+    $(document).ready(function () {
+        fixDogears("#spine-sitenav", "li.current.active.dogeared", "current active dogeared");
+        checkForLrgFrmtSingle(".single.large-format-friendly", "header.main-header", "div.header-group",
+         "centered");
+        initHrH2Motif(".column > h2:not(.fancy), .column > section > h2:not(.fancy)",
+         "hr:not(.subSection)", "no-top-margin", "narrow-bottom-margin dark-gray thicker", 250);
+        initFancyHrH2Motif(".column > h2.fancy, .column > section > h2.fancy", "hr:not(.subSection)",
+         "no-bottom-margin dark-gray thicker encroach-horizontal", 250);
+        initHrH3Motif(".column > h3:not(.fancy), .column > section > h3:not(.fancy)", "hr:not(.subSection)",
+         "narrow-bottom-margin crimson", 250);
+        initFancyHrH3Motif(".column > h3.fancy, .column > section > h3.fancy", "hr:not(.subSection)",
+         "no-bottom-margin crimson encroach-horizontal", 250);
+        initDropDownToggles(".drop-down-toggle", ".toggled-panel", "activated", 500);
+        initReadMoreToggles(".read-more-toggle-in-ctrl", '.read-more-toggle-out-ctrl',
+         ".read-more-panel", 500);
+        initContentFillpers(".content-flipper", ".flipped-content-front", ".flipped-content-back", 500);
+        initDefinitionLists("dl.toggled", ".large-format-friendly", "div.column.one", "div.column.two",
+         "activated", 400, 100);
+        initWelcomeMessage("#welcome-message", "post-welcome-message", 1000, 500, 500);
+    });
+    
+    $(window).load(function () {
+        finalizeLrgFrmtSideRight(".side-right.large-format-friendly", "div.column.two", "div.column.two",
+         1051, 100);
+    });
+    
+    $(window).resize(function () {
+        resizeLrgFrmtSideRight(".side-right.large-format-friendly", "div.column.two", "div.column.two",
+         1051, 100);
+    });
+    
+    function checkForLrgFrmtSingle(slctrSingle, slctrMainHdr, slctrHdrGroup, centeringClass) {
+        var $lrgFrmtSnglSctns = $(slctrSingle);
+        if ($lrgFrmtSnglSctns.length > 0) {
+            var $mainHeader = $(slctrMainHdr);
+            $mainHeader.addClass(centeringClass);
+            var $mnHdrChldDiv = $mainHeader.find(slctrHdrGroup);
+            $mnHdrChldDiv.addClass(centeringClass);
+        }
+    }
+    
+    function finalizeLrgFrmtSideRight(slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, animDuration) {
+        if($(window).width() >= trggrWidth) {
+            $(slctrSideRight + ">" + slctrColTwo).each(function () {
+                var $this = $(this);
+                var $thisPrev = $this.prev(slctrColOne);
+                if($this.height() != $thisPrev.height() ) {
+                    $this.height($thisPrev.height());
+                }
+                var crrntOpacity = $this.css("opacity");
+                if (crrntOpacity == 0) {
+                    $this.animate({opacity: 1.0}, animDuration);
                 }
             });
-            $(window).resize(function () {
-                $('.side-right.large-format-friendly > div.column.two').each(function () {
-					var $this = $(this);
-                    var crrntOpacity = $this.css("opacity");
-                    if (crrntOpacity == 0 && $(window).width() >= 1051) {
-                        $this.animate({opacity: 1.0}, 100);
+        }
+    }
+    
+    function fixDogears(slctrSiteNav, slctrDogeared, removedClasses) {
+        /**********************************************************************************************
+         * Fix bug wherein the wrong items in the spine become dogeared                               *
+         **********************************************************************************************/
+        var $dogearedItems = $(slctrSiteNav).find(slctrDogeared);
+        if ($dogearedItems.length > 1) {
+            var currentURL = window.location.href;
+            var currentPage = currentURL.substring(currentURL.substring(0, currentURL.length - 1).lastIndexOf("/") + 1, currentURL.length - 1);
+            $dogearedItems.each(function () {
+                var $this = $(this);
+                var $navLink = $this.children("a");
+                if ($navLink.length == 1) {
+                    var navLinkURL = $navLink.attr("href");
+                    var navLinkPage = navLinkURL.substring(navLinkURL.substring(0, navLinkURL.length - 1).lastIndexOf("/") + 1, navLinkURL.length - 1);
+                    if (navLinkPage != currentPage) {
+                        $this.removeClass(removedClasses);
                     }
-                    var $thisPrev = $this.prev('div.column.one');
-                    if($this.height() != $thisPrev.height() ) {
-                        $this.height($thisPrev.height());
-                    }
-                });
+                }
             });
-            
-			/**********************************************************************************************
-			 * Implement dynamic behaviors of interactive elements                                        *
-			 **********************************************************************************************/
-			$('.drop-down-toggle').click(function () {
-                var $this = $(this);
-                $this.toggleClass('activated');
-                $this.next('.toggled-panel').toggle(500)
-			});
-			$('.read-more-toggle-in-ctrl').click(function () {
-                var $this = $(this);
-                $this.toggle(500);
-                $this.next('.read-more-panel').toggle(500);
-                $this.next('.read-more-panel').next('.read-more-toggle-out-ctrl').toggle(500);
-			});
-			$('.read-more-toggle-out-ctrl').click(function () {
-                var $this = $(this);
-                $this.toggle(500);
-                $this.next('.read-more-panel').toggle(500);
-                $this.next('.read-more-panel').next('.read-more-toggle-in-ctrl').toggle(500);
-			});
-			$('.content-flipper').click(function () {
-                var $this = $(this);
-                $this.next('.flipped-content-front').toggle(500);
-                $this.next('.flipped-content-front').next('.flipped-content-back').fadeToggle(500);
-			});
-			$('.flipped-content-front').click(function () {
-                var $this = $(this);
-                $this.toggle(500);
-                $this.next('.flipped-content-back').fadeToggle(500);
-			});
-            $('#welcome-message').delay(1000).fadeOut(500, function () {
-                $('#post-welcome-message').fadeIn(500);
+        }
+    }
+
+    function initContentFlippers(slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, animDuration) {
+        $(slctrCntntFlppr).click(function () {
+            var $this = $(this);
+            $this.next(slctrFlppdFront).toggle(animDuration);
+            $this.next(slctrFlppdFront).next(slctrFlppdBack).fadeToggle(animDuration);
+        });
+        $(slctrFlppdFront).click(function () {
+            var $this = $(this);
+            $this.toggle(animDuration);
+            $this.next(slctrFlppdBack).fadeToggle(animDuration);
+        });
+    }
+    
+    function initDefinitionLists(slctrDefList, slctrLrgFrmtSection, slctrColOne, slctrColTwo, activatingClass,
+     animSlideDrtn, animHghtDrtn) {
+        $(slctrDefList + " dt").click(function() {
+            var $this = $(this);
+            $this.toggleClass(activatingClass);
+            $this.next("dd").slideToggle(animSlideDrtn, function () {
+                var $parent = $this.parents(slctrLrgFrmtSection + ">" + slctrColOne);
+                var $prntNxt = $parent.next(slctrColTwo);
+                $prntNxt.animate({height: $parent.css('height')}, animHghtDrtn);
             });
-            $("dl.toggled dt").click(function() {
+        });
+        $(slctrDefList + " dd").hide(); // Definitions should be hidden by default.
+    }
+    
+    function initDropDownToggles(slctrToggle, slctrWhatsToggled, activatingClass, animDuration) {
+        $(slctrToggle).click(function () {
+            var $this = $(this);
+            $this.toggleClass(activatingClass);
+            $this.next(slctrWhatsToggled).toggle(animDuration)
+        });
+    }
+    
+    function initHrH2Motif(slctrStandardH2, slctrPrevHr, h2ClassesAdded, hrClassesAdded, animAddDrtn) {
+        $(slctrStandardH2).each(function () {
                 var $this = $(this);
-                $this.toggleClass('activated');
-                $this.next("dd").slideToggle(400, function () {
-                    var $parent = $this.parents('.large-format-friendly > div.column.one');
-                    var $prntNxt = $parent.next('div.column.two');
-                    $prntNxt.animate({height: $parent.css('height')}, 100);
-                });
-            });
-            $("dl.toggled dd").hide();           
-            
-	});
+                $this.addClass(h2ClassesAdded);
+                $this.prev(slctrPrevHr).addClass(hrClassesAdded, animAddDrtn);
+        });
+    }
+    
+    function initFancyHrH2Motif(slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddDrtn) {
+        $(slctrFancyH2).each(function () {
+                $(this).prev(slctrPrevHr).addClass(hrClassesAdded, animAddDrtn);
+        });
+    }
+    
+    function initHrH3Motif(slctrStandardH3, slctrPrevHr, hrClassesAdded, animAddDrtn) {
+        $(slctrStandardH3).each(function () {
+            $(this).prev(slctrPrevHr).addClass(hrClassesAdded, animAddDrtn);
+        });
+    }
+    
+    function initFancyHrH3Motif(slctrFancyH3, slctrPrevHr, hrClassesAdded, animAddDrtn) {
+        $(slctrFancyH3).each(function () {
+                $(this).prev(slctrPrevHr).addClass(hrClassesAdded, animAddDrtn);
+        });
+    }
+    
+    function initReadMoreToggles(slctrToggleIn, slctrToggleOut, slctrPanel, animDuration) {
+        $(slctrToggleIn).click(function () {
+            var $this = $(this);
+            var $next = $this.next(slctrPanel);
+            $this.toggle(animDuration);
+            $this.$next.toggle(animDuration);
+            $this.$next.next(slctrToggleOut).toggle(animDuration);
+        });
+        $(slctrToggleOut).click(function () {
+            var $this = $(this);
+            var $next = $this.next(slctrPanel);
+            $this.toggle(animDuration);
+            $this.$next.toggle(animDuration);
+            $this.$next.next(slctrToggleIn).toggle(animDuration);
+        });
+    }
+    
+    function initWelcomeMessage(slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDuration,
+     fadeInDuration) {
+        $(slctrWlcmMsg).delay(msgDelay).fadeOut(fadeOutDuration, function () {
+            $(slctrPostWlcmMsg).fadeIn(fadeInDuration);
+        });
+    }
+
+    function resizeLrgFrmtSideRight(slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, animDuration) {
+        finalizeLrgFrmtSideRight(slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, animDuration);
+    }
 })(jQuery);

@@ -98,7 +98,7 @@
     }
     
     function initTriggeredByHover(slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration) {
-        $(slctrRvlsCntntOnHvr).mouseenter(function () {
+        $(slctrTrggrdOnHvr).mouseenter(function () {
             var $this = $(this);
             var $rvldCntnt = $this.find(slctrCntntRvld);
             var $hddnCntnt = $this.find(slctrCntntHddn);

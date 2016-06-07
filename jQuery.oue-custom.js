@@ -19,9 +19,10 @@
         initDropDownToggles(".drop-down-toggle", ".toggled-panel", "activated", 500);
         initReadMoreToggles(".read-more-toggle-in-ctrl", '.read-more-toggle-out-ctrl',
          ".read-more-panel", 500);
-        initContentFillpers(".content-flipper", ".flipped-content-front", ".flipped-content-back", 500);
+        initContentFlippers(".content-flipper", ".flipped-content-front", ".flipped-content-back", 500);
         initDefinitionLists("dl.toggled", ".large-format-friendly", "div.column.one", "div.column.two",
          "activated", 400, 100);
+        initTriggeredByHover(".triggered-on-hover", ".content-revealed", ".content-hidden", 200);
         initWelcomeMessage("#welcome-message", "post-welcome-message", 1000, 500, 500);
     });
     
@@ -93,6 +94,22 @@
             var $this = $(this);
             $this.toggle(animDuration);
             $this.next(slctrFlppdBack).fadeToggle(animDuration);
+        });
+    }
+    
+    function initTriggeredByHover(slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration) {
+        $(slctrRvlsCntntOnHvr).mouseenter(function () {
+            var $this = $(this);
+            var $rvldCntnt = $this.find(slctrCntntRvld);
+            var $hddnCntnt = $this.find(slctrCntntHddn);
+            $rvldCntnt.stop().show(animDuration);
+            $hddnCntnt.stop().hide(animDuration);
+        }).mouseleave(function () {
+            var $this = $(this);
+            var $rvldCntnt = $this.find(slctrCntntRvld);
+            var $hddnCntnt = $this.find(slctrCntntHddn);
+            $rvldCntnt.stop().hide(animDuration);
+            $hddnCntnt.stop().show(animDuration);
         });
     }
     

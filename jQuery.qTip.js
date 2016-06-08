@@ -8,52 +8,123 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
 
 (function ($) {
     $(document).ready(function () {
-        var qTipContentSource;
-        var qTipStyle;
         var $this;
+        var qTipContentSource; // Currently, either a span or a div tag will be accepted.
+        var qTipStyle; // Currently, blue and dark qTips are implemented.
+        var qTipCntnt; // Object needed for enabling the optional use of titles within qTips.
         $('.has-tool-tip').each(function () {
             $this = $(this);
             $this.hasClass('blue') ? qTipStyle = 'qtip-blue' : qTipStyle = 'qtip-dark';
             if ($this.hasClass('parental-neighbor-is-source')) {
-                $this.qtip({
-                    style: qTipStyle,
-                    content: { text: $this.parent().next('div')},
-                    position: {
-                        target: 'mouse', // Track the mouse as the positioning target
-                        adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
-                    },
-                    show: {
-                        effect: function () {
-                            $(this).slideDown(200);
+                qTipCntnt = new QTipContent($this.parent().next('div').text());
+                if (qTipCntnt.qTipTitle == null) {
+                    $this.qtip({
+                        style: qTipStyle,
+                        content: {
+                            text: qTipCntnt.qTipText
+                        },
+                        position: {
+                            target: 'mouse', // Track the mouse as the positioning target
+                            adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
+                        },
+                        show: {
+                            effect: function () {
+                                $(this).slideDown(200);
+                            }
+                        },
+                        hide: {
+                            effect: function () {
+                                $(this).slideUp(200);
+                            }
                         }
-                    },
-                    hide: {
-                        effect: function () {
-                            $(this).slideUp(200);
+                    });
+                }
+                else {
+                    $this.qtip({
+                        style: qTipStyle,
+                        content: {
+                            title: qTipCntnt.qTipTitle,
+                            text: qTipCntnt.qTipText
+                        },
+                        position: {
+                            target: 'mouse', // Track the mouse as the positioning target
+                            adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
+                        },
+                        show: {
+                            effect: function () {
+                                $(this).slideDown(200);
+                            }
+                        },
+                        hide: {
+                            effect: function () {
+                                $(this).slideUp(200);
+                            }
                         }
-                    }
-                });                
+                    });
+                }
             } else {
                 $this.hasClass('span-is-source') ? qTipContentSource = 'span' : qTipContentSource = 'div';
-                $this.qtip({
-                    style: qTipStyle,
-                    content: { text: $this.next(qTipContentSource)},
-                    position: {
-                        target: 'mouse', // Track the mouse as the positioning target
-                        adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
-                    },
-                    show: {
-                        effect: function () {
-                            $(this).slideDown(200);
+                qTipCntnt = new QTipContent($this.next(qTipContentSource).text());
+                if (qTipCntnt.qTipTitle == null) {
+                    $this.qtip({
+                        style: qTipStyle,
+                        content: {
+                            text: qTipCntnt.qTipText;
+                        },
+                        position: {
+                            target: 'mouse', // Track the mouse as the positioning target
+                            adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
+                        },
+                        show: {
+                            effect: function () {
+                                $(this).slideDown(200);
+                            }
+                        },
+                        hide: {
+                            effect: function () {
+                                $(this).slideUp(200);
+                            }
                         }
-                    },
-                    hide: {
-                        effect: function () {
-                            $(this).slideUp(200);
+                    });
+                }
+                else {
+                    $this.qtip({
+                        style: qTipStyle,
+                        content: {
+                            title: qTipCntnt.qTipTitle;
+                            text: qTipCntnt.qTipText;
+                        },
+                        position: {
+                            target: 'mouse', // Track the mouse as the positioning target
+                            adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
+                        },
+                        show: {
+                            effect: function () {
+                                $(this).slideDown(200);
+                            }
+                        },
+                        hide: {
+                            effect: function () {
+                                $(this).slideUp(200);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });       
     });
+    
+    function QTipContent(srcText) {
+        this.qTipTitle = null;
+        this.qTipText = null;
+        var regExPttrn = /^(.+)\|(.+)$/;
+        var regExResult = regExPttrn.exec(srcText);
+        if (regExResult != null && regExResult.length == 3) {
+            this.qTipTitle = regExResult[1];
+            this.qTipTitle = regExResult[1];
+            this.qTipText = regExResult[2];            
+        } else {
+            this.qTipText = srcText;
+        }
+    }
 })(jQuery);

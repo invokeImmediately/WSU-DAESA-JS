@@ -69,7 +69,7 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
                     $this.qtip({
                         style: qTipStyle,
                         content: {
-                            text: qTipCntnt.qTipText
+                            text: qTipCntnt.qTipInnerHTML
                         },
                         position: {
                             target: 'mouse', // Track the mouse as the positioning target
@@ -92,7 +92,7 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
                         style: qTipStyle,
                         content: {
                             title: qTipCntnt.qTipTitle,
-                            text: qTipCntnt.qTipText
+                            text: qTipCntnt.qTipInnerHTML
                         },
                         position: {
                             target: 'mouse', // Track the mouse as the positioning target

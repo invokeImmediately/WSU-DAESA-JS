@@ -21,7 +21,7 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
                     $this.qtip({
                         style: qTipStyle,
                         content: {
-                            text: qTipCntnt.qTipText
+                            text: qTipCntnt.qTipInnerHTML
                         },
                         position: {
                             target: 'mouse', // Track the mouse as the positioning target
@@ -44,7 +44,7 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
                         style: qTipStyle,
                         content: {
                             title: qTipCntnt.qTipTitle,
-                            text: qTipCntnt.qTipText
+                            text: qTipCntnt.qTipInnerHTML
                         },
                         position: {
                             target: 'mouse', // Track the mouse as the positioning target
@@ -114,16 +114,20 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
         });       
     });
     
-    function QTipContent(srcText) {
+    function QTipContent($qTipSlctr) {
         this.qTipTitle = null;
         this.qTipText = null;
+        this.qTipInnerHTML = null;
         var regExPttrn = /^(.+)\|(.+)$/;
-        var regExResult = regExPttrn.exec(srcText);
+        var regExResult = regExPttrn.exec($qTipSlctr.text());
         if (regExResult != null && regExResult.length == 3) {
             this.qTipTitle = regExResult[1];
-            this.qTipText = regExResult[2];            
+            this.qTipText = regExResult[2];
+            regExPttrn = /^(.+)\|/;
+            this.qTipInnerHTML = $qTipSlctr.html().replace(regExPttrn);
         } else {
-            this.qTipText = srcText;
+            this.qTipText = $qTipSlctr.text();
+            this.qTipInnerHTML = $qTipSlctr.html();
         }
     }
 })(jQuery);

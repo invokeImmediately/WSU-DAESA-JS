@@ -16,7 +16,7 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
             $this = $(this);
             $this.hasClass('blue') ? qTipStyle = 'qtip-blue' : qTipStyle = 'qtip-dark';
             if ($this.hasClass('parental-neighbor-is-source')) {
-                qTipCntnt = new QTipContent($this.parent().next('div').text());
+                qTipCntnt = new QTipContent($this.parent().next('div'));
                 if (qTipCntnt.qTipTitle == null) {
                     $this.qtip({
                         style: qTipStyle,
@@ -64,7 +64,7 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
                 }
             } else {
                 $this.hasClass('span-is-source') ? qTipContentSource = 'span' : qTipContentSource = 'div';
-                qTipCntnt = new QTipContent($this.next(qTipContentSource).text());
+                qTipCntnt = new QTipContent($this.next(qTipContentSource));
                 if (qTipCntnt.qTipTitle == null) {
                     $this.qtip({
                         style: qTipStyle,

@@ -124,7 +124,7 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
             this.qTipTitle = regExResult[1];
             this.qTipText = regExResult[2];
             regExPttrn = /^(.+)\|/;
-            this.qTipInnerHTML = $qTipSlctr.html().replace(regExPttrn);
+            this.qTipInnerHTML = $qTipSlctr.html().replace(regExPttrn, "");
         } else {
             this.qTipText = $qTipSlctr.text();
             this.qTipInnerHTML = $qTipSlctr.html();

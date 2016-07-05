@@ -3,11 +3,12 @@
  *********************************************************************************************************************/
 "use strict";
 
-jQuery.fn.isJQuery = function($obj) {
+function isJQuery($obj) {
 	return ($obj && ($obj instanceof jQuery || $obj.constructor.prototype.jquery));
 }
 
 (function ($) {
+	"use strict";
     $(document).ready(function () {
         fixDogears("#spine-sitenav", "li.current.active.dogeared", "current active dogeared");
         checkForLrgFrmtSingle(".single.large-format-friendly", "header.main-header", "div.header-group",

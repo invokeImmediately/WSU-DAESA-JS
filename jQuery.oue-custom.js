@@ -4,7 +4,7 @@
 "use strict";
 
 jQuery.fn.isJQuery = function($obj) {
-	return ($obj && ($obj instanceof $ || obj.constructor.prototype.jquery));
+	return ($obj && ($obj instanceof jQuery || obj.constructor.prototype.jquery));
 }
 
 (function ($) {

@@ -3,11 +3,9 @@
  *********************************************************************************************************************/
 "use strict";
 
-jQuery.fn.extend({
-	isJQuery: function($obj) {
-		return ($obj && ($obj instanceof $ || obj.constructor.prototype.jquery));
-	}
-});
+jQuery.fn.isJQuery = function($obj) {
+	return ($obj && ($obj instanceof $ || obj.constructor.prototype.jquery));
+}
 
 (function ($) {
     $(document).ready(function () {

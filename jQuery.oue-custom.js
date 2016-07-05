@@ -3,7 +3,13 @@
  *********************************************************************************************************************/
 (function ($) {
     "use strict";
-    
+
+	$.fn.extend({
+		isJQuery: function($obj) {
+			return ($obj && ($obj instanceof $ || obj.constructor.prototype.jquery));
+		}
+	});
+	
     $(document).ready(function () {
         fixDogears("#spine-sitenav", "li.current.active.dogeared", "current active dogeared");
         checkForLrgFrmtSingle(".single.large-format-friendly", "header.main-header", "div.header-group",

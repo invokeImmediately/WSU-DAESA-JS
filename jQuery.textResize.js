@@ -41,7 +41,41 @@
             $(window).on("resize.textresize orientationchange.textresize", resizer);
         });
     };
-    
+	
+// TODO: write function for fitting text.
+//	$.fn.fitText = function(  )
+
+// TODO: Come up with a line-based solution
+//  Ideas: invisible absolutely positioned duplicate of element that is scaled until desired effect is
+//   achieved, then settings are applied to original; etc.
+/*	function FontShrinker($fromElem) {
+		this.maxLines = undefined;
+		this.leadingRatio = undefined;
+		this.fontSizeStart = undefined;
+		this.fontSizeThreshold = undefined;
+		
+		var validArg = isJQuery($fromElem);
+		if(validArg) {
+			this.maxLines = $this.data("max-lines");
+			var styleProps = $this.css([
+				"fontSize", "lineHeight"
+			]);
+			styleProps = $.extend({
+				"height" : $this.height()
+			}, styleProps);
+			var height = parseFloat(styleProps.height);
+			var fontSize = parseFloat(styleProps.fontSize);
+			var lineHeight = parseFloat(styleProps.lineHeight);
+			this.leadingRatio = parseFloat(styleProps.lineHeight) / parseFloat(styleProps.fontSize);
+			var curLines = height / lineHeight;
+			if(this.maxLines != undefined && curLines > maxLines) {
+				var newFontSz = 
+			} else {
+				
+			}
+		}
+	}*/
+
     // Now use the plugin on the WSU Undergraduate education website (i.e. delete or modify the
     // following statement if you are going to utilize this plugin on your own site).
     $(document).ready(function () {
@@ -63,6 +97,13 @@
 			var maxWidth = $parent.css("max-width");
 			var scalingAmt;
 			if (maxWidth == "none") {
+				var $binder = $("#binder");
+				if ($binder.length == 1) {
+					maxWidth = $binder.css("max-width");
+					if (maxWidth != "none") {
+						clmnWidth = parseFloat(maxWidth) - 198;
+					}
+				}
 				scalingAmt = clmnWidth / (parseFloat(fontSz) * 10);
 			}
 			else {
@@ -70,5 +111,12 @@
 			}
 			$this.textResize(scalingAmt, {"minFontSize" : "10.7px", "againstSelf" : 0})
 		});
+		
+/*		var $shrinkingElems = $(".shrinks-with-parent");
+		$shrinkingElems.each(function() {
+			var $this = $(this);
+			
+		});*/
     });
 })(jQuery);
+// 14.4px;

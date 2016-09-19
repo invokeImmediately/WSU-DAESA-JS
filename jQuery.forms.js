@@ -8,6 +8,7 @@
         if($("div.gform_body").length > 0) {
             //TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine 
             //       how to handle object by finding div children with gfield_container_class.
+			initWsuIdInputs(".gf-is-wsu-id");
             hghlghtRqrdInpts(".oue-gf-rqrd-input, .oue-gf-hghlghts-rqrd-input");
             hghlghtRqrdChckbxs(".oue-gf-rqrd-checkbox, .oue-gf-hghlghts-rqrd-checkbox");
             hghlghtRqrdTxtAreas(".oue-gf-rqrd-txtarea, .oue-gf-hghlghts-rqrd-txtarea");
@@ -142,6 +143,33 @@
         }
     }
 
+    /******************************************************************************************\
+    | Initialize RegEx filtration of inputs that accept WSU ID numbers                         |
+    \******************************************************************************************/
+    function initWsuIdInputs(slctrInputs) {
+        var $wsuIdInputs = $(slctrInputs).find("input[type='text']");
+        $wsuIdInputs.on("keyup paste", function () {
+            var $this = $(this);
+            var regExMask = /[^0-9]+/g;
+            var inputText = $this.val();
+            if (regExMask.exec(inputText) != null) {
+                $this.val(inputText.replace(regExMask, ""));
+                inputText = $this.val();
+            }
+            if (inputText.length > 9) {
+                $this.val(inputText.slice(0,9));
+            }
+        });
+        $wsuIdInputs.blur(function () {
+            var $this = $(this);
+            var regExFinalPttrn = /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
+            var inputText = $this.val();
+            if (regExFinalPttrn.exec(inputText) == null) {
+                $this.val("");
+            }
+        });
+    }
+	
     /******************************************************************************************\
     | Setup activator checkboxes that disappear once one is selected                           |
     \******************************************************************************************/

@@ -166,10 +166,12 @@
             var $this = $(this);
             var regExFinalPttrn = /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
             var inputText = $this.val();
-            if (regExFinalPttrn.exec(inputText) == null) {
-                $this.val("");
-				alert("Please try again: when the leading zero is included, WSU ID numbers are nine (9) digits long. (You can also drop the leading zero and enter in eight (8) digits.");
-            }
+			if (inputText != "") {
+				if (regExFinalPttrn.exec(inputText) == null) {					
+					$this.val("");
+					alert("Please try again: when the leading zero is included, WSU ID numbers are nine (9) digits long. (You can also drop the leading zero and enter in eight (8) digits.");
+				}
+			}
         });
     }
 	

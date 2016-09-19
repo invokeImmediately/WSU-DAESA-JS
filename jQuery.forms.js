@@ -155,9 +155,11 @@
             if (regExMask.exec(inputText) != null) {
                 $this.val(inputText.replace(regExMask, ""));
                 inputText = $this.val();
+				alert("WSU ID numbers can only contain digts.");
             }
             if (inputText.length > 9) {
                 $this.val(inputText.slice(0,9));
+				alert("WSU ID numbers are no greater than nine (9) digits in length.");
             }
         });
         $wsuIdInputs.blur(function () {
@@ -166,6 +168,7 @@
             var inputText = $this.val();
             if (regExFinalPttrn.exec(inputText) == null) {
                 $this.val("");
+				alert("Please try again: when the leading zero is included, WSU ID numbers are nine (9) digits long. (You can also drop the leading zero and enter in eight (8) digits.");
             }
         });
     }

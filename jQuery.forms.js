@@ -10,9 +10,9 @@
             //       how to handle object by finding div children with gfield_container_class.
 			initWsuIdInputs(".gf-is-wsu-id");
             hghlghtRqrdInpts("li.gfield_contains_required input");
-            hghlghtRqrdChckbxs(".oue-gf-rqrd-checkbox, .oue-gf-hghlghts-rqrd-checkbox");
-            hghlghtRqrdTxtAreas(".oue-gf-rqrd-txtarea, .oue-gf-hghlghts-rqrd-txtarea");
-            hghlghtRqrdSelects(".oue-gf-rqrd-select, .oue-gf-hghlghts-rqrd-select");
+            hghlghtRqrdChckbxs("li.gfield_contains_required ul.gfield_checkbox, li.gfield_contains_required ul.gfield_radio");
+            hghlghtRqrdTxtAreas("li.gfield_contains_required textarea");
+            hghlghtRqrdSelects("li.gfield_contains_required input");
             setupActvtrChckbxs(".oue-gf-actvtr-checkbox");
             setupActvtrChain(".oue-gf-actvtr-chain");
             setupUploadChain(".oue-gf-upload-chain");
@@ -81,29 +81,7 @@
     | Highlight required TEXT AREA inputs until a value has been properly entered              |
     \******************************************************************************************/
     function hghlghtRqrdTxtAreas (selector) {
-        if ($.type(selector) === "string") {
-            $(selector).each(function () {
-                var $this = $(this);
-                var $inputs = $this.find("textarea");
-                $inputs.each(function () {
-                    var $thisChild = $(this);
-                    if ($thisChild.val() == "") {
-                        $thisChild.removeClass("gf-value-entered");
-                    }
-                    else {
-                        $thisChild.addClass("gf-value-entered");
-                    }
-                    $thisChild.change(function () {
-                        if ($thisChild.val() == "") {
-                            $thisChild.removeClass("gf-value-entered");
-                        }
-                        else {
-                            $thisChild.addClass("gf-value-entered");
-                        }
-                    });
-                });
-            });
-        }
+		hghlghtRqrdInpts(selector);
     }
 
     /******************************************************************************************\
@@ -112,29 +90,25 @@
     function hghlghtRqrdSelects (selector) {
         if ($.type(selector) === "string") {
             $(selector).each(function () {
-                var $this = $(this);
-                var $inputs = $this.find("select");
-                $inputs.each(function () {
-                    var $thisInput = $(this);
-                    var $childSlctdOptn = $thisInput.find("option:selected");
-                    var optionVal = $childSlctdOptn.text();                        
-                    if (optionVal != "") {
-                        $thisInput.addClass("gf-value-entered");
-                    }
-                    else {
-                        $thisInput.removeClass("gf-value-entered");
-                    }
-                    $thisInput.change(function () {
-                        $childSlctdOptn = $thisInput.find("option:selected");
-                        optionVal = $childSlctdOptn.text();                        
-                        if (optionVal != "") {
-                            $thisInput.addClass("gf-value-entered");
-                        }
-                        else {
-                            $thisInput.removeClass("gf-value-entered");
-                        }
-                    });
-                });
+                var $thisInput = $(this);
+				var $childSlctdOptn = $thisInput.find("option:selected");
+				var optionVal = $childSlctdOptn.text();                        
+				if (optionVal != "") {
+					$thisInput.addClass("gf-value-entered");
+				}
+				else {
+					$thisInput.removeClass("gf-value-entered");
+				}
+				$thisInput.change(function () {
+					$childSlctdOptn = $thisInput.find("option:selected");
+					optionVal = $childSlctdOptn.text();                        
+					if (optionVal != "") {
+						$thisInput.addClass("gf-value-entered");
+					}
+					else {
+						$thisInput.removeClass("gf-value-entered");
+					}
+				});
             });
         }
     }

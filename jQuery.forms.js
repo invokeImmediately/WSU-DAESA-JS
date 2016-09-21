@@ -9,7 +9,7 @@
             //TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine 
             //       how to handle object by finding div children with gfield_container_class.
 			initWsuIdInputs(".gf-is-wsu-id");
-            hghlghtRqrdInpts(".oue-gf-rqrd-input, .oue-gf-hghlghts-rqrd-input");
+            hghlghtRqrdInpts("li.gfield_contains_required input");
             hghlghtRqrdChckbxs(".oue-gf-rqrd-checkbox, .oue-gf-hghlghts-rqrd-checkbox");
             hghlghtRqrdTxtAreas(".oue-gf-rqrd-txtarea, .oue-gf-hghlghts-rqrd-txtarea");
             hghlghtRqrdSelects(".oue-gf-rqrd-select, .oue-gf-hghlghts-rqrd-select");
@@ -25,25 +25,21 @@
     function hghlghtRqrdInpts (selector) {
         if ($.type(selector) === "string") {
             $(selector).each(function () {
-                var $this = $(this);
-                var $inputs = $this.find("input");
-                $inputs.each(function () {
-                    var $thisChild = $(this);
-                    if ($thisChild.val() == "") {
-                        $thisChild.removeClass("gf-value-entered");
-                    }
-                    else {
-                        $thisChild.addClass("gf-value-entered");
-                    }
-                    $thisChild.blur(function () {
-                        if ($thisChild.val() == "") {
-                            $thisChild.removeClass("gf-value-entered");
-                        }
-                        else {
-                            $thisChild.addClass("gf-value-entered");
-                        }
-                    });
-                });
+                var $thisInput = $(this);
+				if ($thisInput.val() == "") {
+					$thisInput.removeClass("gf-value-entered");
+				}
+				else {
+					$thisInput.addClass("gf-value-entered");
+				}
+				$thisInput.blur(function () {
+					if ($thisInput.val() == "") {
+						$thisInput.removeClass("gf-value-entered");
+					}
+					else {
+						$thisInput.addClass("gf-value-entered");
+					}
+				});
             });
         }
     }

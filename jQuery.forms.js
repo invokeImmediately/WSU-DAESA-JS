@@ -6,11 +6,13 @@
     
 	$(document).bind("gform_post_render", function () {
 		checkRqrdInpts("li.gfield_contains_required input");
+		checkRqrdChckbxs("li.gfield_contains_required ul.gfield_checkbox, li.gfield_contains_required ul.gfield_radio");
+		checkRqrdTxtAreas("li.gfield_contains_required textarea");
 	});
 	$(document).ready(function () {
         if($("div.gform_body").length > 0) {
-            //TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine 
-            //       how to handle object by finding div children with gfield_container_class.
+            // TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine 
+            //   how to handle object by finding div children with gfield_container_class.
 			initWsuIdInputs(".gf-is-wsu-id");
             setupActvtrChckbxs(".oue-gf-actvtr-checkbox");
             setupActvtrChain(".oue-gf-actvtr-chain");
@@ -18,7 +20,7 @@
 			hghlghtRqrdInpts("li.gfield_contains_required input");
 			hghlghtRqrdChckbxs("li.gfield_contains_required ul.gfield_checkbox, li.gfield_contains_required ul.gfield_radio");
 			hghlghtRqrdTxtAreas("li.gfield_contains_required textarea");
-			hghlghtRqrdSelects("li.gfield_contains_required input");
+			hghlghtRqrdSelects("li.gfield_contains_required select");
         }
     });
     
@@ -58,6 +60,27 @@
     /******************************************************************************************\
     | Highlight required CHECKBOXES until at least one has been checked                        |
     \******************************************************************************************/
+    function checkRqrdChckbxs (selector) {
+        if ($.type(selector) === "string") {
+            $(selector).each(function () {
+                var $this = $(this);
+                var $inputs = $this.find("input");
+				var inputReady = false;
+                $inputs.each(function () {
+					if ($(this).prop("checked") == true && !inputReady) {
+						inputReady = true;
+					}
+				});
+				if (inputReady) {
+					$this.addClass("gf-value-entered");
+				}
+				else {
+					$this.removeClass("gf-value-entered");
+				}
+			});
+		}
+	}
+
     function hghlghtRqrdChckbxs (selector) {
         if ($.type(selector) === "string") {
             $(selector).each(function () {
@@ -91,6 +114,10 @@
     /******************************************************************************************\
     | Highlight required TEXT AREA inputs until a value has been properly entered              |
     \******************************************************************************************/
+    function checkRqrdTxtAreas (selector) {
+		checkRqrdInpts(selector);
+    }
+
     function hghlghtRqrdTxtAreas (selector) {
 		hghlghtRqrdInpts(selector);
     }

@@ -4,25 +4,28 @@
 (function ($) {
     "use strict";
     
+	$(document).bind("gform_post_render", function () {
+		checkRqrdInpts("li.gfield_contains_required input");
+	});
 	$(document).ready(function () {
         if($("div.gform_body").length > 0) {
             //TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine 
             //       how to handle object by finding div children with gfield_container_class.
 			initWsuIdInputs(".gf-is-wsu-id");
-            hghlghtRqrdInpts("li.gfield_contains_required input");
-            hghlghtRqrdChckbxs("li.gfield_contains_required ul.gfield_checkbox, li.gfield_contains_required ul.gfield_radio");
-            hghlghtRqrdTxtAreas("li.gfield_contains_required textarea");
-            hghlghtRqrdSelects("li.gfield_contains_required input");
             setupActvtrChckbxs(".oue-gf-actvtr-checkbox");
             setupActvtrChain(".oue-gf-actvtr-chain");
             setupUploadChain(".oue-gf-upload-chain");
+			hghlghtRqrdInpts("li.gfield_contains_required input");
+			hghlghtRqrdChckbxs("li.gfield_contains_required ul.gfield_checkbox, li.gfield_contains_required ul.gfield_radio");
+			hghlghtRqrdTxtAreas("li.gfield_contains_required textarea");
+			hghlghtRqrdSelects("li.gfield_contains_required input");
         }
     });
     
     /******************************************************************************************\
     | Highlight required INPUTS until a value has been properly entered                        |
     \******************************************************************************************/
-    function hghlghtRqrdInpts (selector) {
+    function checkRqrdInpts (selector) {
         if ($.type(selector) === "string") {
             $(selector).each(function () {
                 var $thisInput = $(this);
@@ -32,6 +35,14 @@
 				else {
 					$thisInput.addClass("gf-value-entered");
 				}
+            });
+        }
+    }
+
+    function hghlghtRqrdInpts (selector) {
+        if ($.type(selector) === "string") {
+            $(selector).each(function () {
+                var $thisInput = $(this);
 				$thisInput.blur(function () {
 					if ($thisInput.val() == "") {
 						$thisInput.removeClass("gf-value-entered");

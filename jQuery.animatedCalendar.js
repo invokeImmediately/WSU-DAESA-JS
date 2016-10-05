@@ -282,8 +282,11 @@
 				});
 				$legendPanelsDarkGray.hover(function() {
 					$("td.has-an-event.dark-gray").animate({ backgroundColor: "#59696f" },200);
+					$("td.has-an-event.dark-gray.brown").animate({ backgroundImage: "none" },200);
 				}, function() {
 					$("td.has-an-event.dark-gray").animate({ backgroundColor: "#373940" },200);
+					$("td.has-an-event.dark-gray.brown").animate({
+						backgroundImage: "linear-gradient(to bottom, #373940, #723f1f)" },200);
 				});
 				$legendPanelsDarkBrown.hover(function() {
 					$("td.has-an-event.dark-brown").animate({ backgroundColor: "#664a4d" },200);
@@ -292,8 +295,11 @@
 				});
 				$legendPanelsBrown.hover(function() {
 					$("td.has-an-event.brown").animate({ backgroundColor: "#866e56" },200);
+					$("td.has-an-event.dark-gray.brown").animate({ backgroundImage: "none" },200);
 				}, function() {
 					$("td.has-an-event.brown").animate({ backgroundColor: "#723f1f" },200);
+					$("td.has-an-event.dark-gray.brown").animate({
+						backgroundImage: "linear-gradient(to bottom, #373940, #723f1f)" },200);
 				});
 				$legendPanelsDarkOlive.hover(function() {
 					$("td.has-an-event.dark-olive").animate({ backgroundColor: "#646a4f" },200);

@@ -4,7 +4,7 @@
 	$(document).ready(function() {
 		var $calendars = $("table.calendar");
         if ($calendars.length > 0) {
-			setupCalendarShorcuts($calendars);
+			setupCalendarShortcuts($calendars);
             setupColorCoding($calendars);
 			setupCalendarLegendScrolling($calendars);
         }

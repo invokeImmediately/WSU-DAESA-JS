@@ -24,9 +24,11 @@
 			hghlghtRqrdChckbxs($rqrdFlds.find("ul.gfield_checkbox, ul.gfield_radio"));
 			hghlghtRqrdTxtAreas($rqrdFlds.find("textarea"));
 			hghlghtRqrdSelects($rqrdFlds.find("select"));
-			hghlghtRqrdRchTxtEdtrs($rqrdFlds.filter(".uses-rich-editor"));
         }
     });
+	$(window).load(function () {
+		hghlghtRqrdRchTxtEdtrs($("li.gfield_contains_required.uses-rich-editor"));
+	});
     
     /****************************************************************************************************\
     | Highlight required INPUTS until a value has been properly entered                                  |
@@ -130,19 +132,21 @@
     | Highlight required RICH TEXT EDITOR containters until a value has been properly entered            |
     \****************************************************************************************************/
 	function hghlghtRqrdRchTxtEdtrs($fields) {
-        if (isJQuery($fields)) {
+        if (isJQuery($fields) && $fields.length > 0) {
             $fields.each(function () {
 				var $edtrFrm = $(this).find("iframe");
-				var $edtrBdy = $edtrFrm.content().find("#tinymce");
-				$edtrBdy.css("background", "rgba(255,0,0,0.1)");
-				$edtrBdy.focus(function () {
-					$(this).css("background-color", "rgba(255,255,255,1)");
-				});
-				$edtrBdy.blur(function () {
-					var $this = $(this);
-					if($this.text().replace(/\n|\uFEFF/g, "") == "") {
-						$this.css("background-color","rgba(255,0,0,0.1)");
-					}
+				$edtrFrm.each(function () {
+					var $edtrBdy = $(this).contents().find("#tinymce");
+					$edtrBdy.css("background-color", "rgba(255,0,0,0.1)");
+					$edtrBdy.focus(function () {
+						$(this).css("background-color", "rgba(255,255,255,1)");
+					});
+					$edtrBdy.blur(function () {
+						var $this = $(this);
+						if($this.text().replace(/\n|\uFEFF/g, "") == "") {
+							$this.css("background-color","rgba(255,0,0,0.1)");
+						}
+					});
 				});
 			});
 		}

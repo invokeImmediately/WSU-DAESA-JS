@@ -29,16 +29,17 @@ function isJQuery($obj) {
          "activated", 400, 100);
 		initQuickTabs("section.row.single.quick-tabs");
         initTriggeredByHover(".triggered-on-hover", ".content-revealed", ".content-hidden", 200);
+		// initScrollingSidebars("...");
         initWelcomeMessage("#welcome-message", "post-welcome-message", 1000, 500, 500);
     });
     
     $(window).load(function () {
-        finalizeLrgFrmtSideRight(".side-right.large-format-friendly", "div.column.two", "div.column.two",
+        finalizeLrgFrmtSideRight(".side-right.large-format-friendly", "div.column.one", "div.column.two",
          1051, 100);
     });
     
     $(window).resize(function () {
-        resizeLrgFrmtSideRight(".side-right.large-format-friendly", "div.column.two", "div.column.two",
+        resizeLrgFrmtSideRight(".side-right.large-format-friendly", "div.column.one", "div.column.two",
          1051, 100);
     });
     

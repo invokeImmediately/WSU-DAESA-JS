@@ -98,7 +98,7 @@ function isJQuery($obj) {
 		// initScrollingSidebars("...");
         initWelcomeMessage(
 			"#welcome-message",
-			"post-welcome-message",
+			"#post-welcome-message",
 			1000,
 			500,
 			500
@@ -369,17 +369,14 @@ function isJQuery($obj) {
 			});
 		}
 		else {
-			if($toc.length === 0) {
-				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Could not find the table of contents element within the DOM.' }");
-			}
-			else if($toc.length > 1) {
+			if($toc.length > 1) {
 				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than one table of contents elements; this function only works with one table of contents.' }");
 			}
 			if($mainHeader.length === 0) {
 				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Could not find the main header  element within the DOM.' }");
 			}
 			else if($mainHeader.length > 1) {
-				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than one table of contents elements; this function only works with one table of contents.' }");
+				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than one main header element; this function assumes that there is one main header and matches the width of the TOC to it.' }");
 			}
 		}
 	}

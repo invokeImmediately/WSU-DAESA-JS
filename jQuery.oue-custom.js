@@ -98,7 +98,7 @@ function isJQuery($obj) {
 		// initScrollingSidebars("...");
         initWelcomeMessage(
 			"#welcome-message",
-			"#post-welcome-message",
+			"post-welcome-message",
 			1000,
 			500,
 			500
@@ -328,7 +328,7 @@ function isJQuery($obj) {
 		if($toc.length === 1 && $mainHeader.length === 1) {
 			var $window = $(window);
 			var tocTrigger = $toc.offset().top + $toc.height() + 100;
-			var $tocClone = $toc.clone().addClass("floating").insertAfter($toc);
+			var $tocClone = $toc.clone().addClass("floating").removeAttr("id").insertAfter($toc);
 			$tocClone.find("span.title + br").remove();
 			$tocClone.find("span.title").remove();
 			if($linkToTop.length === 1) {
@@ -369,14 +369,17 @@ function isJQuery($obj) {
 			});
 		}
 		else {
-			if($toc.length > 1) {
+			if($toc.length === 0) {
+				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Could not find the table of contents element within the DOM.' }");
+			}
+			else if($toc.length > 1) {
 				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than one table of contents elements; this function only works with one table of contents.' }");
 			}
 			if($mainHeader.length === 0) {
 				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Could not find the main header  element within the DOM.' }");
 			}
 			else if($mainHeader.length > 1) {
-				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than one main header element; this function assumes that there is one main header and matches the width of the TOC to it.' }");
+				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than one table of contents elements; this function only works with one table of contents.' }");
 			}
 		}
 	}

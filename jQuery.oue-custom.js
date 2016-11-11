@@ -369,10 +369,7 @@ function isJQuery($obj) {
 			});
 		}
 		else {
-			if($toc.length === 0) {
-				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Could not find the table of contents element within the DOM.' }");
-			}
-			else if($toc.length > 1) {
+			if($toc.length > 1) {
 				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than one table of contents elements; this function only works with one table of contents.' }");
 			}
 			if($mainHeader.length === 0) {

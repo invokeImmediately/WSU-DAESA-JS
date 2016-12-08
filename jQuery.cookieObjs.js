@@ -95,8 +95,23 @@
  */
 (function ($) {
     $(document).ready(function () {
-        if ($('.page-covering-notice-js').length !== 0) {
-            if ($.cookie('wsuVpuePageNoticeViewed03') === undefined) {
+		var $pageNotice = $('.page-covering-notice-js')
+        if ($pageNotice.length === 1) {
+			// Check for a cookie name specified by the page designer
+			var defaultCookieName = "wsuVpuePageNoticeViewed";
+			var cookieName = $pageNotice.data("noticeName");
+			if (!cookieName) {
+				cookieName = defaultCookieName;
+			} else {
+				// Restrict our cookie name to only contain letters and digits
+				var regExMask = /[^0-9a-zA-Z]+/g;
+				if (regExMask.exec(cookieName) != null) {
+					cookieName = cookieName.replace(regExMask, "");
+				}
+			}
+			
+			// If cookie is not present, this is the first time today the page was loaded; so show the notice
+            if ($.cookie(cookieName) === undefined) {
                 // Determine the expiration time of the cookie (i.e. time until midnight)
                 var rightNow = new Date();
                 var tomorrowMidnight = new Date(rightNow.getTime());
@@ -106,14 +121,16 @@
                 tomorrowMidnight.setSeconds(0);
                 tomorrowMidnight.setMilliseconds(0);
                 // Set the cookie to prevent further notice invokations 
-                $.cookie('wsuVpuePageNoticeViewed03', 1, {
+                $.cookie(cookieName, 1, {
                     expires: (tomorrowMidnight.getTime() - rightNow.getTime()) / 86400000
                 });
-                $('.page-covering-notice-js').fadeIn(1000);
-                $('.page-covering-notice-js').click(function () {
+                $pageNotice.fadeIn(1000);
+                $pageNotice.click(function () {
                     $(this).fadeOut(333);
                 });
             }
-        }
+        } else if ($pageNotice.length > 1) {
+			console.log('Error in jQuery.cookieObjs.js: more than one page covering notice was encountered in the DOM.');
+		}
     });
 })(jQuery);

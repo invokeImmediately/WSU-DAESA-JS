@@ -196,7 +196,7 @@
 			}
 			else if (!~[8, 9, 20, 35, 36, 37, 39, 46, 110, 144].indexOf(e.keyCode) && inputText.length >= 9) {
 				e.preventDefault();
-				alert("WSU ID numbers are no greater than nine (9) digits in length.");
+				alert("Note: WSU ID numbers are no greater than nine (9) digits in length.");
 			}
 		});
         $wsuIdInputs.on("paste", function (e) {
@@ -205,7 +205,7 @@
 			var inputText = clipboardData.getData('Text');
             var regExMask = /[^0-9]+/g;
             if (regExMask.exec(inputText) != null) {
-				var errorMsg = "WSU ID numbers can only contain digits.";
+				var errorMsg = "Note: WSU ID numbers can only contain digits.";
 				e.stopPropagation();
 				e.preventDefault();
                 $this.val(inputText.replace(regExMask, ""));
@@ -214,14 +214,14 @@
 					$this.val(inputText.slice(0,9));
 					errorMsg += " Also, they must be no greater than nine (9) digits in length.";
 				}
-				errorMsg += " What you pasted will automatically be corrected."
+				errorMsg += " What you pasted will automatically be corrected; please check the result to see if further corrections are needed."
 				alert(errorMsg);
             }
             else if (inputText.length > 9) {
 				e.stopPropagation();
 				e.preventDefault();
                 $this.val(inputText.slice(0,9));
-				alert("WSU ID numbers are no greater than nine (9) digits in length. What you pasted will automatically be corrected.");
+				alert("WSU ID numbers are no greater than nine (9) digits in length. What you pasted will automatically be corrected; please check the result to see if further corrections are needed.");
             }
         });
         $wsuIdInputs.blur(function () {
@@ -231,7 +231,7 @@
 			if (inputText != "") {
 				if (regExFinalPttrn.exec(inputText) == null) {					
 					$this.val("");
-					alert("Please try again: when the leading zero is included, WSU ID numbers are nine (9) digits long. (You can also drop the leading zero and enter in eight (8) digits.");
+					alert("Please try again: when the leading zero is included, WSU ID numbers are nine (9) digits long. (You can also drop the leading zero and enter in eight (8) digits.)");
 				}
 			}
         });

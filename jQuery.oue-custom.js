@@ -1,36 +1,121 @@
-/**********************************************************************************************************************
- CUSTOM JQUERY-BASED DYNAMIC CONTENT
- *********************************************************************************************************************/
+/*************************************************************************************************************
+ * CUSTOM JQUERY-BASED DYNAMIC CONTENT                                                                       *
+ ************************************************************************************************************/
 "use strict";
 
-function isJQuery($obj) {
-	return ($obj && ($obj instanceof jQuery || $obj.constructor.prototype.jquery));
-}
-
 (function ($) {
-	"use strict";
-	var dogEarParams = {
-		slctrSiteNav: "#spine-sitenav",
-		slctrDogeared: "li.current.active.dogeared",
-		removedClasses: "current active dogeared"
-	};
-	var lrgFormatParams = {
-		slctrSingle: ".single.large-format-friendly",
-		slctrMainHdr: "header.main-header",
-		slctrHdrGroup: "div.header-group",
-        centeringClass: "centered"
-	}		
+	/****************************************************************************************************
+	 * ADDITION OF FUNCTIONS TO JQUERY                                                                  *
+	 ****************************************************************************************************/
+	/**
+	 * jQuery.isJQueryObj
+	 * DESCRIPTION: Checking function to verify that the passed parameter is a valid jQuery object.
+	 */
+	$.isJQueryObj = function ($obj) {
+		return ($obj && ($obj instanceof $ || $obj.constructor.prototype.jquery));
+	}
+
+	/**
+	 * jQuery.logError
+	 * DESCRIPTION: Log an error using the browser console in JSON notation.
+	 * PARAMETERS:
+	 *   += fileName: the name of the JS source file wherein the error was encountered
+	 *   += fnctnName: the name of the function that called $.logError
+	 *   += fnctnDesc: a description of what the calling function is supposed to do
+	 *   += errorMsg: the message that describes what went wrong within the calling function
+	 */
+	$.logError = function (fileName, fnctnName, fnctnDesc, errorMsg) {
+		var bitMask;
+		
+		bitMask = typeof fileName === "string";
+		bitMask = (typeof fnctnName === "string") | (bitMask << 1);
+		bitMask = (typeof fnctnDesc === "string") | (bitMask << 1);
+		bitMask = (typeof errorMsg === "string") | (bitMask << 1);
+		if (bitMask === 15) {
+			console.log("error = {\n\tfile: '" + fileName + "',\n\tfunctionName: '" + functionName + "'\n\terrorMessage: '" + functionName + "'\n\terrorMessage: '" + errorMsg + "'\n\t};");
+		} else {
+			var incorrectTypings;
+			var bitMaskCopy;
+			var newErrorMsg;
+			
+			// Determine how many incorrectly typed arguments were encountered
+			for (var i=0, incorrectTypings = 0, bitMaskCopy = bitMask; i < 4; i++) {
+				incorrectTypings += bitMaskCopy & 1;
+				bitMaskCopy = bitMaskCopy >> 1;
+			}
+			
+			// Construct a new error message
+			if (incorrectTypings == 1) {
+				newErrorMsg = "Unfortunately, a call to jQuery.error was made with an incorrectly typed argument."
+			} else {
+				newErrorMsg = "Unfortunately, a call to jQuery.error was made with incorrectly typed arguments."
+			}
+			newErrorMsg += "Here are the arguments that were passed to jQuery.logError:\n";
+			newErrorMsg += "\t\tfileName = " + fileName + "\n";
+			if (!(bitMask & 1)) {
+				newErrorMsg = "\t\ttypeof filename = " + (typeof fileName) + "\n";
+			}			
+			newErrorMsg += "\t\tfnctnName = " + fnctnName + "\n";
+			if(!((bitMask & 2) >> 1)) {
+				newErrorMsg = "\t\ttypeof fnctnName = " + (typeof fnctnName) + "\n";
+			}
+			newErrorMsg += "\t\tfnctnDesc = " + fnctnDesc + "\n";
+			if(!((bitMask & 4) >> 2)) {
+				newErrorMsg = "\t\ttypeof fnctnDesc = " + (typeof fnctnDesc) + "\n";
+			}
+			newErrorMsg += "\t\terrorMsg = " + errorMsg + "\n";
+			if(!((bitMask & 8) >> 3)) {
+				newErrorMsg = "\t\ttypeof errorMsg = " + (typeof errorMsg) + "\n";
+			}
+
+			// Recursively call jQuery.logError with the new error message.
+			$.logError(
+				"jQuery.oue-custom.js",
+				"jQuery.logError",
+				"Log an error using the browser console in JSON notation.",
+				newErrorMsg
+			);
+		}
+	}
+
+	/****************************************************************************************************
+	 * DOCUMENT READY BINDINGS                                                                          *
+	 ****************************************************************************************************/
     $(document).ready(function () {
+		var params;
+		var myParams;
+		params.fixDogears = {
+			slctrSiteNav: "#spine-sitenav",
+			slctrDogeared: "li.current.active.dogeared",
+			removedClasses: "current active dogeared"
+		};
+		/*params.addBlankTargetAttributes {
+			slctrSpine = "#spine",
+			slctrExternalLinks = "a.external"
+		};*/
+		params.checkForLrgFrmtSingle = {
+			slctrSingle: ".single.large-format-friendly",
+			slctrMainHdr: "header.main-header",
+			slctrHdrGroup: "div.header-group",
+			centeringClass: "centered"
+		}		
+		myParams = params.fixDogears;
         fixDogears(
-			dogEarParams.slctrSiteNav,
-			dogEarParams.slctrDogeared,
-			dogEarParams.removedClasses
+			myParams.slctrSiteNav,
+			myParams.slctrDogeared,
+			myParams.removedClasses
 		);
+		/*myParams = params.addBlankTargetAttributes;
+		addBlankTargetAttributes(
+			myParams.slctrSpine,
+			myParams.slctrExternalLinks
+		);*/
+		myParams = params.checkForLrgFrmtSingle;
         checkForLrgFrmtSingle(
-			lrgFormatParams.slctrSingle,
-			lrgFormatParams.slctrMainHdr,
-			lrgFormatParams.slctrHdrGroup,
-			lrgFormatParams.centeringClass
+			myParams.slctrSingle,
+			myParams.slctrMainHdr,
+			myParams.slctrHdrGroup,
+			myParams.centeringClass
 		);
         initHrH2Motif(
 			".column > h2:not(.fancy), .column > section > h2:not(.fancy)",
@@ -105,7 +190,10 @@ function isJQuery($obj) {
 		);
     });
     
-    $(window).load(function () {
+	/****************************************************************************************************
+	 * WINDOW LOAD EVENT BINDINGS                                                                       *
+	 ****************************************************************************************************/
+    $(window).on("load", function () {
         finalizeLrgFrmtSideRight(".side-right.large-format-friendly", "div.column.one", "div.column.two",
          1051, 100);
     });
@@ -115,6 +203,19 @@ function isJQuery($obj) {
          1051, 100);
     });
     
+	/*function addBlankTargetAttributes(slctrSpine, slctrExternalLinks) {
+		if (typeof slctrSpine === "string" && typeof slctrExternalLinks === "string") {
+			var $spine = $(slctrSpine);
+			if ($spine.length === 1) {
+				var $links = $spine.find(slctrSpine);
+				
+			} else {
+				$.logError("addBlankTargetAttributes", "Error: a WSU Spine element was not found within the DOM.");
+			}
+		} else {
+		}
+	}*/
+	
     function checkForLrgFrmtSingle(slctrSingle, slctrMainHdr, slctrHdrGroup, centeringClass) {
         var $lrgFrmtSnglSctns = $(slctrSingle);
         if ($lrgFrmtSnglSctns.length > 0) {
@@ -348,12 +449,10 @@ function isJQuery($obj) {
 					$tocClone.prepend(" //&nbsp;");
 					$linkToTopClone.prependTo($tocClone);
 					$backToToc.remove();
+				} else {
+					$.logError("initTocFloating", "Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Did not find the correct textual pattern within the link back to the top of the page.' }");
 				}
-				else {
-					console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Did not find the correct textual pattern within the link back to the top of the page.' }");
-				}
-			}
-			else {
+			} else {
 				console.log("ERROR: { function: initTocFloating, description: 'Cause the table of contents element to float after scrolling past a certain point', whatWentWrong: 'Did not find a single hyperlink within the first link back to the top of the page.' }");
 			}
 			$window.scroll(function(e) {

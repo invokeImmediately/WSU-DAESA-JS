@@ -94,8 +94,11 @@
  * is dismissed upon user click or tap.
  */
 (function ($) {
+	var noticeRunning = false;
+	var $pageNotice;
+	
     $(document).ready(function () {
-		var $pageNotice = $('.page-covering-notice-js')
+		$pageNotice = $('.page-covering-notice-js')
         if ($pageNotice.length === 1) {
 			// Check for a cookie name specified by the page designer
 			var defaultCookieName = "wsuVpuePageNoticeViewed";
@@ -124,8 +127,15 @@
                 $.cookie(cookieName, 1, {
                     expires: (tomorrowMidnight.getTime() - rightNow.getTime()) / 86400000
                 });
+				noticeRunning = true;
                 $pageNotice.fadeIn(1000);
+				$(document).on("keydown", closeNoticeOnKeydown);
                 $pageNotice.click(function () {
+                    $(this).fadeOut(333);
+					noticeRunning = false;
+					$(document).off("keydown", closeNoticeOnKeydown);
+                });
+                $pageNotice.keydown(function () {
                     $(this).fadeOut(333);
                 });
             }
@@ -133,4 +143,13 @@
 			console.log('Error in jQuery.cookieObjs.js: more than one page covering notice was encountered in the DOM.');
 		}
     });
+	
+	function closeNoticeOnKeydown(e) {
+		if (noticeRunning) {
+			e.preventDefault();
+			$pageNotice.fadeOut(333);
+			noticeRunning = false;
+			$(document).off("keydown", closeNoticeOnKeydown);	
+		}
+	}
 })(jQuery);

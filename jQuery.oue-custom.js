@@ -82,17 +82,17 @@
 	 * DOCUMENT READY BINDINGS                                                                          *
 	 ****************************************************************************************************/
     $(document).ready(function () {
-		var params;
+		var params = new Object();
 		var myParams;
 		params.fixDogears = {
 			slctrSiteNav: "#spine-sitenav",
 			slctrDogeared: "li.current.active.dogeared",
 			removedClasses: "current active dogeared"
 		};
-		/*params.addBlankTargetAttributes {
-			slctrSpine = "#spine",
-			slctrExternalLinks = "a.external"
-		};*/
+		params.addBlankTargetAttributes = {
+			slctrSpine: "#spine",
+			slctrExternalLinks: "a.external"
+		};
 		params.checkForLrgFrmtSingle = {
 			slctrSingle: ".single.large-format-friendly",
 			slctrMainHdr: "header.main-header",
@@ -105,11 +105,11 @@
 			myParams.slctrDogeared,
 			myParams.removedClasses
 		);
-		/*myParams = params.addBlankTargetAttributes;
+		myParams = params.addBlankTargetAttributes;
 		addBlankTargetAttributes(
 			myParams.slctrSpine,
 			myParams.slctrExternalLinks
-		);*/
+		);
 		myParams = params.checkForLrgFrmtSingle;
         checkForLrgFrmtSingle(
 			myParams.slctrSingle,
@@ -203,18 +203,30 @@
          1051, 100);
     });
     
-	/*function addBlankTargetAttributes(slctrSpine, slctrExternalLinks) {
+	function addBlankTargetAttributes(slctrSpine, slctrExternalLinks) {
 		if (typeof slctrSpine === "string" && typeof slctrExternalLinks === "string") {
 			var $spine = $(slctrSpine);
 			if ($spine.length === 1) {
-				var $links = $spine.find(slctrSpine);
-				
+				var $links = $spine.find(slctrExternalLinks);
+				$links.each(function () {
+					var $thisLink = $(this);
+					if ($thisLink.attr("target") != "_blank") {
+						$thisLink.attr("target", "_blank");
+					}
+				});
 			} else {
-				$.logError("addBlankTargetAttributes", "Error: a WSU Spine element was not found within the DOM.");
+				$.logError(
+					"jQuery.oue-custom.js", "addBlankTargetAttributes", "Adds missing blank target attributes to links within the WSU Spine as needed.",
+					"A WSU Spine element was not found within the DOM."
+				);
 			}
 		} else {
+			$.logError(
+				"jQuery.oue-custom.js", "addBlankTargetAttributes", "Adds missing blank target attributes to links within the WSU Spine as needed.",
+				"Incorrectly typed parameters were passed to this function:\n\ttypeof slctrSpine = " + (typeof slctrSpine) + "\n\ttypeof slctrExternalLinks = " (typeof slctrExternalLinks)
+			);
 		}
-	}*/
+	}
 	
     function checkForLrgFrmtSingle(slctrSingle, slctrMainHdr, slctrHdrGroup, centeringClass) {
         var $lrgFrmtSnglSctns = $(slctrSingle);

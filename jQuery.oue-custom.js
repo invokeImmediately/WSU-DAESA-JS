@@ -115,9 +115,9 @@
 			animAddDrtn: 250
 		}
 		params.initHrH3Motif = {
-			slctrStandardH3: ".column > h3:not(.fancy), .column > section > h3:not(.fancy)"
-			slctrPrevHr: "hr:not(.subSection)"
-			hrClassesAdded: "narrow-bottom-margin crimson"
+			slctrStandardH3: ".column > h3:not(.fancy), .column > section > h3:not(.fancy)",
+			slctrPrevHr: "hr:not(.subSection)",
+			hrClassesAdded: "narrow-bottom-margin crimson",
 			animAddDrtn: 250
 		}
 		params.initFancyHrH3Motif = {

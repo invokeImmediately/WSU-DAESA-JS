@@ -83,7 +83,9 @@
 	 ****************************************************************************************************/
     $(document).ready(function () {
 		var params = new Object();
-		var myParams;
+		var theseParams;
+		
+		// Setup parameters for document initialization function calls
 		params.fixDogears = {
 			slctrSiteNav: "#spine-sitenav",
 			slctrDogeared: "li.current.active.dogeared",
@@ -98,95 +100,198 @@
 			slctrMainHdr: "header.main-header",
 			slctrHdrGroup: "div.header-group",
 			centeringClass: "centered"
-		}		
-		myParams = params.fixDogears;
+		}
+		params.initHrH2Motif = {
+			slctrStandardH2: ".column > h2:not(.fancy), .column > section > h2:not(.fancy)",
+			slctrPrevHr: "hr:not(.subSection)",
+			h2ClassesAdded: "no-top-margin",
+			hrClassesAdded: "narrow-bottom-margin dark-gray thicker",
+			animAddDrtn: 250
+		}
+		params.initFancyHrH2Motif = {
+			slctrFancyH2: ".column > h2.fancy, .column > section > h2.fancy",
+			slctrPrevHr: "hr:not(.subSection)",
+			hrClassesAdded: "no-bottom-margin dark-gray thicker encroach-horizontal",
+			animAddDrtn: 250
+		}
+		params.initHrH3Motif = {
+			slctrStandardH3: ".column > h3:not(.fancy), .column > section > h3:not(.fancy)"
+			slctrPrevHr: "hr:not(.subSection)"
+			hrClassesAdded: "narrow-bottom-margin crimson"
+			animAddDrtn: 250
+		}
+		params.initFancyHrH3Motif = {
+			slctrFancyH3: ".column > h3.fancy, .column > section > h3.fancy",
+			slctrPrevHr: "hr:not(.subSection)",
+			hrClassesAdded: "no-bottom-margin crimson encroach-horizontal",
+			animAddDrtn: 250
+		}
+		params.initDropDownToggles = {
+			slctrToggle: ".drop-down-toggle",
+			slctrWhatsToggled: ".toggled-panel",
+			activatingClass: "activated",
+			animDuration: 500
+		}
+		params.initReadMoreToggles = {
+			slctrToggleIn: ".read-more-toggle-in-ctrl",
+			slctrToggleOut: ".read-more-toggle-out-ctrl",
+			slctrPanel: ".read-more-panel",
+			animDuration: 500
+		}
+		params.initContentFlippers = {
+			slctrCntntFlppr: ".content-flipper",
+			slctrFlppdFront: ".flipped-content-front",
+			slctrFlppdBack: ".flipped-content-back",
+			animDuration: 500
+		}
+		params.initDefinitionLists = {
+			slctrDefList: "dl.toggled",
+			slctrLrgFrmtSection: ".large-format-friendly",
+			slctrColOne: "div.column.one",
+			slctrColTwo: "div.column.two",
+			activatingClass: "activated",
+			animSlideDrtn: 400,
+			animHghtDrtn: 100
+		}
+		params.initQuickTabs = {
+			slctrQtSctn: "section.row.single.quick-tabs"
+		}
+		params.initTocFloating = {
+			slctrToc: "p.vpue-jump-bar",
+			slctrBackToToc: "p.vpue-jump-back"
+		}
+		params.initTriggeredByHover = {
+			slctrTrggrdOnHvr: ".triggered-on-hover",
+			slctrCntntRvld: ".content-revealed",
+			slctrCntntHddn: ".content-hidden",
+			animDuration: 200
+		}
+		params.initWelcomeMessage = {
+			slctrWlcmMsg: "#welcome-message",
+			slctrPostWlcmMsg: "#post-welcome-message",
+			msgDelay: 1000,
+			fadeOutDuration: 500,
+			fadeInDuration: 500
+		}
+		
+		// Call document initialization functions
+		theseParams = params.fixDogears;
         fixDogears(
-			myParams.slctrSiteNav,
-			myParams.slctrDogeared,
-			myParams.removedClasses
+			theseParams.slctrSiteNav,
+			theseParams.slctrDogeared,
+			theseParams.removedClasses
 		);
-		myParams = params.addBlankTargetAttributes;
+		
+		theseParams = params.addBlankTargetAttributes;
 		addBlankTargetAttributes(
-			myParams.slctrSpine,
-			myParams.slctrExternalLinks
+			theseParams.slctrSpine,
+			theseParams.slctrExternalLinks
 		);
-		myParams = params.checkForLrgFrmtSingle;
+		
+		theseParams = params.checkForLrgFrmtSingle;
         checkForLrgFrmtSingle(
-			myParams.slctrSingle,
-			myParams.slctrMainHdr,
-			myParams.slctrHdrGroup,
-			myParams.centeringClass
+			theseParams.slctrSingle,
+			theseParams.slctrMainHdr,
+			theseParams.slctrHdrGroup,
+			theseParams.centeringClass
 		);
+		
+		theseParams = params.initHrH2Motif;
         initHrH2Motif(
-			".column > h2:not(.fancy), .column > section > h2:not(.fancy)",
-			"hr:not(.subSection)",
-			"no-top-margin",
-			"narrow-bottom-margin dark-gray thicker",
-			250
+			theseParams.slctrStandardH2,
+			theseParams.slctrPrevHr,
+			theseParams.h2ClassesAdded,
+			theseParams.hrClassesAdded,
+			theseParams.animAddDrtn
 		);
+		
+		theseParams = params.initFancyHrH2Motif;
         initFancyHrH2Motif(
-			".column > h2.fancy, .column > section > h2.fancy",
-			"hr:not(.subSection)",
-			"no-bottom-margin dark-gray thicker encroach-horizontal",
-			250
+			theseParams.slctrFancyH2,
+			theseParams.slctrPrevHr,
+			theseParams.hrClassesAdded,
+			theseParams.animAddDrtn
 		);
+		
+		theseParams = params.initHrH3Motif;
         initHrH3Motif(
-			".column > h3:not(.fancy), .column > section > h3:not(.fancy)",
-			"hr:not(.subSection)",
-			"narrow-bottom-margin crimson",
-			250
+			theseParams.slctrStandardH3,
+			theseParams.slctrPrevHr,
+			theseParams.hrClassesAdded,
+			theseParams.animAddDrtn
 		);
+		
+		theseParams = params.initFancyHrH3Motif;
         initFancyHrH3Motif(
-			".column > h3.fancy, .column > section > h3.fancy",
-			"hr:not(.subSection)",
-			"no-bottom-margin crimson encroach-horizontal",
-			250
+			theseParams.slctrFancyH3,
+			theseParams.slctrPrevHr,
+			theseParams.hrClassesAdded,
+			theseParams.animAddDrtn
 		);
+		
+		theseParams = params.initDropDownToggles;
         initDropDownToggles(
-			".drop-down-toggle",
-			".toggled-panel",
-			"activated",
-			500
+			theseParams.slctrToggle,
+			theseParams.slctrWhatsToggled,
+			theseParams.activatingClass,
+			theseParams.animDuration
 		);
+		
+		theseParams = params.initReadMoreToggles;
         initReadMoreToggles(
-			".read-more-toggle-in-ctrl",
-			".read-more-toggle-out-ctrl",
-			".read-more-panel",
-			500
+			theseParams.slctrToggleIn,
+			theseParams.slctrToggleOut,
+			theseParams.slctrPanel,
+			theseParams.animDuration
 		);
+		
+		theseParams = params.initContentFlippers;
         initContentFlippers(
-			".content-flipper",
-			".flipped-content-front",
-			".flipped-content-back",
-			500
+			theseParams.slctrCntntFlppr,
+			theseParams.slctrFlppdFront,
+			theseParams.slctrFlppdBack,
+			theseParams.animDuration
 		);
+		
+		theseParams = params.initDefinitionLists;
         initDefinitionLists(
-			"dl.toggled",
-			".large-format-friendly",
-			"div.column.one",
-			"div.column.two",
-			"activated",
-			400,
-			100
+			theseParams.slctrDefList,
+			theseParams.slctrLrgFrmtSection,
+			theseParams.slctrColOne,
+			theseParams.slctrColTwo,
+			theseParams.activatingClass,
+			theseParams.animSlideDrtn,
+			theseParams.animHghtDrtn
 		);
-		initQuickTabs("section.row.single.quick-tabs");
+		
+		theseParams = params.initQuickTabs;
+		initQuickTabs(
+			theseParams.slctrQtSctn
+		);
+		
+		theseParams = params.initTocFloating;
 		initTocFloating(
-			"p.vpue-jump-bar",
-			"p.vpue-jump-back"
+			theseParams.slctrToc,
+			theseParams.slctrBackToToc
 		);
+		
+		theseParams = params.initTriggeredByHover;
         initTriggeredByHover(
-			".triggered-on-hover",
-			".content-revealed",
-			".content-hidden",
-			200
+			theseParams.slctrTrggrdOnHvr,
+			theseParams.slctrCntntRvld,
+			theseParams.slctrCntntHddn,
+			theseParams.animDuration
 		);
-		// initScrollingSidebars("...");
-        initWelcomeMessage(
-			"#welcome-message",
-			"#post-welcome-message",
-			1000,
-			500,
-			500
+		
+		// TODO: initScrollingSidebars("...");
+        
+		theseParams = params.initWelcomeMessage;
+		initWelcomeMessage(
+			theseParams.slctrWlcmMsg,
+			theseParams.slctrPostWlcmMsg,
+			theseParams.msgDelay,
+			theseParams.fadeOutDuration,
+			theseParams.fadeInDuration
 		);
     });
     
@@ -203,6 +308,9 @@
          1051, 100);
     });
     
+	/****************************************************************************************************
+	 * DOCUMENT INITIALIZATION FUNCTIONS                                                                *
+	 ****************************************************************************************************/
 	function addBlankTargetAttributes(slctrSpine, slctrExternalLinks) {
 		if (typeof slctrSpine === "string" && typeof slctrExternalLinks === "string") {
 			var $spine = $(slctrSpine);
@@ -238,26 +346,8 @@
         }
     }
     
-    function finalizeLrgFrmtSideRight(slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, animDuration) {
-        if($(window).width() >= trggrWidth) {
-            $(slctrSideRight + ">" + slctrColTwo).each(function () {
-                var $this = $(this);
-                var $thisPrev = $this.prev(slctrColOne);
-                if($this.height() != $thisPrev.height() ) {
-                    $this.height($thisPrev.height());
-                }
-                var crrntOpacity = $this.css("opacity");
-                if (crrntOpacity == 0) {
-                    $this.animate({opacity: 1.0}, animDuration);
-                }
-            });
-        }
-    }
-    
     function fixDogears(slctrSiteNav, slctrDogeared, removedClasses) {
-        /**********************************************************************************************
-         * Fix bug wherein the wrong items in the spine become dogeared                               *
-         **********************************************************************************************/
+        // Fix bug wherein the wrong items in the spine become dogeared
         var $dogearedItems = $(slctrSiteNav).find(slctrDogeared);
         if ($dogearedItems.length > 1) {
             var currentURL = window.location.href;
@@ -507,7 +597,27 @@
         });
     }
 
+	/****************************************************************************************************
+	 * WINDOW INITIALIZATION FUNCTIONS                                                                  *
+	 ****************************************************************************************************/
+    function finalizeLrgFrmtSideRight(slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, animDuration) {
+        if($(window).width() >= trggrWidth) {
+            $(slctrSideRight + ">" + slctrColTwo).each(function () {
+                var $this = $(this);
+                var $thisPrev = $this.prev(slctrColOne);
+                if($this.height() != $thisPrev.height() ) {
+                    $this.height($thisPrev.height());
+                }
+                var crrntOpacity = $this.css("opacity");
+                if (crrntOpacity == 0) {
+                    $this.animate({opacity: 1.0}, animDuration);
+                }
+            });
+        }
+    }
+    
     function resizeLrgFrmtSideRight(slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, animDuration) {
         finalizeLrgFrmtSideRight(slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, animDuration);
     }
+
 })(jQuery);

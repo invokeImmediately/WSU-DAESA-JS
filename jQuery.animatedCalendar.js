@@ -24,7 +24,7 @@
 
 	function setupCalendarShortcuts($calendars) {
 		var $toTodayShortcut = $("#jumpToToday");
-		if (isJQuery($calendars) && $toTodayShortcut.length > 0) {
+		if ($.isJQueryObj($calendars) && $toTodayShortcut.length > 0) {
 			var d = new Date();
 			var fallYear = 2016;
 			var fallStartDay = 15;
@@ -147,7 +147,7 @@
 	}
 	
 	function setupColorCoding($calendars) {
-		if(isJQuery($calendars)) {
+		if($.isJQueryObj($calendars)) {
 			var $calendarCell;
 			var $calendarCellLinks;
 			var $calendarCellLinkHref;
@@ -217,7 +217,7 @@
 		var $legendPanelsDarkBlue = $("div.legend-panel.dark-blue");
 		var $legendPanelsGold = $("div.legend-panel.gold");
 
-		if (isJQuery($calendars) && $legends.length) {
+		if ($.isJQueryObj($calendars) && $legends.length) {
 			if ($legends.length === $calendars.length) {
 				$window.scroll(function() {
 					var windowScrollPos = $window.scrollTop();

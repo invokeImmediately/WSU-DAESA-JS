@@ -829,7 +829,7 @@
 		var $expandAlls = $lists.children("." + expandAllClass);
 		var $collapseAlls = $lists.children("." + collapseAllClass);
 		$lists.animate({
-			marginTop: "+=29px"
+			marginTop: "+=39px"
 		}, animFadeInDrtn, function() {
 			$expandAlls.fadeIn(animFadeInDrtn);
 			$collapseAlls.fadeIn(animFadeInDrtn);

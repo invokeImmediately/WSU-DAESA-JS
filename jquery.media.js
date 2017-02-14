@@ -10,7 +10,7 @@
 (function($) {
     $(document).ready(function () {
         $('a.media').each(function(){
-            $(this).media({ width: '100%', height: 520 });
+            $(this).media({ width: '100%', height: 760 });
         });
     });
 })(jQuery);

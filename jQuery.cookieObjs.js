@@ -94,12 +94,28 @@
  * is dismissed upon user click or tap.
  */
 (function ($) {
+	var thisFileName = "jQuery.cookieObjs.js";
 	var noticeRunning = false;
 	var $pageNotice;
 	
     $(document).ready(function () {
 		$pageNotice = $('.page-covering-notice-js')
-        if ($pageNotice.length === 1) {
+		showPageCoveringNotice($pageNotice);
+    });
+	
+	function closeNoticeOnKeydown(e) {
+		if (noticeRunning) {
+			e.preventDefault();
+			$pageNotice.fadeOut(333);
+			noticeRunning = false;
+			$(document).off("keydown", closeNoticeOnKeydown);	
+		}
+	}
+	
+	function showPageCoveringNotice($pageNotice) {
+		var thisFuncName = "showPageCoveringNotice";
+		var thisFuncDesc = "Display a single page covering notice if it has not yet been viewed today.";
+        if ($.isJQueryObj($pageNotice) && $pageNotice.length === 1) {
 			// Check for a cookie name specified by the page designer
 			var defaultCookieName = "wsuVpuePageNoticeViewed";
 			var cookieName = $pageNotice.data("noticeName");
@@ -112,44 +128,56 @@
 					cookieName = cookieName.replace(regExMask, "");
 				}
 			}
-			
-			// If cookie is not present, this is the first time today the page was loaded; so show the notice
-            if ($.cookie(cookieName) === undefined) {
-                // Determine the expiration time of the cookie (i.e. time until midnight)
-                var rightNow = new Date();
-                var tomorrowMidnight = new Date(rightNow.getTime());
-                tomorrowMidnight.setDate(tomorrowMidnight.getDate() + 1);
-                tomorrowMidnight.setHours(0);
-                tomorrowMidnight.setMinutes(0);
-                tomorrowMidnight.setSeconds(0);
-                tomorrowMidnight.setMilliseconds(0);
-                // Set the cookie to prevent further notice invokations 
-                $.cookie(cookieName, 1, {
-                    expires: (tomorrowMidnight.getTime() - rightNow.getTime()) / 86400000
-                });
-				noticeRunning = true;
-                $pageNotice.fadeIn(1000);
-				$(document).on("keydown", closeNoticeOnKeydown);
-                $pageNotice.click(function () {
-                    $(this).fadeOut(333);
-					noticeRunning = false;
-					$(document).off("keydown", closeNoticeOnKeydown);
-                });
-                $pageNotice.keydown(function () {
-                    $(this).fadeOut(333);
-                });
-            }
-        } else if ($pageNotice.length > 1) {
-			console.log('Error in jQuery.cookieObjs.js: more than one page covering notice was encountered in the DOM.');
-		}
-    });
-	
-	function closeNoticeOnKeydown(e) {
-		if (noticeRunning) {
-			e.preventDefault();
-			$pageNotice.fadeOut(333);
-			noticeRunning = false;
-			$(document).off("keydown", closeNoticeOnKeydown);	
+			var rightNow = new Date();
+			var noticeHidden = false;
+			var noticeHiddenBefore = $pageNotice.data("noticeHiddenBefore");
+			if (noticeHiddenBefore) {
+				var hiddenBeforeDate = new Date(noticeHiddenBefore);
+				if (rightNow.getTime() < hiddenBeforeDate.getTime()) {
+					noticeHidden = true;
+				}
+			}
+			var noticeNowExpired = false;
+			var noticeExpiration = $pageNotice.data("noticeExpiresAfter");
+			if (noticeExpiration) {
+				var expirationDate = new Date(noticeExpiration);
+				if (rightNow.getTime() > expirationDate.getTime()) {
+					noticeNowExpired = true;
+				}
+			}
+			if (!noticeHidden && !noticeNowExpired) {
+				// If cookie is not present, this is the first time today the page was loaded; so show the notice
+				if ($.cookie(cookieName) === undefined) {
+					// Determine the expiration time of the cookie (i.e. time until midnight)
+					var tomorrowMidnight = new Date(rightNow.getTime());
+					tomorrowMidnight.setDate(tomorrowMidnight.getDate() + 1);
+					tomorrowMidnight.setHours(0);
+					tomorrowMidnight.setMinutes(0);
+					tomorrowMidnight.setSeconds(0);
+					tomorrowMidnight.setMilliseconds(0);
+					// Set the cookie to prevent further displays of notice for the day
+					$.cookie(cookieName, 1, {
+						expires: (tomorrowMidnight.getTime() - rightNow.getTime()) / 86400000
+					});
+					noticeRunning = true;
+					$pageNotice.fadeIn(1000);
+					$(document).on("keydown", closeNoticeOnKeydown);
+					$pageNotice.click(function () {
+						$(this).fadeOut(333);
+						noticeRunning = false;
+						$(document).off("keydown", closeNoticeOnKeydown);
+					});
+					$pageNotice.keydown(function () {
+						$(this).fadeOut(333);
+					});
+				}
+			}
+        } else {
+			if ($pageNotice.length > 1) {
+				$.logError(thisfileName, thisFuncName, thisFuncDesc,
+					"More than one page covering notice was encountered in the DOM."
+				);
+			}
 		}
 	}
 })(jQuery);

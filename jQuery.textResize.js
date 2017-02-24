@@ -68,22 +68,35 @@
 			var $parent = $this.parents(".column").first();
 			var $parentSection = $parent.parent(".row");
 			var fontSz = $this.css("font-size");
+			console.log("Font size is: " + fontSz);
 			var maxWidth = $parent.css("max-width");
 			var scalingAmt;
 			if (maxWidth == "none") {
 				var $binder = $("#binder");
 				if ($binder.length == 1) {
-					maxWidth = $binder.css("max-width");
+					if ($binder.hasClass("max-1188")) {
+						maxWidth = "1188";
+					} else if ($binder.hasClass("max-1386")) {
+						maxWidth = "1386";						
+					} else if ($binder.hasClass("max-1584")) {
+						maxWidth = "1584";						
+					} else if ($binder.hasClass("max-1782")) {
+						maxWidth = "1782";						
+					} else if ($binder.hasClass("max-1980")) {
+						maxWidth = "1980";						
+					}
 					if (maxWidth != "none") {
 						clmnWidth = parseFloat(maxWidth) - spineWidth;
-						if ($.isJQueryObj($parentSection)) {
-							if ($parentSection.hasClass("halves")) {
-								clmnWidth /= 2;
-							} else if ($parentSection.hasClass("thirds")) {
-								clmnWidth /= 3;
-							} else if ($parentSection.hasClass("quarters")) {
-								clmnWidth /= 4;
-							}
+					} else {
+						clmnWidth = 990;
+					}
+					if ($.isJQueryObj($parentSection)) {
+						if ($parentSection.hasClass("halves")) {
+							clmnWidth /= 2;
+						} else if ($parentSection.hasClass("thirds")) {
+							clmnWidth /= 3;
+						} else if ($parentSection.hasClass("quarters")) {
+							clmnWidth /= 4;
 						}
 					}
 				}

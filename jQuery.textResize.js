@@ -7,7 +7,8 @@
  */
 (function($){
 	var clmnWidth = 926; // px - default column width
-	var spineWidth = 198; // px - default width of spine
+	var dfltSpineWidth = 198; // px - default width of spine
+	var $autoTextResizers;
 	
     $.fn.textResize = function( scalingFactor, options ) {
         // Set up default options in case the caller passed no attributes
@@ -45,7 +46,7 @@
     // Now use the plugin on the WSU Undergraduate education website (i.e. delete or modify the following statement if you are going to utilize this plugin on your own site).
     $(document).ready(function () {
 		initArticleHeaderText();
-		initAutoFittedElems();
+		initAutoTextResizing(".auto-fits-text");
     });
 
 	function initArticleHeaderText() {
@@ -61,54 +62,101 @@
         });
 	}
 	
-	function initAutoFittedElems() {
-		var $fittedElems = $(".auto-fits-text");
-		$fittedElems.each(function() {
-			var $this = $(this);
-			var $parent = $this.parents(".column").first();
-			var $parentSection = $parent.parent(".row");
-			var fontSz = $this.css("font-size");
-			console.log("Font size is: " + fontSz);
-			var maxWidth = $parent.css("max-width");
-			var scalingAmt;
-			if (maxWidth == "none") {
+	function initAutoTextResizing(cssClass) {
+		$autoTextResizers = new AutoTextResizers(cssClass, dfltSpineWidth);
+		$autoTextResizers.InitializeTextResizing();
+	}
+	
+	function AutoTextResizers(cssClass, spineWidth) {	
+		var $resizers = $(cssClass);
+		
+		this.InitializeTextResizing = function () {
+			$resizers.each(function() {
+				var autoTextResizingElem = new AutoTextResizingElem($(this), spineWidth);
+			});
+		}		
+		
+		function AutoTextResizingElem($jqObj, spineWidth) {
+			var $this = $jqObj;
+			setupTextResizing();
+			
+			function setupTextResizing() {
+				if ($.isJQueryObj($this)) {
+					var fontSz = parseFloat($this.css("font-size"));
+					var scalingAmt = calculateScalingAmount(fontSz);
+					if ($this.hasClass("has-max-size")) {
+						$this.textResize(scalingAmt, {"minFontSize" : "10.7px", "maxFontSize" : fontSz, "againstSelf" : 0});
+					} else {
+						$this.textResize(scalingAmt, {"minFontSize" : "10.7px", "againstSelf" : 0});
+					}					
+				}
+			}
+			
+			function calculateScalingAmount(fontSz) {
+				var maxColumnWidth = findMaxColumnWidth();
+				return maxColumnWidth / (fontSz * 10);
+			}
+			
+			function findMaxColumnWidth() {
+				var $parentCol = $this.parents(".column").first();
+				var maxWidth = chooseMaxWidthFromColOrRow($parentCol);
+				return maxWidth;
+			}
+			
+			function chooseMaxWidthFromColOrRow($parentCol) {
+				var maxClmnWidth = 990;
+				var maxCssWidth = $parentCol.css("max-width");
+				if (maxCssWidth != "none") {
+					maxClmnWidth = parseFloat(maxCssWidth);
+				} else {
+					maxClmnWidth = findMaxWidthFromBinder(maxClmnWidth);
+				}
+				return divideUpMaxWidth(maxClmnWidth, $parentCol);
+			}
+			
+			function findMaxWidthFromBinder(dfltMaxClmnWidth) {
+				var maxClmnWidth = dfltMaxClmnWidth;
+				var maxCssWidth = findMaxCssWidthFromBinder();
+				if (maxCssWidth != "none") {
+					maxClmnWidth = parseFloat(maxCssWidth) - spineWidth;
+				}
+				return maxClmnWidth;
+			}
+			
+			function findMaxCssWidthFromBinder() {
+				var maxCssWidth = "none";
 				var $binder = $("#binder");
 				if ($binder.length == 1) {
 					if ($binder.hasClass("max-1188")) {
-						maxWidth = "1188";
+						maxCssWidth = "1188";
 					} else if ($binder.hasClass("max-1386")) {
-						maxWidth = "1386";						
+						maxCssWidth = "1386";						
 					} else if ($binder.hasClass("max-1584")) {
-						maxWidth = "1584";						
+						maxCssWidth = "1584";						
 					} else if ($binder.hasClass("max-1782")) {
-						maxWidth = "1782";						
+						maxCssWidth = "1782";						
 					} else if ($binder.hasClass("max-1980")) {
-						maxWidth = "1980";						
-					}
-					if (maxWidth != "none") {
-						clmnWidth = parseFloat(maxWidth) - spineWidth;
-					} else {
-						clmnWidth = 990;
-					}
-					if ($.isJQueryObj($parentSection)) {
-						if ($parentSection.hasClass("halves")) {
-							clmnWidth /= 2;
-						} else if ($parentSection.hasClass("thirds")) {
-							clmnWidth /= 3;
-						} else if ($parentSection.hasClass("quarters")) {
-							clmnWidth /= 4;
-						}
+						maxCssWidth = "1980";						
 					}
 				}
-				scalingAmt = clmnWidth / (parseFloat(fontSz) * 10);
+				return maxCssWidth;
 			}
-			else {
-				scalingAmt = parseFloat(maxWidth) / (parseFloat(fontSz) * 10);
+			
+			function divideUpMaxWidth(maxClmnWidth, $parentCol) {
+				var $parentRow = ($.isJQueryObj($parentCol)) ? $parentCol.parent(".row") : undefined;
+				if ($.isJQueryObj($parentRow)) {
+					if ($parentRow.hasClass("halves")) {
+						maxClmnWidth /= 2;
+					} else if ($parentRow.hasClass("thirds")) {
+						maxClmnWidth /= 3;
+					} else if ($parentRow.hasClass("quarters")) {
+						maxClmnWidth /= 4;
+					}
+				}
+				return maxClmnWidth;
 			}
-			$this.textResize(scalingAmt, {"minFontSize" : "10.7px", "againstSelf" : 0})
-		});
+		}
 	}
-	
 // TODO: write function for fitting text.
 //	$.fn.fitText = function(  )
 

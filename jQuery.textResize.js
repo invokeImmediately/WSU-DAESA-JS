@@ -6,10 +6,6 @@
  *  (http://daverupert.com).
  */
 (function($){
-	var clmnWidth = 926; // px - default column width
-	var dfltSpineWidth = 198; // px - default width of spine
-	var $autoTextResizers;
-	
     $.fn.textResize = function( scalingFactor, options ) {
         // Set up default options in case the caller passed no attributes
         var scalingAmount = scalingFactor || 1,
@@ -42,14 +38,20 @@
             $(window).on("resize.textresize orientationchange.textresize", resizer);
         });
     };
+})(jQuery);
+
+// Now use the plugin on the WSU Undergraduate education website (i.e. delete or modify the following statement if you are going to utilize this plugin on your own site).
+(function($){
+	var clmnWidth = 926; // px - default column width
+	var dfltSpineWidth = 198; // px - default width of spine
 	
-    // Now use the plugin on the WSU Undergraduate education website (i.e. delete or modify the following statement if you are going to utilize this plugin on your own site).
     $(document).ready(function () {
 		initArticleHeaderText();
-		initAutoTextResizing(".auto-fits-text");
+		initTextAutoResizers(".auto-fits-text");
     });
 
 	function initArticleHeaderText() {
+		//TODO: Refactor to rely on auto
 		var $columns = $(".column");
         $columns.find(".article-header .header-content h1").each(function () {
             $(this).textResize(1.277142857142857, {"minFontSize" : "34.8"});
@@ -62,25 +64,25 @@
         });
 	}
 	
-	function initAutoTextResizing(cssClass) {
-		$autoTextResizers = new AutoTextResizers(cssClass, dfltSpineWidth);
-		$autoTextResizers.InitializeTextResizing();
+	function initTextAutoResizers(cssClass) {
+		var $textAutoResizers = new TextAutoResizers(cssClass, dfltSpineWidth);
+		$textAutoResizers.initTextAutoResizing();
 	}
 	
-	function AutoTextResizers(cssClass, spineWidth) {	
+	function TextAutoResizers(cssClass, spineWidth) {	
 		var $resizers = $(cssClass);
 		
-		this.InitializeTextResizing = function () {
+		this.initTextAutoResizing = function () {
 			$resizers.each(function() {
-				var autoTextResizingElem = new AutoTextResizingElem($(this), spineWidth);
+				var textAutoResizer = new TextAutoResizingElem($(this), spineWidth);
 			});
 		}		
 		
-		function AutoTextResizingElem($jqObj, spineWidth) {
+		function TextAutoResizingElem($jqObj, spineWidth) {
 			var $this = $jqObj;
-			setupTextResizing();
+			initTextAutoResizing();
 			
-			function setupTextResizing() {
+			function initTextAutoResizing() {
 				if ($.isJQueryObj($this)) {
 					var fontSz = parseFloat($this.css("font-size"));
 					var scalingAmt = calculateScalingAmount(fontSz);
@@ -99,97 +101,63 @@
 			
 			function findMaxColumnWidth() {
 				var $parentCol = $this.parents(".column").first();
-				var maxWidth = chooseMaxWidthFromColOrRow($parentCol);
-				return maxWidth;
+				var maxColWidth = findMaxColWidth($parentCol);
+				return maxColWidth;
 			}
 			
-			function chooseMaxWidthFromColOrRow($parentCol) {
-				var maxClmnWidth = 990;
-				var maxCssWidth = $parentCol.css("max-width");
-				if (maxCssWidth != "none") {
-					maxClmnWidth = parseFloat(maxCssWidth);
+			function findMaxColWidth($parentCol) {
+				var maxRowWidth = 990; // Sets the default max row width.
+				var maxWidthCss = $parentCol.css("max-width"); // In case the max width was explicitly set for the parental column...
+				if (maxWidthCss != "none") {
+					maxRowWidth = parseFloat(maxWidthCss);
 				} else {
-					maxClmnWidth = findMaxWidthFromBinder(maxClmnWidth);
+					maxRowWidth = findMaxRowWidthFromBinder(maxRowWidth); // In case the max width was implicitly set...
 				}
-				return divideUpMaxWidth(maxClmnWidth, $parentCol);
+				return divideUpMaxRowWidth(maxRowWidth, $parentCol); // Return the max column width by dividing up the max row width as needed.
 			}
 			
-			function findMaxWidthFromBinder(dfltMaxClmnWidth) {
-				var maxClmnWidth = dfltMaxClmnWidth;
-				var maxCssWidth = findMaxCssWidthFromBinder();
+			function findMaxRowWidthFromBinder(dfltMaxRowWidth) {
+				var maxRowWidth = dfltMaxRowWidth;
+				var maxCssWidth = findBindersMaxWidthCss();
 				if (maxCssWidth != "none") {
-					maxClmnWidth = parseFloat(maxCssWidth) - spineWidth;
+					maxRowWidth = parseFloat(maxCssWidth) - spineWidth; // The binder's max width includes the spine's fixed width, so subtract it off to achieve actual max width of row.
 				}
-				return maxClmnWidth;
+				return maxRowWidth; // i.e., returns the max width in numerical form.
 			}
 			
-			function findMaxCssWidthFromBinder() {
-				var maxCssWidth = "none";
+			function findBindersMaxWidthCss() {
+				var maxWidthCss = "none";
 				var $binder = $("#binder");
 				if ($binder.length == 1) {
 					if ($binder.hasClass("max-1188")) {
-						maxCssWidth = "1188";
+						maxWidthCss = "1188";
 					} else if ($binder.hasClass("max-1386")) {
-						maxCssWidth = "1386";						
+						maxWidthCss = "1386";						
 					} else if ($binder.hasClass("max-1584")) {
-						maxCssWidth = "1584";						
+						maxWidthCss = "1584";						
 					} else if ($binder.hasClass("max-1782")) {
-						maxCssWidth = "1782";						
+						maxWidthCss = "1782";						
 					} else if ($binder.hasClass("max-1980")) {
-						maxCssWidth = "1980";						
+						maxWidthCss = "1980";						
 					}
 				}
-				return maxCssWidth;
+				return maxWidthCss; // i.e., returns a string containing the parental binder's max width as specified in CSS
 			}
 			
-			function divideUpMaxWidth(maxClmnWidth, $parentCol) {
+			function divideUpMaxRowWidth(maxRowWidth, $parentCol) {
+				var maxColWidth = maxRowWidth;
 				var $parentRow = ($.isJQueryObj($parentCol)) ? $parentCol.parent(".row") : undefined;
-				if ($.isJQueryObj($parentRow)) {
+				if ($parentCol.css("max-width") == "none" && $.isJQueryObj($parentRow)) {
 					if ($parentRow.hasClass("halves")) {
-						maxClmnWidth /= 2;
+						maxColWidth /= 2;
 					} else if ($parentRow.hasClass("thirds")) {
-						maxClmnWidth /= 3;
+						maxColWidth /= 3;
 					} else if ($parentRow.hasClass("quarters")) {
-						maxClmnWidth /= 4;
+						maxColWidth /= 4;
 					}
 				}
-				return maxClmnWidth;
+				return maxColWidth;
 			}
 		}
 	}
-// TODO: write function for fitting text.
-//	$.fn.fitText = function(  )
-
-// TODO: Come up with a line-based solution
-//  Ideas: invisible absolutely positioned duplicate of element that is scaled until desired effect is
-//   achieved, then settings are applied to original; etc.
-/*	function FontShrinker($fromElem) {
-		this.maxLines = undefined;
-		this.leadingRatio = undefined;
-		this.fontSizeStart = undefined;
-		this.fontSizeThreshold = undefined;
-		
-		var validArg = isJQuery($fromElem);
-		if(validArg) {
-			this.maxLines = $this.data("max-lines");
-			var styleProps = $this.css([
-				"fontSize", "lineHeight"
-			]);
-			styleProps = $.extend({
-				"height" : $this.height()
-			}, styleProps);
-			var height = parseFloat(styleProps.height);
-			var fontSize = parseFloat(styleProps.fontSize);
-			var lineHeight = parseFloat(styleProps.lineHeight);
-			this.leadingRatio = parseFloat(styleProps.lineHeight) / parseFloat(styleProps.fontSize);
-			var curLines = height / lineHeight;
-			if(this.maxLines != undefined && curLines > maxLines) {
-				var newFontSz = 
-			} else {
-				
-			}
-		}
-	}*/
-
 })(jQuery);
-// 14.4px;

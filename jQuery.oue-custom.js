@@ -1,14 +1,15 @@
-/*************************************************************************************************************
- * CUSTOM JQUERY-BASED DYNAMIC CONTENT                                                                       *
- ************************************************************************************************************/
+/***************************************************************************************************************************
+ * CUSTOM JQUERY-BASED DYNAMIC CONTENT                                                                                     *
+ ***************************************************************************************************************************/
 "use strict";
 
 (function ($) {
 	var thisFileName = "jQuery.oue-custom.js";
 
-	/****************************************************************************************************
-	 * ADDITION OF FUNCTIONS TO JQUERY                                                                  *
-	 ****************************************************************************************************/
+	/********************************************************************************************************************
+	 * ADDITION OF FUNCTIONS TO JQUERY                                                                                  *
+	 *******************************************************************************************************************/
+	 
 	/**
 	 * jQuery.isJQueryObj
 	 * DESCRIPTION: Checking function to verify that the passed parameter is a valid jQuery object.
@@ -16,15 +17,15 @@
 	$.isJQueryObj = function ($obj) {
 		return ($obj && ($obj instanceof $ || $obj.constructor.prototype.jquery));
 	}
-
+	
 	/**
 	 * jQuery.logError
 	 * DESCRIPTION: Log an error using the browser console in JSON notation.
 	 * PARAMETERS:
-	 *   += fileName: the name of the JS source file wherein the error was encountered
-	 *   += fnctnName: the name of the function that called $.logError
-	 *   += fnctnDesc: a description of what the calling function is supposed to do
-	 *   += errorMsg: the message that describes what went wrong within the calling function
+	 *   - fileName: the name of the JS source file wherein the error was encountered
+	 *   - fnctnName: the name of the function that called $.logError
+	 *   - fnctnDesc: a description of what the calling function is supposed to do
+	 *   - errorMsg: the message that describes what went wrong within the calling function
 	 */
 	$.logError = function (fileName, fnctnName, fnctnDesc, errorMsg) {
 		var thisFuncName = "jQuery.logError";
@@ -36,7 +37,7 @@
 		bitMask = (typeof fnctnDesc === "string") | (bitMask << 1);
 		bitMask = (typeof errorMsg === "string") | (bitMask << 1);
 		if (bitMask === 15) {
-			console.log("error = {\n\tfile: '" + fileName + "',\n\tfunctionName: '" + functionName + "'\n\terrorMessage: '" + functionName + "'\n\terrorMessage: '" + errorMsg + "'\n\t};");
+			console.log("error = {\n\tfile: '" + fileName + "',\n\tfunctionName: '" + fnctnName + "'\n\tfunctionDesc: '" + fnctnDesc + "'\n\terrorMessage: '" + errorMsg + "'\n\t};");
 		} else {
 			var incorrectTypings;
 			var bitMaskCopy;
@@ -565,7 +566,7 @@
 			$prntNxt.delay(400).animate({height: $parent.css('height')}, animHghtDrtn);
         });
 		$listDts.on("keydown", function(e) {
-			var regExMask = /Enter| /g;
+			var regExMask = /Enter| /g; // TODO: Divide and conquer
 			if (regExMask.exec(e.key) != null) {
 				e.preventDefault();
 				var $this = $(this);
@@ -586,16 +587,78 @@
 				$prntNxt.delay(400).animate({height: $parent.css('height')}, animHghtDrtn);
 			}
 		});
-        $(slctrDefList + " dd").removeClass(ddRevealingClass); // TODO: change implementation to height + overflow based approach
+        $(slctrDefList + " dd").removeClass(ddRevealingClass);
     }
     
     function initDropDownToggles(slctrToggle, slctrWhatsToggled, activatingClass, animDuration) {
-        $(slctrToggle).click(function () {
+		var $toggles =  $(slctrToggle);
+		$toggles.attr("tabindex", 0);
+		effectDropDownTogglePermanence($toggles, slctrWhatsToggled, activatingClass, animDuration);
+        $toggles.click(function () {
             var $this = $(this);
             $this.toggleClass(activatingClass);
-            $this.next(slctrWhatsToggled).toggle(animDuration)
-        });
+            $this.next(slctrWhatsToggled).toggle(animDuration);
+			setupDropDownTogglePermanence($this, activatingClass);
+        }); // TODO: change implementation to height + overflow based hiding approach
+		$toggles.on("keydown", function(e) {
+			var regExMask = /Enter| /g;
+			if (regExMask.exec(e.key) != null) {
+				e.preventDefault();
+				var $this = $(this);
+				$this.toggleClass(activatingClass);
+				$this.next(slctrWhatsToggled).toggle(animDuration);
+				setupDropDownTogglePermanence($this, activatingClass);
+			}
+		});
     }
+	
+	function effectDropDownTogglePermanence($toggles, slctrWhatsToggled, activatingClass, animDuration) {
+		var thisFuncName = "effectDropDownTogglePermanence";
+		var thisFuncDesc = "Upon page load, sets the expansion state of a drop down toggle element based on previous user interactions during the session.";
+		if ($.isJQueryObj($toggles)) {
+			$toggles.each(function() {
+				var $this = $(this);
+				if ($this[0].id) {
+					try {
+						var state = sessionStorage.getItem($this[0].id);
+						if (state == "expanded") {
+							$this.toggleClass(activatingClass);
+							$this.next(slctrWhatsToggled).toggle(animDuration);							
+						}
+					} catch(e) {
+						$.logError(thisFileName, thisFuncName, thisFuncDesc, e.message);
+					}
+				} else {
+					$.logError(thisFileName, thisFuncName, thisFuncDesc,
+						"No ID was set for this drop down toggle element; thus, expansion state permanence cannot be effected.");
+				}
+			});
+		} else {
+			$.logError(thisFileName, thisFuncName, thisFuncDesc,
+				"I was not passed a valid jQuery object.");
+		}
+	}
+	
+	function setupDropDownTogglePermanence($toggle, activatingClass) {
+		var thisFuncName = "setupDropDownTogglePermanence";
+		var thisFuncDesc = "Records the expansion state of a drop down toggle element in local storage to later effect permanence.";
+		if ($.isJQueryObj($toggle)) {
+			if ($toggle[0].id) {
+				try {
+					var state = $toggle.hasClass(activatingClass) ? "expanded" : "collapsed";
+					sessionStorage.setItem($toggle[0].id, state);
+				} catch(e) {
+					$.logError(thisFileName, thisFuncName, thisFuncDesc, e.message);
+				}
+			} else {
+				$.logError(thisFileName, thisFuncName, thisFuncDesc,
+					"No ID was set for this drop down toggle element; thus, expansion state permanence cannot be effected.");
+			}
+		} else {
+			$.logError(thisFileName, thisFuncName, thisFuncDesc,
+				"I was not passed a valid jQuery object.");
+		}
+	}
     
     function initFancyHrH2Motif(slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddDrtn) {
         $(slctrFancyH2).each(function () {

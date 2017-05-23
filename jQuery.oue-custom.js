@@ -87,69 +87,69 @@
 	 * Function calls made once the DOM IS READY                                                                       *
 	 *******************************************************************************************************************/
     $(function () {
-		var params = new Object();
-		var theseParams;
+		var argsList = new Object(); // List of arguments that will be passed to functions
+		var args;
 		
-		// Set up parameters for functions called during document initialization function calls
-		params.fixDogears = {
+		// Set up organized list of arguments to be passed to functions called during document initialization
+		argsList.fixDogears = {
 			slctrSiteNav: "#spine-sitenav",
 			slctrDogeared: "li.current.active.dogeared",
 			removedClasses: "current active dogeared"
 		};
-		params.addBlankTargetAttributes = {
+		argsList.addBlankTargetAttributes = {
 			slctrSpine: "#spine",
 			slctrExternalLinks: "a.external"
 		};
-		params.checkForLrgFrmtSingle = {
+		argsList.checkForLrgFrmtSingle = {
 			slctrSingle: ".single.large-format-friendly",
 			slctrMainHdr: "header.main-header",
 			slctrHdrGroup: ".header-group",
 			centeringClass: "centered"
 		};
-		params.initHrH2Motif = {
+		argsList.initHrH2Motif = {
 			slctrStandardH2: ".column > h2:not(.fancy), .column > section > h2:not(.fancy)",
 			slctrPrevHr: "hr:not(.subSection)",
 			h2ClassesAdded: "no-top-margin",
 			hrClassesAdded: "narrow-bottom-margin dark-gray thicker",
 			animAddDrtn: 250
 		};
-		params.initFancyHrH2Motif = {
+		argsList.initFancyHrH2Motif = {
 			slctrFancyH2: ".column > h2.fancy, .column > section > h2.fancy",
 			slctrPrevHr: "hr:not(.subSection)",
 			hrClassesAdded: "no-bottom-margin dark-gray thicker encroach-horizontal",
 			animAddDrtn: 250
 		};
-		params.initHrH3Motif = {
+		argsList.initHrH3Motif = {
 			slctrStandardH3: ".column > h3:not(.fancy), .column > section > h3:not(.fancy)",
 			slctrPrevHr: "hr:not(.subSection)",
 			hrClassesAdded: "narrow-bottom-margin crimson",
 			animAddDrtn: 250
 		};
-		params.initFancyHrH3Motif = {
+		argsList.initFancyHrH3Motif = {
 			slctrFancyH3: ".column > h3.fancy, .column > section > h3.fancy",
 			slctrPrevHr: "hr:not(.subSection)",
 			hrClassesAdded: "no-bottom-margin crimson encroach-horizontal",
 			animAddDrtn: 250
 		};
-		params.initDropDownToggles = {
+		argsList.initDropDownToggles = {
 			slctrToggle: ".drop-down-toggle",
 			slctrWhatsToggled: ".toggled-panel",
 			activatingClass: "activated",
 			animDuration: 500
 		};
-		params.initReadMoreToggles = {
+		argsList.initReadMoreToggles = {
 			slctrToggleIn: ".read-more-toggle-in-ctrl",
 			slctrToggleOut: ".read-more-toggle-out-ctrl",
 			slctrPanel: ".read-more-panel",
 			animDuration: 500
 		};
-		params.initContentFlippers = {
+		argsList.initContentFlippers = {
 			slctrCntntFlppr: ".content-flipper",
 			slctrFlppdFront: ".flipped-content-front",
 			slctrFlppdBack: ".flipped-content-back",
 			animDuration: 500
 		};
-		params.initDefinitionLists = {
+		argsList.initDefinitionLists = {
 			slctrDefList: "dl.toggled",
 			slctrLrgFrmtSection: ".large-format-friendly",
 			slctrColOne: ".column.one",
@@ -159,23 +159,23 @@
 			animSldDrtn: 400,
 			animHghtDrtn: 100
 		};
-		params.addDefinitionListButtons = {
-			slctrDefList: params.initDefinitionLists.slctrDefList,
+		argsList.addDefinitionListButtons = {
+			slctrDefList: argsList.initDefinitionLists.slctrDefList,
 			expandAllClass: "expand-all-button",
 			collapseAllClass: "collapse-all-button",
 			btnDisablingClass: "disabled",
-			dtActivatingClass: params.initDefinitionLists.dtActivatingClass,
-			ddRevealingClass: params.initDefinitionLists.ddRevealingClass,
-			animSldDrtn: params.initDefinitionLists.animSldDrtn
+			dtActivatingClass: argsList.initDefinitionLists.dtActivatingClass,
+			ddRevealingClass: argsList.initDefinitionLists.ddRevealingClass,
+			animSldDrtn: argsList.initDefinitionLists.animSldDrtn
 		};
-		params.initQuickTabs = {
+		argsList.initQuickTabs = {
 			slctrQtSctn: "section.row.single.quick-tabs"
 		};
-		params.initTocFloating = {
+		argsList.initTocFloating = {
 			slctrToc: "p.vpue-jump-bar",
 			slctrBackToToc: "p.vpue-jump-back"
 		};
-		params.initTriggeredByHover = {
+		argsList.initTriggeredByHover = {
 			slctrTrggrdOnHvr: ".triggered-on-hover",
 			slctrCntntRvld: ".content-revealed",
 			slctrCntntHddn: ".content-hidden",
@@ -183,111 +183,124 @@
 		};
 		
 		// Call document initialization functions
-		theseParams = params.fixDogears;
+		args = argsList.fixDogears;
         fixDogears(
-			theseParams.slctrSiteNav,
-			theseParams.slctrDogeared,
-			theseParams.removedClasses
+			args.slctrSiteNav,
+			args.slctrDogeared,
+			args.removedClasses
 		);
 		
-		theseParams = params.addBlankTargetAttributes;
+		args = argsList.addBlankTargetAttributes;
 		addBlankTargetAttributes(
-			theseParams.slctrSpine,
-			theseParams.slctrExternalLinks
+			args.slctrSpine,
+			args.slctrExternalLinks
 		);
-		theseParams = params.checkForLrgFrmtSingle;
+		
+		args = argsList.checkForLrgFrmtSingle;
         checkForLrgFrmtSingle(
-			theseParams.slctrSingle,
-			theseParams.slctrMainHdr,
-			theseParams.slctrHdrGroup,
-			theseParams.centeringClass
+			args.slctrSingle,
+			args.slctrMainHdr,
+			args.slctrHdrGroup,
+			args.centeringClass
 		);
-		theseParams = params.initHrH2Motif;
+		
+		args = argsList.initHrH2Motif;
         initHrH2Motif(
-			theseParams.slctrStandardH2,
-			theseParams.slctrPrevHr,
-			theseParams.h2ClassesAdded,
-			theseParams.hrClassesAdded,
-			theseParams.animAddDrtn
+			args.slctrStandardH2,
+			args.slctrPrevHr,
+			args.h2ClassesAdded,
+			args.hrClassesAdded,
+			args.animAddDrtn
 		);
-		theseParams = params.initFancyHrH2Motif;
+		
+		args = argsList.initFancyHrH2Motif;
         initFancyHrH2Motif(
-			theseParams.slctrFancyH2,
-			theseParams.slctrPrevHr,
-			theseParams.hrClassesAdded,
-			theseParams.animAddDrtn
+			args.slctrFancyH2,
+			args.slctrPrevHr,
+			args.hrClassesAdded,
+			args.animAddDrtn
 		);
-		theseParams = params.initHrH3Motif;
+		
+		args = argsList.initHrH3Motif;
         initHrH3Motif(
-			theseParams.slctrStandardH3,
-			theseParams.slctrPrevHr,
-			theseParams.hrClassesAdded,
-			theseParams.animAddDrtn
+			args.slctrStandardH3,
+			args.slctrPrevHr,
+			args.hrClassesAdded,
+			args.animAddDrtn
 		);
-		theseParams = params.initFancyHrH3Motif;
+		
+		args = argsList.initFancyHrH3Motif;
         initFancyHrH3Motif(
-			theseParams.slctrFancyH3,
-			theseParams.slctrPrevHr,
-			theseParams.hrClassesAdded,
-			theseParams.animAddDrtn
+			args.slctrFancyH3,
+			args.slctrPrevHr,
+			args.hrClassesAdded,
+			args.animAddDrtn
 		);
-		theseParams = params.initDropDownToggles;
+		
+		args = argsList.initDropDownToggles;
         initDropDownToggles(
-			theseParams.slctrToggle,
-			theseParams.slctrWhatsToggled,
-			theseParams.activatingClass,
-			theseParams.animDuration
+			args.slctrToggle,
+			args.slctrWhatsToggled,
+			args.activatingClass,
+			args.animDuration
 		);
-		theseParams = params.initReadMoreToggles;
+		
+		args = argsList.initReadMoreToggles;
         initReadMoreToggles(
-			theseParams.slctrToggleIn,
-			theseParams.slctrToggleOut,
-			theseParams.slctrPanel,
-			theseParams.animDuration
+			args.slctrToggleIn,
+			args.slctrToggleOut,
+			args.slctrPanel,
+			args.animDuration
 		);
-		theseParams = params.initContentFlippers;
+		
+		args = argsList.initContentFlippers;
         initContentFlippers(
-			theseParams.slctrCntntFlppr,
-			theseParams.slctrFlppdFront,
-			theseParams.slctrFlppdBack,
-			theseParams.animDuration
+			args.slctrCntntFlppr,
+			args.slctrFlppdFront,
+			args.slctrFlppdBack,
+			args.animDuration
 		);
-		theseParams = params.initDefinitionLists;
+		
+		args = argsList.initDefinitionLists;
         initDefinitionLists(
-			theseParams.slctrDefList,
-			theseParams.slctrLrgFrmtSection,
-			theseParams.slctrColOne,
-			theseParams.slctrColTwo,
-			theseParams.dtActivatingClass,
-			theseParams.ddRevealingClass,
-			theseParams.animSldDrtn,
-			theseParams.animHghtDrtn
+			args.slctrDefList,
+			args.slctrLrgFrmtSection,
+			args.slctrColOne,
+			args.slctrColTwo,
+			args.dtActivatingClass,
+			args.ddRevealingClass,
+			args.animSldDrtn,
+			args.animHghtDrtn
 		);
-		theseParams = params.addDefinitionListButtons;
+		
+		args = argsList.addDefinitionListButtons;
         addDefinitionListButtons(
-			theseParams.slctrDefList,
-			theseParams.expandAllClass,
-			theseParams.collapseAllClass,
-			theseParams.btnDeactivatingClass,
-			theseParams.dtActivatingClass,
-			theseParams.ddRevealingClass,
-			theseParams.animSldDrtn
+			args.slctrDefList,
+			args.expandAllClass,
+			args.collapseAllClass,
+			args.btnDeactivatingClass,
+			args.dtActivatingClass,
+			args.ddRevealingClass,
+			args.animSldDrtn
 		);
-		theseParams = params.initQuickTabs;
+		
+		args = argsList.initQuickTabs;
 		initQuickTabs(
-			theseParams.slctrQtSctn
-		);	
-		theseParams = params.initTocFloating;
-		initTocFloating(
-			theseParams.slctrToc,
-			theseParams.slctrBackToToc
+			args.slctrQtSctn
 		);
-		theseParams = params.initTriggeredByHover;
+		
+		args = argsList.initTocFloating;
+		initTocFloating(
+			args.slctrToc,
+			args.slctrBackToToc
+		);
+
+		args = argsList.initTriggeredByHover;
         initTriggeredByHover(
-			theseParams.slctrTrggrdOnHvr,
-			theseParams.slctrCntntRvld,
-			theseParams.slctrCntntHddn,
-			theseParams.animDuration
+			args.slctrTrggrdOnHvr,
+			args.slctrCntntRvld,
+			args.slctrCntntHddn,
+			args.animDuration
 		);
 		
 		// TODO: initScrollingSidebars("...");

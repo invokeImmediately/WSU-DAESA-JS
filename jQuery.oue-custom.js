@@ -392,6 +392,18 @@
 					var $thisLink = $(this);
 					if ($thisLink.attr("target") != "_blank") {
 						$thisLink.attr("target", "_blank");
+						var relStr = $thisLink.attr("rel");
+						if (relStr == undefined) {
+							$thisLink.attr("rel", "noopener noreferrer");
+						} else {
+							if (relStr.search(/noopener/i) < 0) {
+								relStr += " noopener";
+							}
+							if (relStr.search(/noreferrer/i) < 0) {
+								relStr += " noreferrer";
+							}
+							$thisLink.attr("rel", relStr);
+						}
 					}
 				});
 			} else {

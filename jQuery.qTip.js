@@ -7,127 +7,134 @@ e===O?(h=c===H?L:K,j[h]="50%",j[ib+"-"+h]=-Math.round(b[c===H?0:1]/2)+i):(h=f._p
 /* # sourceMappingURL=jquery.qtip.min.js.map */
 
 (function ($) {
-    $(document).ready(function () {
-        var $this;
-        var qTipContentSource; // Currently, either a span or a div tag will be accepted.
-        var qTipStyle; // Currently, blue and dark qTips are implemented.
-        var qTipCntnt; // Object needed for enabling the optional use of titles within qTips.
-        $('.has-tool-tip').each(function () {
-            $this = $(this);
-            $this.hasClass('blue') ? qTipStyle = 'qtip-blue' : qTipStyle = 'qtip-dark';
-            if ($this.hasClass('parental-neighbor-is-source')) {
-                qTipCntnt = new QTipContent($this.parent().next('div'));
-                if (qTipCntnt.qTipTitle == null) {
-                    $this.qtip({
-                        style: qTipStyle,
-                        content: {
-                            text: qTipCntnt.qTipInnerHTML
-                        },
-                        position: {
-                            target: 'mouse', // Track the mouse as the positioning target
-                            adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
-                        },
-                        show: {
-                            effect: function () {
-                                $(this).slideDown(200);
-                            }
-                        },
-                        hide: {
-                            effect: function () {
-                                $(this).slideUp(200);
-                            }
-                        }
-                    });
-                }
-                else {
-                    $this.qtip({
-                        style: qTipStyle,
-                        content: {
-                            title: qTipCntnt.qTipTitle,
-                            text: qTipCntnt.qTipInnerHTML
-                        },
-                        position: {
-                            target: 'mouse', // Track the mouse as the positioning target
-                            adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
-                        },
-                        show: {
-                            effect: function () {
-                                $(this).slideDown(200);
-                            }
-                        },
-                        hide: {
-                            effect: function () {
-                                $(this).slideUp(200);
-                            }
-                        }
-                    });
-                }
-            } else {
-                $this.hasClass('span-is-source') ? qTipContentSource = 'span' : qTipContentSource = 'div';
-                qTipCntnt = new QTipContent($this.next(qTipContentSource));
-                if (qTipCntnt.qTipTitle == null) {
-                    $this.qtip({
-                        style: qTipStyle,
-                        content: {
-                            text: qTipCntnt.qTipInnerHTML
-                        },
-                        position: {
-                            target: 'mouse', // Track the mouse as the positioning target
-                            adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
-                        },
-                        show: {
-                            effect: function () {
-                                $(this).slideDown(200);
-                            }
-                        },
-                        hide: {
-                            effect: function () {
-                                $(this).slideUp(200);
-                            }
-                        }
-                    });
-                }
-                else {
-                    $this.qtip({
-                        style: qTipStyle,
-                        content: {
-                            title: qTipCntnt.qTipTitle,
-                            text: qTipCntnt.qTipInnerHTML
-                        },
-                        position: {
-                            target: 'mouse', // Track the mouse as the positioning target
-                            adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
-                        },
-                        show: {
-                            effect: function () {
-                                $(this).slideDown(200);
-                            }
-                        },
-                        hide: {
-                            effect: function () {
-                                $(this).slideUp(200);
-                            }
-                        }
-                    });
-                }
-            }
-        });       
-    });
-    
-    function QTipContent($qTipSlctr) {
-        this.qTipTitle = null;
-        this.qTipText = null;
-        this.qTipInnerHTML = null;
-        var regExPttrn = /^(.+)\|(.+)$/;
-        var regExResult = regExPttrn.exec($qTipSlctr.text());
-        if (regExResult != null && regExResult.length == 3) {
-            this.qTipTitle = regExResult[1];
-            this.qTipText = regExResult[2];
-            regExPttrn = /^(.+)\|/;
-            this.qTipInnerHTML = $qTipSlctr.html().replace(regExPttrn, "");
-        } else {
-            this.qTipText = $qTipSlctr.text();
-            this.qTipInnerHTML = $qTipSlctr.html();
-        }
-    }
+
+// Code executed once DOM is ready
+$(function () {
+	var $this;
+	var qTipContentSource; // Either a span or a div tag will be accepted.
+	var qTipStyle; // Blue and dark qTips are implemented.
+	var qTipCntnt; // Object enabling the optional use of titles within qTips.
+	$('.has-tool-tip').each(function () {
+		$this = $(this);
+		$this.hasClass('blue') ? qTipStyle = 'qtip-blue' : qTipStyle = 'qtip-dark';
+		if ($this.hasClass('parental-neighbor-is-source')) {
+			qTipCntnt = new QTipContent($this.parent().next('div'));
+			if (qTipCntnt.qTipTitle == null) {
+				$this.qtip({
+					style: qTipStyle,
+					content: {
+						text: qTipCntnt.qTipInnerHTML
+					},
+					position: {
+						target: 'mouse', // Track the mouse as the positioning target
+						adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
+					},
+					show: {
+						effect: function () {
+							$(this).slideDown(200);
+						}
+					},
+					hide: {
+						effect: function () {
+							$(this).slideUp(200);
+						}
+					}
+				});
+			}
+			else {
+				$this.qtip({
+					style: qTipStyle,
+					content: {
+						title: qTipCntnt.qTipTitle,
+						text: qTipCntnt.qTipInnerHTML
+					},
+					position: {
+						target: 'mouse', // Track the mouse as the positioning target
+						adjust: { x: 5, y: 15 } // Offset it slightly from under the mouse
+					},
+					show: {
+						effect: function () {
+							$(this).slideDown(200);
+						}
+					},
+					hide: {
+						effect: function () {
+							$(this).slideUp(200);
+						}
+					}
+				});
+			}
+		} else {
+			$this.hasClass('span-is-source') ?
+				qTipContentSource = 'span' :
+				qTipContentSource = 'div';
+			qTipCntnt = new QTipContent($this.next(qTipContentSource));
+			if ( qTipCntnt.qTipTitle == null ) {
+				$this.qtip({
+					style: qTipStyle,
+					content: {
+						text: qTipCntnt.qTipInnerHTML
+					},
+					position: {
+						target: 'mouse',
+						adjust: { x: 5, y: 15 }
+					},
+					show: {
+						effect: function () {
+							$(this).slideDown(200);
+						}
+					},
+					hide: {
+						effect: function () {
+							$(this).slideUp(200);
+						}
+					}
+				});
+			} else {
+				$this.qtip({
+					style: qTipStyle,
+					content: {
+						title: qTipCntnt.qTipTitle,
+						text: qTipCntnt.qTipInnerHTML
+					},
+					position: {
+						target: 'mouse',
+						adjust: { x: 5, y: 15 }
+					},
+					show: {
+						effect: function () {
+							$(this).slideDown(200);
+						}
+					},
+					hide: {
+						effect: function () {
+							$(this).slideUp(200);
+						}
+					}
+				});
+			}
+		}
+	});       
+});
+
+/*!
+ *  QTip content class
+ */
+function QTipContent($qTipSlctr) {
+	var regExPttrn = /^(.+)\|(.+)$/;
+	var regExResult;
+	this.qTipTitle = null;
+	this.qTipText = null;
+	this.qTipInnerHTML = null;
+	regExResult = regExPttrn.exec($qTipSlctr.text());
+	if (regExResult != null && regExResult.length == 3) {
+		this.qTipTitle = regExResult[1];
+		this.qTipText = regExResult[2];
+		regExPttrn = /^(.+)\|/;
+		this.qTipInnerHTML = $qTipSlctr.html().replace(regExPttrn, "");
+	} else {
+		this.qTipText = $qTipSlctr.text();
+		this.qTipInnerHTML = $qTipSlctr.html();
+	}
+}
 })(jQuery);

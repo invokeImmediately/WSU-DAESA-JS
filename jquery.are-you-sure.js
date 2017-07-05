@@ -201,8 +201,8 @@
  * Version: 1.0.0
  */
 (function($) {
-	$(document).ready(function() {
-		var $gForms = $("div.gform_wrapper > form");
-		$gForms.areYouSure();
-	});
+$(function() {
+	var $gForms = $("div.gform_wrapper > form");
+	$gForms.areYouSure();
+});
 })(jQuery);

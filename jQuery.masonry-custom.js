@@ -1,69 +1,73 @@
 /*!
- * Application of imagesLoaded & Masonry libraries to WSU OUE websites.
+ * jQuery.masonry-custom.js
+ * ------------------------
+ * DESCRIPTION:
+ *     Application of imagesLoaded and Masonry libraries, both written by David DeSandro, to WSU OUE
+ *     websites. (Please see [https://github.com/desandro/imagesloaded] and [https://github.com/desa
+ *     ndro/masonry] for David's repositories.) 
+ *
+ * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  */
-(function ($) {
+( function ($) {
 
-// Function calls made once the DOM IS READY
-$(function () {
-	var $masonryTrgts = $("ul.cascaded-layout");
-	$masonryTrgts.each(function () {
-		var $thisCascade = $(this);
+// ---- DOM IS READY: Code executed after the DOM is ready for use. --------------------------------
+$( function () {
+	var $masonryTrgts = $( 'ul.cascaded-layout' );
+	$masonryTrgts.each( function () {
+		var $thisCascade = $( this );
 		var proceedWithLayout = true;
 		var sizerFound = false;
 		var gutterSizerFound = false;
 		var $cascadeChilren = $thisCascade.children();
-		$cascadeChilren.each(function () { // Look for the correct layout
-			var $thisChild = $(this);
-			if(!$thisChild.hasClass("cascaded-item")) {
-				if(!$thisChild.hasClass("cascade-sizer")) {
-					if(!$thisChild.hasClass("gutter-sizer")) {
-						if(!$thisChild.hasClass("cascade-other")) {
+		$cascadeChilren.each( function () { // Look for the correct layout
+			var $thisChild = $( this );
+			if ( !$thisChild.hasClass( 'cascaded-item' ) ) {
+				if ( !$thisChild.hasClass( 'cascade-sizer' ) ) {
+					if ( !$thisChild.hasClass( 'gutter-sizer' ) ) {
+						if ( !$thisChild.hasClass( 'cascade-other' ) ) {
 							return proceedWithLayout = false;
 						}
-					}
-					else
-					{
+					} else {
 						gutterSizerFound = true;
 					}
-				}
-				else {
+				} else {
 					sizerFound = true;
 				}
 			}
-		});
-		if(proceedWithLayout && (!sizerFound || !gutterSizerFound)) proceedWithLayout = false;
-		if(proceedWithLayout) {
-			$thisCascade.masonry({
-				columnWidth: ".cascade-sizer",
-				gutter: ".gutter-sizer",
-				itemSelector: ".cascaded-item",
+		} );
+		if ( proceedWithLayout && ( !sizerFound || !gutterSizerFound ) ) proceedWithLayout = false;
+		if ( proceedWithLayout ) {
+			$thisCascade.masonry( {
+				columnWidth: '.cascade-sizer',
+				gutter: '.gutter-sizer',
+				itemSelector: '.cascaded-item',
 				percentPosition: true
-			});
-			$thisCascade.attr("data-masonry-active","1");
+			} );
+			$thisCascade.attr( 'data-masonry-active', '1' );
 			$thisCascade.imagesLoaded().progress( function() {
-				$thisCascade.masonry("layout");
-			});
+				$thisCascade.masonry( 'layout' );
+			} );
 		}
-	});
+	} );
 });
 
-// WINDOW LOAD event bindings
-$(window).on("load", function () {
-	var $masonryTrgts = $("ul.cascaded-layout");
-	$masonryTrgts.each(function () {
-		var $thisCascade = $(this),
+// ---- WINDOW LOADED: Code executed after the browser window has fully loaded ---------------------
+$( window ).on( 'load', function () {
+	var $masonryTrgts = $( 'ul.cascaded-layout' );
+	$masonryTrgts.each( function () {
+		var $thisCascade = $( this ),
 		var proceedWithLayout = true;
 		var sizerFound = false;
 		var gutterSizerFound = false;
 		var $cascadeChilren = $thisCascade.children();
-		$cascadeChilren.each(function () {
+		$cascadeChilren.each( function () {
 
 			// Verify that the layout is correct
-			var $thisChild = $(this);
-			if(!$thisChild.hasClass("cascaded-item")) {
-				if(!$thisChild.hasClass("cascade-sizer")) {
-					if(!$thisChild.hasClass("gutter-sizer")) {
-						if(!$thisChild.hasClass("cascade-other")) {
+			var $thisChild = $( this );
+			if ( !$thisChild.hasClass( 'cascaded-item' ) ) {
+				if ( !$thisChild.hasClass( 'cascade-sizer' ) ) {
+					if ( !$thisChild.hasClass( 'gutter-sizer' ) ) {
+						if ( !$thisChild.hasClass( 'cascade-other' ) ) {
 							return proceedWithLayout = false;
 						}
 					} else {
@@ -74,10 +78,10 @@ $(window).on("load", function () {
 				}
 			}
 		});
-		if(proceedWithLayout && (!sizerFound || !gutterSizerFound)) proceedWithLayout = false;
-		if(proceedWithLayout) {
-			$thisCascade.masonry("layout");
+		if ( proceedWithLayout && ( !sizerFound || !gutterSizerFound ) ) proceedWithLayout = false;
+		if ( proceedWithLayout ) {
+			$thisCascade.masonry( 'layout' );
 		}
-	});
-});
-})(jQuery);
+	} );
+} );
+} )( jQuery );

@@ -8,7 +8,7 @@
  *
  * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  */
-( function ($) {
+( function ( $ ) {
 
 var thisFileName = 'jQuery.countdown-custom';
 var animationTiming = 400;	// Controls the speed at which jQuery-induced countdown animations occur
@@ -50,7 +50,7 @@ $( window ).on( 'load', function () {
  *      $countdownTimer: a single jQuery object containing an element on which the plugin will be
  *                       invoked.
  */
-function processCountdownTimerMsg ($countdownTimerMsg) {
+function processCountdownTimerMsg ( $countdownTimerMsg ) {
 	var fnctnName = 'processCountdownTimer';
 	var fnctnDesc = 'Invokes the "The Final Countdown" jQuery plugin on appropriate elements ' +
 					'within the DOM.';
@@ -61,23 +61,24 @@ function processCountdownTimerMsg ($countdownTimerMsg) {
 	var format;
 
 	// Check integrity of argument
-	if ( $.isJQueryObj($countdownTimerMsg) && $countdownTimerMsg.length === 1 ) {
+	if ( $.isJQueryObj( $countdownTimerMsg ) && $countdownTimerMsg.length === 1 ) {
 		
 		// Invoke The Final Countdown plugin on the object after parsing the necessary data.
 		countdownTarget = $countdownTimerMsg.data( 'countdown' );
+
 		// TODO: Add appending and prepending of message strings
 		pendingMsg = $countdownTimerMsg.data( 'pending-message' );
 		expiredMsg = $countdownTimerMsg.data( 'expired-message' );
-		if( countdownTarget && pendingMsg && expiredMsg ) {
+		if ( countdownTarget && pendingMsg && expiredMsg ) {
 			$countdownTimerMsg.countdown( countdownTarget ).on( 'update.countdown', function( event ) {
 				parsedMsg = pendingMsg.replace( /\[/g, '<' ).replace( /\]/g, '>' );
 				format = '%H:%M:%S';
-				if( event.offset.totalDays > 0 ) {
+				if ( event.offset.totalDays > 0 ) {
 					format = '%-D day%!D and ' + format;
 				}
 				format = '<strong>' + format + '</strong>' + parsedMsg;
 				$( this ).html( event.strftime( format ) );
-			} ).on('finish.countdown', function( event ) {
+			} ).on( 'finish.countdown', function( event ) {
 				parsedMsg = expiredMsg.replace( /\[/g, '<' ).replace( /\]/g, '>' );
 				$( this ).html( parsedMsg );
 			} );

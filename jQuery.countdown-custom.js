@@ -12,21 +12,24 @@ $( function () {
 	var countdownTarget;
 	var pendingMsg;
 	var expiredMsg;
+	var parsedMsg;
+	var format;
 	if( $countdownClock ) {
 		countdownTarget = $countdownClock.data( "countdown" );
 		pendingMsg = $countdownClock.data( "pending-message" );
 		expiredMsg = $countdownClock.data( "expired-message" );
 		if( countdownTarget && pendingMsg && expiredMsg ) {
 			$countdownClock.countdown( countdownTarget ).on( "update.countdown", function( event ) {
-				var parsedMsg = pendingMsg.replace( /\[/g, "<" ).replace( /\]/g, ">" );
-				var format = "%H:%M:%S";
+				parsedMsg = pendingMsg.replace( /\[/g, "<" ).replace( /\]/g, ">" );
+				format = "%H:%M:%S";
 				if( event.offset.totalDays > 0 ) {
 					format = "%-D day%!D and " + format;
 				}
 				format = "<strong>" + format + "</strong>" + parsedMsg;
 				$( this ).html( event.strftime( format ) );
 			} ).on("finish.countdown", function( event ) {
-				$( this ).html( expiredMsg );
+				parsedMsg = expiredMsg.replace( /\[/g, "<" ).replace( /\]/g, ">" );
+				$( this ).html( parsedMsg );
 			} );
 		}
 	}

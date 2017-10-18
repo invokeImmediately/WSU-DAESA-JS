@@ -92,7 +92,7 @@ function processCountdownTimerMsg ( $countdownTimerMsg ) {
 			);
 			console.log( $countdownTimerMsg, pendingMsg, expiredMsg );
 		}
-	} else {
+	} else if ($countdownTimerMsg.length != 0) {
 
 		// Report appropriate problem with argument integrity
 		if ( !$.isJQueryObj( $countdownTimerMsg ) ) {

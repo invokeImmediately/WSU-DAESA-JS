@@ -27,7 +27,7 @@
         }
     });
 	$(window).load(function () {
-		hghlghtRqrdRchTxtEdtrs($("li.gfield_contains_required.uses-rich-editor"));
+		hghlghtRqrdRchTxtEdtrs( $( '.gfield_contains_required.uses-rich-editor' ) );
 	});
     
     /****************************************************************************************************\
@@ -137,7 +137,10 @@
 				var $edtrFrm = $(this).find("iframe");
 				$edtrFrm.each(function () {
 					var $edtrBdy = $(this).contents().find("#tinymce");
-					$edtrBdy.css("background-color", "rgba(255,0,0,0.1)");
+					$edtrBdy.css( {
+						 backgroundColor: 'rgba(255,0,0,0.1)',
+						 fontFamily: '"Open sans", sans-serif'
+					} );
 					$edtrBdy.focus(function () {
 						$(this).css("background-color", "rgba(255,255,255,1)");
 					});

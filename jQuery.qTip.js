@@ -31,8 +31,8 @@ function assertQTipPluginLoaded() {
 	}
 }
 
-function processQTips(qTipSlctr)
-	// TODO: Refactor for improved maintainability
+function processQTips(qTipSlctr) {
+	// TODO: Refactor for improved maintainability; add try/catch processing
 	var $this;
 	var qTipContentSource; // Either a span or a div tag will be accepted.
 	var qTipStyle; // Blue and dark qTips are implemented.
@@ -137,8 +137,8 @@ function processQTips(qTipSlctr)
 				} );
 			}
 		}
-	} );       
-
+	} );
+}
 
 /*!
  *  QTip content class

@@ -621,16 +621,14 @@
             var $this = $(this);
 			$this.blur();
             $this.toggleClass(activatingClass);
-            $this.next(slctrWhatsToggled).toggle(animDuration);
 			setupDropDownTogglePermanence($this, activatingClass);
-        }); // TODO: change implementation to height + overflow based hiding approach
+        });
 		$toggles.on("keydown", function(e) {
 			var regExMask = /Enter| /g;
 			if (regExMask.exec(e.key) != null) {
 				e.preventDefault();
 				var $this = $(this);
 				$this.toggleClass(activatingClass);
-				$this.next(slctrWhatsToggled).toggle(animDuration);
 				setupDropDownTogglePermanence($this, activatingClass);
 			}
 		});
@@ -647,7 +645,6 @@
 						var state = sessionStorage.getItem($this[0].id);
 						if (state == "expanded") {
 							$this.toggleClass(activatingClass);
-							$this.next(slctrWhatsToggled).toggle(animDuration);							
 						}
 					} catch(e) {
 						$.logError(thisFileName, thisFuncName, thisFuncDesc, e.message);

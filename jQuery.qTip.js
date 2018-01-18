@@ -9,7 +9,7 @@
  
 ( function ( $ ) {
 
-var thisFileName = 'jquery.are-you-sure.js';
+var thisFileName = 'jquery.qTip.js';
 
 // Code executed once DOM is ready
 $( function () {
@@ -32,7 +32,7 @@ function assertQTipPluginLoaded() {
 }
 
 function processQTips(qTipSlctr) {
-	// TODO: Refactor for improved maintainability; add try/catch processing
+	// TODO: Refactor for improved maintainability
 	var $this;
 	var qTipContentSource; // Either a span or a div tag will be accepted.
 	var qTipStyle; // Blue and dark qTips are implemented.
@@ -137,7 +137,7 @@ function processQTips(qTipSlctr) {
 				} );
 			}
 		}
-	} );
+	} );       
 }
 
 /*!

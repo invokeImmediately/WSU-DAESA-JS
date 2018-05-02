@@ -98,17 +98,17 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 		newErrorMsg += "\t\tfileName = " + fileName + "\n";
 		if ( !( bitMask & 1 ) ) {
 			newErrorMsg += "\t\ttypeof filename = " + ( typeof fileName ) + "\n";
-			fileName = thisFileName
+			fileName = thisFileName;
 		}
 		newErrorMsg += "\t\tfnctnName = " + fnctnName + "\n";
 		if( !( ( bitMask & 2 ) >> 1 ) ) {
 			newErrorMsg += "\t\ttypeof fnctnName = " + ( typeof fnctnName ) + "\n";
-			fnctnName = thisFuncName
+			fnctnName = thisFuncName;
 		}
 		newErrorMsg += "\t\tfnctnDesc = " + fnctnDesc + "\n";
 		if( !( ( bitMask & 4 ) >> 2 ) ) {
 			newErrorMsg += "\t\ttypeof fnctnDesc = " + ( typeof fnctnDesc ) + "\n";
-			fnctnDesc = thisFuncDesc
+			fnctnDesc = thisFuncDesc;
 		}
 		newErrorMsg += "\t\terrorMsg = " + errorMsg + "\n";
 		if( !( ( bitMask & 8 ) >> 3 ) ) {

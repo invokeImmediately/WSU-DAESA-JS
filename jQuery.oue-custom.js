@@ -97,23 +97,26 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 		newErrorMsg += "Here are the arguments that were passed to jQuery.logError:\n";
 		newErrorMsg += "\t\tfileName = " + fileName + "\n";
 		if ( !( bitMask & 1 ) ) {
-			newErrorMsg = "\t\ttypeof filename = " + ( typeof fileName ) + "\n";
+			newErrorMsg += "\t\ttypeof filename = " + ( typeof fileName ) + "\n";
+			fileName = thisFileName
 		}
 		newErrorMsg += "\t\tfnctnName = " + fnctnName + "\n";
 		if( !( ( bitMask & 2 ) >> 1 ) ) {
-			newErrorMsg = "\t\ttypeof fnctnName = " + ( typeof fnctnName ) + "\n";
+			newErrorMsg += "\t\ttypeof fnctnName = " + ( typeof fnctnName ) + "\n";
+			fnctnName = thisFuncName
 		}
 		newErrorMsg += "\t\tfnctnDesc = " + fnctnDesc + "\n";
 		if( !( ( bitMask & 4 ) >> 2 ) ) {
-			newErrorMsg = "\t\ttypeof fnctnDesc = " + ( typeof fnctnDesc ) + "\n";
+			newErrorMsg += "\t\ttypeof fnctnDesc = " + ( typeof fnctnDesc ) + "\n";
+			fnctnDesc = thisFuncDesc
 		}
 		newErrorMsg += "\t\terrorMsg = " + errorMsg + "\n";
 		if( !( ( bitMask & 8 ) >> 3 ) ) {
-			newErrorMsg = "\t\ttypeof errorMsg = " + ( typeof errorMsg ) + "\n";
+			newErrorMsg += "\t\ttypeof errorMsg = " + ( typeof errorMsg ) + "\n";
 		}
 
 		// Recursively call jQuery.logError with the new error message.
-		$.logError( thisFileName, thisFuncName, thisFuncDesc, newErrorMsg );
+		$.logError( fileName, fnctnName, fnctnDesc, newErrorMsg );
 	}
 }
 

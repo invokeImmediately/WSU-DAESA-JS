@@ -790,11 +790,14 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 }
 
 function initTocFloating( slctrToc, slctrBackToToc ) {
+	var thisFuncName = "initTocFloating";
+	var thisFuncDesc = "Cause the table of contents element to float after scrolling past a \
+certain point";
 	var $toc = $( slctrToc );
 	var $backToToc = $( slctrBackToToc );
 	var $linkToTop = $backToToc.first().children( "a" );
 	var $mainHeader = $( "header.main-header" );
-	if( $toc.length === 1 && $mainHeader.length === 1 ) {
+	if ( $toc.length === 1 && $mainHeader.length === 1 ) {
 		var $window = $( window );
 		var tocTrigger = $toc.offset().top + $toc.height() + 100;
 		var $tocClone = $toc.clone().addClass( "floating" ).removeAttr( "id" ).insertAfter( $toc );
@@ -808,36 +811,34 @@ function initTocFloating( slctrToc, slctrBackToToc ) {
 			$( this ).remove();
 			counter++;
 		} );
-		if( $linkToTop.length === 1 ) {
+		if ( $linkToTop.length === 1 ) {
 			var linkText = $linkToTop.text();
-			var idxMatched = linkText.search( /\u2014Back to ( [^\u2014]+ )\u2014/ );
-			if( idxMatched != -1 ) {
+			var idxMatched = linkText.search( /\u2014Back to ([^\u2014]+)\u2014/ );
+			if ( idxMatched != -1 ) {
 				var $linkToTopClone = $linkToTop.clone();
-				$linkToTopClone.text( linkText.replace( /\u2014Back to ( [^\u2014]+ )\u2014/,
+				$linkToTopClone.text( linkText.replace( /\u2014Back to ([^\u2014]+)\u2014/,
 					"$1" ) );
 				$tocClone.prepend( " //&nbsp;" );
 				$linkToTopClone.prependTo( $tocClone );
 				$backToToc.remove();
 			} else {
-				$.logError( "initTocFloating", "Cause the table of contents element to float after \
-scrolling past a certain point', whatWentWrong: 'Did not find the correct textual pattern within \
-the link back to the top of the page.' }" );
+				$.logError( thisFileName, thisFuncName, thisFuncDesc, "Did not find the correct \
+textual pattern within the link back to the top of the page." );
 			}
 		} else {
-			console.log( "ERROR: { function: initTocFloating, description: 'Cause the table of \
-contents element to float after scrolling past a certain point', whatWentWrong: 'Did not find a \
-single hyperlink within the first link back to the top of the page.' }" );
+			console.log( thisFileName, thisFuncName, thisFuncDesc,  "Did not find a single \
+hyperlink within the first link back to the top of the page." );
 		}
 		$window.scroll( function( e ) {
 			var windowScrollPos = $window.scrollTop();
-			if( windowScrollPos > tocTrigger && !$tocClone.is( ":visible" ) ) {
+			if ( windowScrollPos > tocTrigger && !$tocClone.is( ":visible" ) ) {
 				$tocClone.width( $mainHeader.width() * .8 );
 				$tocClone.css( {
 					left: $mainHeader.offset().left + $mainHeader.width() / 2,
 				} );
 				$tocClone.fadeIn( 300 );
 			}
-			else if( windowScrollPos <= tocTrigger && $tocClone.is( ":visible" ) ) {
+			else if ( windowScrollPos <= tocTrigger && $tocClone.is( ":visible" ) ) {
 				$tocClone.hide();
 			}
 		} );
@@ -847,22 +848,17 @@ single hyperlink within the first link back to the top of the page.' }" );
 				left: $mainHeader.offset().left + $mainHeader.width() / 2,
 			} );
 		} );
-	}
-	else {
-		if( $toc.length > 1 ) {
-			console.log( "ERROR: { function: initTocFloating, description: 'Cause the table of \
-contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than \
-one table of contents elements; this function only works with one table of contents.' }" );
+	} else {
+		if ( $toc.length > 1 ) {
+			console.log( thisFileName, thisFuncName, thisFuncDesc, "Found more than one table of \
+contents elements; this function only works with one table of contents." );
 		}
-		if( $mainHeader.length === 0 ) {
-			console.log( "ERROR: { function: initTocFloating, description: 'Cause the table of \
-contents element to float after scrolling past a certain point', whatWentWrong: 'Could not find \
-the main header  element within the DOM.' }" );
-		}
-		else if( $mainHeader.length > 1 ) {
-			console.log( "ERROR: { function: initTocFloating, description: 'Cause the table of \
-contents element to float after scrolling past a certain point', whatWentWrong: 'Found more than \
-one table of contents elements; this function only works with one table of contents.' }" );
+		if ( $mainHeader.length === 0 ) {
+			console.log( thisFileName, thisFuncName, thisFuncDesc, "Could not find the main header \
+element within the DOM." );
+		} else if ( $mainHeader.length > 1 ) {
+			console.log( thisFileName, thisFuncName, thisFuncDesc, "Found more than one table of \
+contents elements; this function only works with one table of contents.' }" );
 		}
 	}
 }

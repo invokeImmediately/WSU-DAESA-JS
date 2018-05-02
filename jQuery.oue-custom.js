@@ -89,34 +89,32 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 		// Construct a new error message
 		if ( incorrectTypings == 1 ) {
 			newErrorMsg = "Unfortunately, a call to jQuery.error was made with an incorrectly\
- typed argument."
+ typed argument.\n"
 		} else {
 			newErrorMsg = "Unfortunately, a call to jQuery.error was made with incorrectly typed\
- arguments."
+ arguments.\n"
 		}
 		newErrorMsg += "Here are the arguments that were passed to jQuery.logError:\n";
 		newErrorMsg += "\t\tfileName = " + fileName + "\n";
-		if ( !( bitMask & 1 ) ) {
+		if ( !( ( bitMask & 8 ) >> 3 ) ) {
 			newErrorMsg += "\t\ttypeof filename = " + ( typeof fileName ) + "\n";
 			fileName = thisFileName;
 		}
 		newErrorMsg += "\t\tfnctnName = " + fnctnName + "\n";
-		if( !( ( bitMask & 2 ) >> 1 ) ) {
+		if( !( ( bitMask & 4 ) >> 2 ) ) {
 			newErrorMsg += "\t\ttypeof fnctnName = " + ( typeof fnctnName ) + "\n";
 			fnctnName = thisFuncName;
 		}
 		newErrorMsg += "\t\tfnctnDesc = " + fnctnDesc + "\n";
-		if( !( ( bitMask & 4 ) >> 2 ) ) {
+		if( !( ( bitMask & 2 ) >> 1 ) ) {
 			newErrorMsg += "\t\ttypeof fnctnDesc = " + ( typeof fnctnDesc ) + "\n";
 			fnctnDesc = thisFuncDesc;
 		}
 		newErrorMsg += "\t\terrorMsg = " + errorMsg + "\n";
-		if( !( ( bitMask & 8 ) >> 3 ) ) {
+		if( !( bitMask & 1 ) ) {
 			newErrorMsg += "\t\ttypeof errorMsg = " + ( typeof errorMsg ) + "\n";
 		}
-
-		// Recursively call jQuery.logError with the new error message.
-		$.logError( fileName, fnctnName, fnctnDesc, newErrorMsg );
+		console.log(newErrorMsg);
 	}
 }
 

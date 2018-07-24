@@ -1,0 +1,25 @@
+{
+  "name": "wsu-ue---js",
+  "version": "2.0.0",
+  "description": "JavaScript build dependencies common to all of the websites of WSU Undergraduate Education.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/invokeImmediately/WSU-UE---JS.git"
+  },
+  "keywords": [
+    "WSU",
+    "Washington",
+    "State",
+    "University"
+  ],
+  "author": "Daniel Rieck <danielcrieck@gmail.com> (https://www.linkedin.com/in/danielcrieck/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/invokeImmediately/WSU-UE---JS/issues"
+  },
+  "homepage": "https://github.com/invokeImmediately/WSU-UE---JS#readme"
+}

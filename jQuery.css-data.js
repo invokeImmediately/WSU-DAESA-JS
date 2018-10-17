@@ -30,13 +30,13 @@ var thisFile = 'jQuery.css-data.js';
 /**
  * Interface for interpreting CSS class names as information encodings.
  *
- * @param {object} $obj - A jQuery object containing a single element with data encoded in one or
- *     more of its CSS class names.
+ * @param {object} $targetObj - A jQuery object containing a single element representing the target
+ *     within the DOM that has data encoded in one or more of its CSS class names.
  */
-function CssData($obj) {
+function CssData($targetObj) {
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE PROPERTIES
-	var _$obj = $obj;
+	var _$obj = $targetObj;
 	var _argsAreValid = false;
 	var _classList = undefined;
 	var _masterPrefix = 'data-';
@@ -88,6 +88,18 @@ s passed something that was typeof ' + typeof dataPrefix + '.';
 //				typeof dataPrefix + '.', dataPrefix );
 		}
 		return data;
+	}
+
+	/**
+	 * Sets a new target for data extraction.
+	 *
+	 * @param {object} $targetObj - A jQuery object containing a single element representing the
+	 *     target within the DOM that has data encoded in one or more of its CSS class names.
+	 */
+	this.setDomTarget = function ($newObj) {
+		_$obj = $newObj;
+		_ValidateTargetingArgs();
+		_LoadClassList();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////

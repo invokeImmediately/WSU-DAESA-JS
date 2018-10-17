@@ -40,7 +40,11 @@ function CssData($targetObj) {
 	var _argsAreValid = false;
 	var _classList = undefined;
 	var _targetingErrorMask;
-	var _targetingErrorMsgs;
+	var _targetingErrorMsgs = [
+			'I was not passed a valid jQuery object representing a target within the DOM.',
+			'I was passed a valid jQuery object purportedly representing a target within the DOM, b\
+ut it did not contain a single element as required.'
+		];
 	var _masterPrefix = 'data-';
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,11 +162,6 @@ owing problems during an attempt to extract data:';
 		// Set validity flag and error mask based on testing results; report any problems.
 		_argsAreValid = valid$Obj && elemNumIs1;
 		_targetingErrorMask = !valid$Obj | ( ( valid$Obj && !elemNumIs1 ) << 1 );
-		_targetingErrorMsgs = [
-			'I was not passed a valid jQuery object representing a target within the DOM.',
-			'I was passed a valid jQuery object purportedly representing a target within the DOM, b\
-ut it contained ' + _$obj.length + ' elements rather than the required 1.'
-		]
 	}
 }
 

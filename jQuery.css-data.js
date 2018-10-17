@@ -39,6 +39,8 @@ function CssData($targetObj) {
 	var _$obj = $targetObj;
 	var _argsAreValid = false;
 	var _classList = undefined;
+	var _targetingErrorMask;
+	var _targetingErrorMsgs;
 	var _masterPrefix = 'data-';
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +69,7 @@ function CssData($targetObj) {
 		var class_i;
 		var reObj;
 		var matchResult;
-		if ( typeof dataPrefix === 'string' ) {
+		if ( _argsAreValid && typeof dataPrefix === 'string' ) {
 			reObj = new RegExp( '^' + _masterPrefix + dataPrefix + '-(.*)$' );
 			for ( idx = 0; !matchResult && idx < _classList.length; idx++ ) {
 				class_i = _classList.item(idx);
@@ -79,6 +81,8 @@ function CssData($targetObj) {
 				}
 			}
 			// TODO: Handle additional error states.
+		} else if ( !_argsAreValid ) {
+			_ReportTargetingErrors();
 		} else {
 			throw 'I was expecting to be passed a string for my dataPrefix parameter; instead, I wa\
 s passed something that was typeof ' + typeof dataPrefix + '.';
@@ -121,25 +125,17 @@ s passed something that was typeof ' + typeof dataPrefix + '.';
 	 * instance.
 	 *
 	 * @access private
-	 *
-	 * @param {number} constructorErrorMask - A bitmask wherein each bit flags whether the error
-	 *     stored in the accompanying error message array was encountered.
-	 * @param {string[]} errorMsgs - An array of error messages that explain the errors flagged by
-	 *     the bitmask parameter.
-	 *
-	 * @throws {string} A console-ready error message is thrown by this function if any errors were
-	 *     encountered when choosing a data extraction target from the DOM.
 	 */
-	function _ReportTargetingErrors(constructorErrorMask, errorMsgs) {
+	function _ReportTargetingErrors() {
 		var i;
 		var errorMsg;
 
 		if ( !_argsAreValid ) {
 			errorMsg = 'This is an error report from an instance of CssData. I encountered the foll\
-owing problems during my construction:';
-			for ( i = 0; i < errorMsgs.length; i++ ) {
-				if ( 1 & ( constructorErrorMask >> i ) ) {
-					errorMsg += '\n' + errorMsgs[ i ];
+owing problems during an attempt to extract data:';
+			for ( i = 0; i < _targetingErrorMsgs.length; i++ ) {
+				if ( 1 & ( _targetingErrorMask >> i ) ) {
+					errorMsg += '\n' + _targetingErrorMsgs[ i ];
 				}
 			}
 			throw errorMsg;
@@ -152,9 +148,7 @@ owing problems during my construction:';
 	 * @access private
 	 */
 	function _ValidateTargetingArgs() {
-		var constructorErrorMask;
 		var elemNumIs1;
-		var errorMsgs;
 		var valid$Obj;
 
 		// Perform validity tests of arguments passed to the constructor.
@@ -163,13 +157,12 @@ owing problems during my construction:';
 
 		// Set validity flag and error mask based on testing results; report any problems.
 		_argsAreValid = valid$Obj && elemNumIs1;
-		constructorErrorMask = !valid$Obj | ( ( valid$Obj && !elemNumIs1 ) << 1 );
-		errorMsgs = [
-			'I was not passed a valid jQuery object as a target.',
-			'I was passed a valid jQuery object as a target, but it contained ' + _$obj.length
-				+ ' elements rather than 1.'
+		_targetingErrorMask = !valid$Obj | ( ( valid$Obj && !elemNumIs1 ) << 1 );
+		_targetingErrorMsgs = [
+			'I was not passed a valid jQuery object representing a target within the DOM.',
+			'I was passed a valid jQuery object purportedly representing a target within the DOM, b\
+ut it contained ' + _$obj.length + ' elements rather than the required 1.'
 		]
-		_ReportTargetingErrors(constructorErrorMask, errorMsgs);
 	}
 }
 

@@ -30,10 +30,10 @@ var thisFile = 'jQuery.css-data.js';
 /**
  * Interface for interpreting CSS class names as information encodings.
  *
- * @param {object} $targetObj - A jQuery object containing a single element representing the target
- *     within the DOM that has data encoded in one or more of its CSS class names.
+ * @param {object} [$targetObj=undefined] - A jQuery object containing a single element representing
+ *     the target within the DOM that has data encoded in one or more of its CSS class names.
  */
-function CssData($targetObj) {
+function CssData($targetObj = undefined) {
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE PROPERTIES
 	var _$obj = $targetObj;

@@ -43,7 +43,7 @@ function CssData($obj) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// CONSTRUCTOR EXECUTION SECTION
-	_ValidateArgs();
+	_ValidateTargetingArgs();
 	_LoadClassList();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,9 +116,9 @@ s passed something that was typeof ' + typeof dataPrefix + '.';
 	 *     the bitmask parameter.
 	 *
 	 * @throws {string} A console-ready error message is thrown by this function if any errors were
-	 *     encountered during the construction of this instance.
+	 *     encountered when choosing a data extraction target from the DOM.
 	 */
-	function _ReportConstructorErrors(constructorErrorMask, errorMsgs) {
+	function _ReportTargetingErrors(constructorErrorMask, errorMsgs) {
 		var i;
 		var errorMsg;
 
@@ -139,7 +139,7 @@ owing problems during my construction:';
 	 *
 	 * @access private
 	 */
-	function _ValidateArgs() {
+	function _ValidateTargetingArgs() {
 		var constructorErrorMask;
 		var elemNumIs1;
 		var errorMsgs;
@@ -153,11 +153,11 @@ owing problems during my construction:';
 		_argsAreValid = valid$Obj && elemNumIs1;
 		constructorErrorMask = !valid$Obj | ( ( valid$Obj && !elemNumIs1 ) << 1 );
 		errorMsgs = [
-			'I was not passed a valid jQuery object.',
-			'I was passed a valid jQuery object, but it contained ' + _$obj.length +  ' elements ra\
-ther than 1.'
+			'I was not passed a valid jQuery object as a target.',
+			'I was passed a valid jQuery object as a target, but it contained ' + _$obj.length
+				+ ' elements rather than 1.'
 		]
-		_ReportConstructorErrors(constructorErrorMask, errorMsgs);
+		_ReportTargetingErrors(constructorErrorMask, errorMsgs);
 	}
 }
 

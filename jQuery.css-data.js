@@ -37,7 +37,7 @@ function CssData( $targetObj ) {
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE PROPERTIES
 	var _$obj = $targetObj;
-	var _argsAreValid = false;
+	var _targetIsValid = false;
 	var _classList = undefined;
 	var _targetingErrorMask;
 	var _targetingErrorMsgs = [
@@ -73,7 +73,7 @@ ut it did not contain a single element as required.'
 		var class_i;
 		var reObj;
 		var matchResult;
-		if ( _argsAreValid && typeof dataPrefix === 'string' ) {
+		if ( _targetIsValid && typeof dataPrefix === 'string' ) {
 			reObj = new RegExp( '^' + _masterPrefix + dataPrefix + '-(.*)$' );
 			for ( idx = 0; !matchResult && idx < _classList.length; idx++ ) {
 				class_i = _classList.item(idx);
@@ -85,7 +85,7 @@ ut it did not contain a single element as required.'
 				}
 			}
 			// TODO: Handle additional error states.
-		} else if ( !_argsAreValid ) {
+		} else if ( !_targetIsValid ) {
 			_ReportTargetingErrors();
 		} else {
 			throw 'I was expecting to be passed a string for my dataPrefix parameter; instead, I wa\
@@ -119,7 +119,7 @@ s passed something that was typeof ' + typeof dataPrefix + '.';
 	 * @access private
 	 */
 	function _LoadClassList() {
-		if ( _argsAreValid ) {
+		if ( _targetIsValid ) {
 			_classList = _$obj[0].classList;
 		}
 	}
@@ -134,7 +134,7 @@ s passed something that was typeof ' + typeof dataPrefix + '.';
 		var i;
 		var errorMsg;
 
-		if ( !_argsAreValid ) {
+		if ( !_targetIsValid ) {
 			errorMsg = 'This is an error report from an instance of CssData. I encountered the foll\
 owing problems during an attempt to extract data:';
 			for ( i = 0; i < _targetingErrorMsgs.length; i++ ) {
@@ -160,7 +160,7 @@ owing problems during an attempt to extract data:';
 		elemNumIs1 = valid$Obj ? _$obj.length == 1 : false;
 
 		// Set validity flag and error mask based on testing results; report any problems.
-		_argsAreValid = valid$Obj && elemNumIs1;
+		_targetIsValid = valid$Obj && elemNumIs1;
 		_targetingErrorMask = !valid$Obj | ( ( valid$Obj && !elemNumIs1 ) << 1 );
 	}
 }

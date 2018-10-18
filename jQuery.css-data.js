@@ -37,8 +37,8 @@ function CssData( $targetObj ) {
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE PROPERTIES
 	var _$obj = $targetObj;
-	var _targetIsValid = false;
 	var _classList = undefined;
+	var _targetIsValid = false;
 	var _targetingErrorMask;
 	var _targetingErrorMsgs = [
 			'I was not passed a valid jQuery object representing a target within the DOM.',
@@ -62,17 +62,22 @@ ut it did not contain a single element as required.'
 	 *     an encoding of data (e.g., 'expires-on-').
 	 *
 	 * @throws {string} Parameter dataPrefix must typed as a string.
+	 * @throws {string} If a valid target element within the DOM has not been supplied, errors will
+	 *     be thrown via the private member function _ReportTargetingErrors.
+	 * @throws {string} Of the CSS class applied to the target element in the DOM, there can be only
+	 *     one class which encodes data according to the dataPrefix parameter.
 	 *
 	 * @return {string} Returns any data encoded within the CSS class list. If no valid data was
-	 *     found, returns an empty string.
+	 *     found, this function returns an empty string.
 	 */
 	this.getData = function (dataPrefix) {
-		// TODO: Finish writing function.
+		var class_i;
+		var errorMsg;
 		var data = '';
 		var idx;
-		var class_i;
-		var reObj;
 		var matchResult;
+		var reObj;
+
 		if ( _targetIsValid && typeof dataPrefix === 'string' ) {
 			reObj = new RegExp( '^' + _masterPrefix + dataPrefix + '-(.*)$' );
 			for ( idx = 0; !matchResult && idx < _classList.length; idx++ ) {
@@ -82,18 +87,23 @@ ut it did not contain a single element as required.'
 			if ( matchResult !== null ) {
 				if (matchResult.length === 2) {
 					data = matchResult[1];
+				} else {
+					errorMsg := 'Error in CssData.getThis: I found ' + (matchResult.length - 1)
+						+ ' CSS classes that encode data associated with the prefix ' + dataPrefix
+						+ '. Matching results were:';
+					for ( idx = 1; idx <= matchResult.length - 1; idx++ ) {
+						errorMsg += "\n" + matchResult[ idx ];
+					}
+					throw errorMsg;
 				}
 			}
-			// TODO: Handle additional error states.
 		} else if ( !_targetIsValid ) {
 			_ReportTargetingErrors();
 		} else {
-			throw 'I was expecting to be passed a string for my dataPrefix parameter; instead, I wa\
-s passed something that was typeof ' + typeof dataPrefix + '.';
+			errorMsg := 'Error in CssData.getThis: I was expecting to be passed a string for my dataPrefi\
+x parameter; instead, I was passed something that was typeof ' + typeof dataPrefix + '.';
+			throw errorMsg;
 			// TODO: Write & apply OueError class.
-//			throw new OueError( thisFile, 'CssData.GetData(…)', 'I was expecting to be passed a str\
-//ing for my dataPrefix parameter; instead, I was passed something that was typeof ' +
-//				typeof dataPrefix + '.', dataPrefix );
 		}
 		return data;
 	}
@@ -127,6 +137,9 @@ s passed something that was typeof ' + typeof dataPrefix + '.';
 	/**
 	 * Provides the user with information about any errors encountered during construction of this
 	 * instance.
+	 *
+	 * @throws {string} A single target element within the DOM was not supplied to the instance via
+	 *     a valid jQuery object representing the element.
 	 *
 	 * @access private
 	 */

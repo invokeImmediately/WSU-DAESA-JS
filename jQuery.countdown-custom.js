@@ -14,13 +14,17 @@
 var thisFileName = 'jQuery.countdown-custom';
 var animationTiming = 400;	// Controls the speed at which jQuery-induced countdown animations occur
 
-// ---- DOM IS READY: Code executed after the DOM is ready for use. --------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// DOM-READY EXECUTION SECTION
+
 $( function () {
 	processCountdownTimerById( '#countdown-clock' );
 	// $countdownClockByClass = $( '.countdown-clock' );
 } );
 
-// ---- WINDOW LOADED: Code executed after the browser window has fully loaded ---------------------
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// WINDOW-LOADED EXECUTION SECTION
+
 $( window ).on( 'load', function () {
 	var $countdownClock = $( '#countdown-clock' );
 	var $countdownParent = $countdownClock.parents( 'section' ).first();
@@ -39,10 +43,14 @@ $( window ).on( 'load', function () {
 	}
 } );
 
-// ---- IIFE-localized definitions of FUNCTIONS USED IN THIS SCRIPT --------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// IIFE-LOCALIZED DEFINITIONS OF FUNCTIONS USED IN THIS SCRIPT
+
 /**
+ * Find and process a countdown timer element that has been marked with an ID attribute.
  * 
- * @param {string} selectorStr - Selector 
+ * @param {string} selectorStr - Selector string for isolating countdown timer elements within the
+ *     DOM.
  */
 function processCountdownTimerById( selectorStr ) {
 	var $countdownClockById;
@@ -61,7 +69,7 @@ function processCountdownTimerById( selectorStr ) {
 			$countdownClockById = $( selectorStr );
 			if ( $countdownClockById.length === 1 ) {
 				processCountdownTimerMsg( $countdownClock );
-			} else {
+			} else if ( $countdownClockById.length > 1 ) {
 				throw {
 					fileName: thisFileName,
 					fName: thisFName,

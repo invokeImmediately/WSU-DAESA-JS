@@ -47,8 +47,13 @@ function processCountdownTimerById( selectorStr ) {
 	var $countdownClockById = undefined;
 	var argIsIdSelector;
 	var errMsg;
-	var thisFDesc = 'Set up countdown timers on page.';
-	var thisFName = 'processCountdownTimerById';
+	var error = {
+		fileName: thisFileName,
+		fName: 'processCountdownTimerById',
+		fDesc: 'Find and process a countdown timer element that has been marked with an ID attribut\
+e.',
+		msg: ''
+	};
 	var validArgType;
 
 	validArgType = typeof selectorStr === 'string';
@@ -61,36 +66,26 @@ function processCountdownTimerById( selectorStr ) {
 			if ( $countdownClockById.length === 1 ) {
 				processCountdownTimerMsg( $countdownClock );
 			} else if ( $countdownClockById.length > 1 ) {
-				throw {
-					fileName: thisFileName,
-					fName: thisFName,
-					fDesc: thisFDesc,
-					msg: 'I found ' + ($countdownClockById.length).toString() + ' instead of the re\
-quired 1 ID-labeled countdown timers.'
-				};
+				error.msg = 'I found ' + ($countdownClockById.length).toString() + ' instead of the\
+ required 1 ID-labeled countdown timers.'
+				throw error;
 			}
 		} else {
-			errorMsg = '';
 			if ( validArgType ) {
-				errorMsg += 'I was passed a selector string argument that was typed as ' +
+				error.msg += 'I was passed a selector string argument that was typed as ' +
 					( typeof selectorStr ) + ' instead of string.';
 			}
 			if ( argIsIdSelector ) {
 				if ( validArgType ) {
-					errorMsg += ' Also, '
+					error.msg += ' Also, '
 				}
-				errorMsg += 'I was passed a selector string argument that did not contain a simple \
+				error.msg += 'I was passed a selector string argument that did not contain a simple \
 ID-based selector.';
 			}
-			throw {
-				fileName: thisFileName,
-				fName: thisFName,
-				fDesc: thisFDesc,
-				msg: errMsg;
-			};
+			throw error;
 		}
-	} catch ( error ) {
-		$.logError( error.fileName, error.fName, error.fDesc, error.msg );
+	} catch ( thrownError ) {
+		$.logError( thrownError.fileName, thrownError.fName, thrownError.fDesc, thrownError.msg );
 	}
 
 	return $countdownClockById;

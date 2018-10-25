@@ -28,21 +28,7 @@ $( function () {
 // WINDOW-LOADED EXECUTION SECTION
 
 $( window ).on( 'load', function () {
-	var $countdownClock = $( '#countdown-clock' );
-	var $countdownParent = $countdownClock.parents( 'section' ).first();
-
-	//TODO: Implement showing/hiding times for countdown timers.
-//	var hideUntilTime = $countdownClock.data( 'hide-until' );
-//	var showUntilTime = $countdownClock.data( 'show-until' );
-	var hideCountdown = false;
-
-//	if (hideUntilTime) {
-//		
-//	}
-
-	if ( !hideCountdown ) {
-		$countdownParent.show( animationTiming );
-	}
+	showIdSelectedCountdownTimer( $countdownTimerById, animationTiming );
 } );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,9 +39,11 @@ $( window ).on( 'load', function () {
  * 
  * @param {string} selectorStr - Selector string for isolating countdown timer elements within the
  *     DOM.
+ *
  * @return {(undefined|jQuery)} Either a jQuery object representing the element identified by ID as
  *     a countdown timer or undefined if an error condition was encountered.
  */
+// TODO: Fix instances of … fDesc, thisFDesc, …
 function processCountdownTimerById( selectorStr ) {
 	var $countdownClockById = undefined;
 	var argIsIdSelector;
@@ -120,8 +108,8 @@ ID-based selector.';
 function processCountdownTimerMsg ( $countdownTimerMsg ) {
 	var countdownTarget;
 	var expiredMsg;
-	var fnctnDesc = 'Invokes the "The Final Countdown" jQuery plugin on appropriate elements \
-within the DOM.';
+	var fnctnDesc = 'Invokes the "The Final Countdown" jQuery plugin on appropriate elements within\
+ the DOM.';
 	var fnctnName = 'processCountdownTimer';
 	var format;
 	var parsedMsg;
@@ -167,6 +155,58 @@ proceed with invocation of The Final Countdown on the jQuery object I am current
 			'I was passed an invalid argument for $countdownTimerMsg, which appears below:'
 		);
 		console.log( $countdownTimerMsg );
+	}
+}
+
+/**
+ * Show a countdown timer that was marked by its ID attribute.
+ *
+ * @param {undefined|jQuery} $countdownClock - Either a jQuery object representing the element
+ *     identified by ID as a countdown timer or undefined if no such element was found.
+ * @param {number} animationTiming - The duration of the show animation in milliseconds.
+ */
+function showIdSelectedCountdownTimer( $countdownClock, animationTiming ) {
+	var $countdownParent;
+	var hideCountdown = false;
+	var validArgTypes = {};
+	var error = {
+		fileName: thisFileName,
+		fName: 'showIdSelectedCountdownTimer',
+		fDesc: 'Show a countdown timer that was marked by its ID attribute.',
+		msg: ''
+	};
+
+//	var hideUntilTime = $countdownClock.data( 'hide-until' );
+//	var showUntilTime = $countdownClock.data( 'show-until' );
+
+	//TODO: Implement showing/hiding times for countdown timers.
+	try {
+		validArgTypes[ '$countdownClock' ] = $.isJQueryObj( $countdownClock );
+		validArgTypes[ 'animationTiming' ] = typeof animationTiming === 'number';
+		if ( $countdownClock && validArgTypes [ '$countdownClock' ] &&
+				validArgTypes[ 'animationTiming' ] ) {
+			$countdownParent = $countdownClock.parents( 'section' ).first();
+			if ( !hideCountdown ) {
+				$countdownParent.show( animationTiming );
+			}
+		} else {
+			if ( $countdownClock ) {
+				if ( !validArgTypes[ '$countdownClock' ] ) {
+					error.msg = 'I was passed a purported jQuery object representing the countdown \
+timer, but it turned out to not actually be a jQuery object.';
+				}
+				if ( !validArgTypes[ 'animationTiming' ] ) {
+					if ( error.msg == '' ) {
+						error.msg += ' Also, ';
+					}
+					error.msg += 'I was passed a non-number argument for the show animation timing \
+that turned out to be typed as ' + ( typeof animationTiming ) +  '.';
+				}
+				throw error;
+			}
+		}
+	} catch ( thrownError ) {
+		$.logError( thrownError.fileName, thrownError.fName, thrownError.fDesc, thrownError.msg );
 	}
 }
 

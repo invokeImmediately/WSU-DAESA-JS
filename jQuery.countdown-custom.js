@@ -11,14 +11,16 @@
  */
 ( function ( $ ) {
 
-var thisFileName = 'jQuery.countdown-custom';
+var $countdownTimerById;
 var animationTiming = 400;	// Controls the speed at which jQuery-induced countdown animations occur
+var thisFileName = 'jQuery.countdown-custom';
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // DOM-READY EXECUTION SECTION
 
 $( function () {
-	processCountdownTimerById( '#countdown-clock' );
+	$countdownTimerById = processCountdownTimerById( '#countdown-clock' );
 	// $countdownClockByClass = $( '.countdown-clock' );
 } );
 
@@ -51,9 +53,11 @@ $( window ).on( 'load', function () {
  * 
  * @param {string} selectorStr - Selector string for isolating countdown timer elements within the
  *     DOM.
+ * @return {(undefined|jQuery)} Either a jQuery object representing the element identified by ID as
+ *     a countdown timer or undefined if an error condition was encountered.
  */
 function processCountdownTimerById( selectorStr ) {
-	var $countdownClockById;
+	var $countdownClockById = undefined;
 	var argIsIdSelector;
 	var errMsg;
 	var thisFDesc = 'Set up countdown timers on page.';
@@ -102,6 +106,7 @@ ID-based selector.';
 		$.logError( error.fileName, error.fName, error.fDesc, error.msg );
 	}
 
+	return $countdownClockById;
 }
 
 /**

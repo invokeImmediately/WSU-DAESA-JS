@@ -43,7 +43,6 @@ $( window ).on( 'load', function () {
  * @return {(undefined|jQuery)} Either a jQuery object representing the element identified by ID as
  *     a countdown timer or undefined if an error condition was encountered.
  */
-// TODO: Fix instances of … fDesc, thisFDesc, …
 function processCountdownTimerById( selectorStr ) {
 	var $countdownClockById = undefined;
 	var argIsIdSelector;
@@ -65,7 +64,7 @@ function processCountdownTimerById( selectorStr ) {
 				throw {
 					fileName: thisFileName,
 					fName: thisFName,
-					fDesc, thisFDesc,
+					fDesc: thisFDesc,
 					msg: 'I found ' + ($countdownClockById.length).toString() + ' instead of the re\
 quired 1 ID-labeled countdown timers.'
 				};
@@ -86,7 +85,7 @@ ID-based selector.';
 			throw {
 				fileName: thisFileName,
 				fName: thisFName,
-				fDesc, thisFDesc,
+				fDesc: thisFDesc,
 				msg: errMsg;
 			};
 		}
@@ -144,9 +143,9 @@ function processCountdownTimerMsg ( $countdownTimerMsg ) {
 		} else {
 			// TODO: Expand error reporting to achieve optimal granularity for troubleshooting.
 			$.logError( thisFileName, fnctnName, fnctnDesc,
-				'Because I encountered a problem with expected data attributes, I am unable to \ 
-proceed with invocation of The Final Countdown on the jQuery object I am currently working with.\
-\n\tHere\'s information on the variables I am handling:'
+				'Because I encountered a problem with expected data attributes, I am unable to proc\
+eed with invocation of The Final Countdown on the jQuery object I am currently working with.\n\tHer\
+e\'s information on the variables I am handling:'
 			);
 			console.log( $countdownTimerMsg, pendingMsg, expiredMsg );
 		}

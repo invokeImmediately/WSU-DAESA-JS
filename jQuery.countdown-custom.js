@@ -92,12 +92,10 @@ ID-based selector.';
 }
 
 /**
- *  processCountdownTimer DESCRIPTION: Invokes the "The Final Countdown" jQuery plugin on
- *      appropriate elements within the DOM.
+ *  Invokes the "The Final Countdown" jQuery plugin on appropriate elements within the DOM.
  *  
- *  ARGUMENTS:
- *      $countdownTimer: a single jQuery object containing an element on which the plugin will be
- *                       invoked.
+ *  @param {jQuery} $countdownTimer - A single jQuery object containing an element on which the
+ *      plugin will be invoked.
  */
 function processCountdownTimerMsg ( $countdownTimerMsg ) {
 	var countdownTarget;

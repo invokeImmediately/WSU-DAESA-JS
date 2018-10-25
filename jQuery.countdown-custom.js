@@ -1,12 +1,13 @@
 /*!
  * jQuery.countdown-custom.js 
- * --------------------------
- * DESCRIPTION: 
- *     Application of "The Final Countdown" jQuery plugin, written by Edson Hilios, to WSU OUE
- *     websites. (Please see https://github.com/hilios/jQuery.countdown for Edson's repository for
- *     "The Final Countdown.") 
+ * -------------------------------------------------------------------------------------------------
+ * DESCRIPTION: Application of "The Final Countdown" jQuery plugin, written by Edson Hilios, to WSU
+ *   OUE websites. (Please see https://github.com/hilios/jQuery.countdown for Edson's repository for
+ *   "The Final Countdown.")
  *
  * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
+ *
+ * REPOSITORY: https://github.com/invokeImmediately/WSU-UE---JS
  */
 ( function ( $ ) {
 
@@ -15,10 +16,8 @@ var animationTiming = 400;	// Controls the speed at which jQuery-induced countdo
 
 // ---- DOM IS READY: Code executed after the DOM is ready for use. --------------------------------
 $( function () {
-
-	// TODO: Also implement a class based approach
-	var $countdownClock = $( '#countdown-clock' );
-	processCountdownTimerMsg( $countdownClock );
+	processCountdownTimerById( '#countdown-clock' );
+	// $countdownClockByClass = $( '.countdown-clock' );
 } );
 
 // ---- WINDOW LOADED: Code executed after the browser window has fully loaded ---------------------
@@ -41,6 +40,61 @@ $( window ).on( 'load', function () {
 } );
 
 // ---- IIFE-localized definitions of FUNCTIONS USED IN THIS SCRIPT --------------------------------
+/**
+ * 
+ * @param {string} selectorStr - Selector 
+ */
+function processCountdownTimerById( selectorStr ) {
+	var $countdownClockById;
+	var argIsIdSelector;
+	var errMsg;
+	var thisFDesc = 'Set up countdown timers on page.';
+	var thisFName = 'processCountdownTimerById';
+	var validArgType;
+
+	validArgType = typeof selectorStr === 'string';
+	argIsIdSelector = validArgType ?
+		( /^#/ ).exec( selectorString ) :
+		false;
+	try {
+		if ( validArgType && argIsIdSelector ) {
+			$countdownClockById = $( selectorStr );
+			if ( $countdownClockById.length === 1 ) {
+				processCountdownTimerMsg( $countdownClock );
+			} else {
+				throw {
+					fileName: thisFileName,
+					fName: thisFName,
+					fDesc, thisFDesc,
+					msg: 'I found ' + ($countdownClockById.length).toString() + ' instead of the re\
+quired 1 ID-labeled countdown timers.'
+				};
+			}
+		} else {
+			errorMsg = '';
+			if ( validArgType ) {
+				errorMsg += 'I was passed a selector string argument that was typed as ' +
+					( typeof selectorStr ) + ' instead of string.';
+			}
+			if ( argIsIdSelector ) {
+				if ( validArgType ) {
+					errorMsg += ' Also, '
+				}
+				errorMsg += 'I was passed a selector string argument that did not contain a simple \
+ID-based selector.';
+			}
+			throw {
+				fileName: thisFileName,
+				fName: thisFName,
+				fDesc, thisFDesc,
+				msg: errMsg;
+			};
+		}
+	} catch ( error ) {
+		$.logError( error.fileName, error.fName, error.fDesc, error.msg );
+	}
+
+}
 
 /**
  *  processCountdownTimer DESCRIPTION: Invokes the "The Final Countdown" jQuery plugin on
@@ -51,26 +105,30 @@ $( window ).on( 'load', function () {
  *                       invoked.
  */
 function processCountdownTimerMsg ( $countdownTimerMsg ) {
-	var fnctnName = 'processCountdownTimer';
-	var fnctnDesc = 'Invokes the "The Final Countdown" jQuery plugin on appropriate elements ' +
-					'within the DOM.';
 	var countdownTarget;
-	var pendingMsg;
 	var expiredMsg;
-	var parsedMsg;
+	var fnctnDesc = 'Invokes the "The Final Countdown" jQuery plugin on appropriate elements \
+within the DOM.';
+	var fnctnName = 'processCountdownTimer';
 	var format;
+	var parsedMsg;
+	var pendingMsg;
 
 	// Check integrity of argument
-	if ( $.isJQueryObj( $countdownTimerMsg ) && $countdownTimerMsg.length === 1 ) {
-		
+	if ( $.isJQueryObj( $countdownTimerMsg ) ) {
 		// Invoke The Final Countdown plugin on the object after parsing the necessary data.
 		countdownTarget = $countdownTimerMsg.data( 'countdown' );
 
 		// TODO: Add appending and prepending of message strings
 		pendingMsg = $countdownTimerMsg.data( 'pending-message' );
 		expiredMsg = $countdownTimerMsg.data( 'expired-message' );
+		// TODO: Refactor this function for improved performance:
+		// * Parse the messages only once
+		// * Add spans as children to the element and label them with identifying classes
+		// * Update the html of only the countdown span each clock cycle
 		if ( countdownTarget && pendingMsg && expiredMsg ) {
-			$countdownTimerMsg.countdown( countdownTarget ).on( 'update.countdown', function( event ) {
+			$countdownTimerMsg.countdown( countdownTarget ).on( 'update.countdown', 
+					function( event ) {
 				parsedMsg = pendingMsg.replace( /\[/g, '<' ).replace( /\]/g, '>' );
 				format = '%H:%M:%S';
 				if ( event.offset.totalDays > 0 ) {
@@ -83,30 +141,19 @@ function processCountdownTimerMsg ( $countdownTimerMsg ) {
 				$( this ).html( parsedMsg );
 			} );
 		} else {
-
 			// TODO: Expand error reporting to achieve optimal granularity for troubleshooting.
 			$.logError( thisFileName, fnctnName, fnctnDesc,
-				'Because I encountered a problem with expected data attributes, I am unable to ' +
-				'proceed with invocation of The Final Countdown on the jQuery object I am ' +
-				'currently working with.\n\tHere\'s information on the variables I am handling:'
+				'Because I encountered a problem with expected data attributes, I am unable to \ 
+proceed with invocation of The Final Countdown on the jQuery object I am currently working with.\
+\n\tHere\'s information on the variables I am handling:'
 			);
 			console.log( $countdownTimerMsg, pendingMsg, expiredMsg );
 		}
-	} else if ($countdownTimerMsg.length != 0) {
-
-		// Report appropriate problem with argument integrity
-		if ( !$.isJQueryObj( $countdownTimerMsg ) ) {
-			errorMsg = 
-			$.logError( thisFileName, fnctnName, fnctnDesc,
-				'I was passed an invalid argument for $countdownTimerMsg, which appears below:'
-			);
-			console.log( $countdownTimerMsg );
-		} else {
-			$.logError( thisFileName, fnctnName, fnctnDesc,
-				'I was expecting a single jQuery object as an argument for $countdownTimerMsg. ' +
-				'Instead, I was passed a jQuery object with a length of ' + $countdownTimerMsg.length
-			);
-		}
+	} else {
+		$.logError( thisFileName, fnctnName, fnctnDesc,
+			'I was passed an invalid argument for $countdownTimerMsg, which appears below:'
+		);
+		console.log( $countdownTimerMsg );
 	}
 }
 

@@ -5,35 +5,37 @@
 /**************************************************************************************************
  * TABLE OF CONTENTS                                                                              *
  * -----------------                                                                              *
- *   §1: ADDITION OF FUNCTIONS to jQuery......................................................46  *
- *   §2: AFTER DOM IS READY excution section.................................................127  *
- *   §3: AFTER WINDOW LOADED event bindings..................................................284  *
- *   §4: WINDOW RESIZE event bindings........................................................330  *
- *   §5: FUNCTION DECLARATIONS...............................................................338  *
- *     §5.1: addA11yTabPressListener.........................................................348  *
- *     §5.2: addBlankTargetAttributes........................................................360  *
- *     §5.3: addDefinitionListButtons........................................................415  *
- *     §5.4: checkForLrgFrmtSingle...........................................................512  *
- *     §5.5: effectDropDownTogglePermanence..................................................526  *
- *     §5.6: finalizeLrgFrmtSideRight........................................................555  *
- *     §5.7: fixDogears......................................................................572  *
- *     §5.8: handleMouseClickForA11y.........................................................594  *
- *     §5.9: handleTabPressForA11y...........................................................600  *
- *     §5.10: initContentFlippers............................................................608  *
- *     §5.11: initDefinitionLists............................................................621  *
- *     §5.12: initDropDownToggles............................................................668  *
- *     §5.13: initFancyHrH2Motif.............................................................690  *
- *     §5.14: initFancyHrH3Motif.............................................................696  *
- *     §5.15: initHrH2Motif..................................................................702  *
- *     §5.16: initHrH3Motif..................................................................714  *
- *     §5.17: initQuickTabs..................................................................720  *
- *     §5.18: initReadMoreToggles............................................................780  *
- *     §5.19: initTocFloating................................................................797  *
- *     §5.20: initTriggeredByHover...........................................................871  *
- *     §5.21: initWelcomeMessage.............................................................887  *
- *     §5.22: resizeLrgFrmtSideRight.........................................................894  *
- *     §5.23: setupDropDownTogglePermanence..................................................899  *
- *     §5.24: showDefinitionListButtons......................................................931  *
+ *   §1: ADDITION OF FUNCTIONS to jQuery......................................................48  *
+ *     §1.1: jQuery.isJQueryObj...............................................................56  *
+ *     §1.2: jQuery.isJQueryObj...............................................................69  *
+ *   §2: AFTER DOM IS READY excution section.................................................128  *
+ *   §3: AFTER WINDOW LOADED event bindings..................................................285  *
+ *   §4: WINDOW RESIZE event bindings........................................................331  *
+ *   §5: FUNCTION DECLARATIONS...............................................................339  *
+ *     §5.1: addA11yTabPressListener.........................................................349  *
+ *     §5.2: addBlankTargetAttributes........................................................361  *
+ *     §5.3: addDefinitionListButtons........................................................418  *
+ *     §5.4: checkForLrgFrmtSingle...........................................................515  *
+ *     §5.5: effectDropDownTogglePermanence..................................................529  *
+ *     §5.6: finalizeLrgFrmtSideRight........................................................558  *
+ *     §5.7: fixDogears......................................................................575  *
+ *     §5.8: handleMouseClickForA11y.........................................................597  *
+ *     §5.9: handleTabPressForA11y...........................................................603  *
+ *     §5.10: initContentFlippers............................................................611  *
+ *     §5.11: initDefinitionLists............................................................624  *
+ *     §5.12: initDropDownToggles............................................................671  *
+ *     §5.13: initFancyHrH2Motif.............................................................693  *
+ *     §5.14: initFancyHrH3Motif.............................................................699  *
+ *     §5.15: initHrH2Motif..................................................................705  *
+ *     §5.16: initHrH3Motif..................................................................717  *
+ *     §5.17: initQuickTabs..................................................................723  *
+ *     §5.18: initReadMoreToggles............................................................783  *
+ *     §5.19: initTocFloating................................................................800  *
+ *     §5.20: initTriggeredByHover...........................................................874  *
+ *     §5.21: initWelcomeMessage.............................................................890  *
+ *     §5.22: resizeLrgFrmtSideRight.........................................................897  *
+ *     §5.23: setupDropDownTogglePermanence..................................................902  *
+ *     §5.24: showDefinitionListButtons......................................................934  *
  **************************************************************************************************/
 
 ( function ( $ ) {
@@ -42,28 +44,27 @@
 
 var thisFileName = "jQuery.oue-custom.js";
 
-/**************************************************************************************************
- * §1: ADDITION OF FUNCTIONS to jQuery                                                            *
- **************************************************************************************************/
- 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §1: ADDITION OF FUNCTIONS to jQuery
+
+// --- §1.1: jQuery.isJQueryObj
 /**
- * jQuery.isJQueryObj
- * DESCRIPTION: Checking function to verify that the passed parameter is a valid jQuery object.
- * PARAMETERS:
- *   - $obj: Possible jQuery object.
+ * Checking function to verify that the passed parameter is a valid jQuery object.
+ *
+ * @param $obj - Possible jQuery object; could be anything.
  */
 $.isJQueryObj = function ( $obj ) {
 	return ( $obj && ( $obj instanceof $ || $obj.constructor.prototype.jquery ) );
 }
 
+// --- §1.2: jQuery.logError
 /**
- * jQuery.logError
- * DESCRIPTION: Log an error using the browser console in JSON notation.
- * PARAMETERS:
- *   - fileName: Name of the JS source file wherein the error was encountered.
- *   - fnctnName: Name of the function that called $.logError.
- *   - fnctnDesc: Description of what the calling function is supposed to do.
- *   - errorMsg: Message that describes what went wrong within the calling function.
+ * Log an error using the browser console in JSON notation.
+ * 
+ * @param {string} fileName - Name of the JS source file wherein the error was encountered.
+ * @param {string} fnctnName - Name of the function that called $.logError.
+ * @param {string} fnctnDesc - Description of what the calling function is supposed to do.
+ * @param {string} errorMsg - Message that describes what went wrong within the calling function.
  */
 $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 	var thisFuncName = "jQuery.logError";
@@ -123,9 +124,9 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 	}
 }
 
-/**************************************************************************************************
- * §2: AFTER DOM IS READY excution section                                                        *
- **************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §2: AFTER DOM IS READY excution section
+
 $( function () {
 	var argsList = new Object(); // List of arguments that will be passed to functions
 	var args; // List of arguments currently being utilized
@@ -280,9 +281,9 @@ $( function () {
 	// TODO: initScrollingSidebars("...");
 } );
 
-/**************************************************************************************************
- * §3: AFTER WINDOW LOADED event bindings                                                         *
- **************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §3: AFTER WINDOW LOADED event bindings
+
 $( window ).on( "load", function () {
 	var argsList = new Object();
 	var args;
@@ -326,36 +327,36 @@ $( window ).on( "load", function () {
 	addA11yTabPressListener( args.listenerCallback );
 } );
 
-/**************************************************************************************************
- * §4: WINDOW RESIZE event bindings                                                               *
- **************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §4: WINDOW RESIZE event bindings
+
 $( window ).resize( function () {
 	resizeLrgFrmtSideRight( ".side-right.large-format-friendly", "div.column.one",
 		"div.column.two", 1051, 100 );
 } );
 
-/**************************************************************************************************
- * §5: FUNCTION DECLARATIONS                                                                      *
- **************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §5: FUNCTION DECLARATIONS
 
+// --- §5.1: addA11yTabPressListener
 /**
- * addA11yTabPressListener
- * DESCRIPTION: Add an event listener to handle for keyboard navigation implied by tab presses. 
- *  Intended to support accessibility design.
- * PARAMETERS:
- *   - listenerCallback: Function callback triggered on keydown event
+ * Add an event listener to handle for keyboard navigation implied by tab presses. 
+ *
+ * Intended to support accessibility design.
+ *
+ * @param {function} listenerCallback - Function callback triggered on keydown event.
  */
 function addA11yTabPressListener( listenerCallback ) {
 	window.addEventListener( "keydown", listenerCallback );
 }
 
+// --- §5.2: addBlankTargetAttributes
 /**
- * addBlankTargetAttributes
- * DESCRIPTION: Adds missing blank target attributes to links within the WSU Spine as needed.
- * PARAMETERS:
- *   - slctrSpine: Selector string for locating the spine object within the DOM.
- *   - slctrExternalLinks: Selector string for locating links within the spine that lead to 
- *      destination external to the domain.
+ * Adds missing blank target attributes to links within the WSU Spine as needed.
+ * 
+ * @param {string} slctrSpine - Selector string for locating the spine object within the DOM.
+ * @param {string} slctrExternalLinks - Selector string for locating links within the spine that
+ *     lead to destination external to the domain.
  */
 function addBlankTargetAttributes( slctrSpine, slctrExternalLinks ) {
 	var thisFnctnName = "addBlankTargetAttributes";
@@ -399,18 +400,20 @@ passed:\n\ttypeof slctrSpine = " + ( typeof slctrSpine ) + "\n\ttypeof slctrExte
 	}
 }
 
+// --- §5.3: addDefinitionListButtons
 /**
- * addDefinitionListButtons
- * DESCRIPTION: Automatically creates and binds events to expand/collapse all buttons designed for 
- *  improving UX of OUE site definition lists.
- * PARAMETERS:
- *   - slctrDefList: Selector string for locating definition list elements within the DOM that 
- *      contain collapsible definitions.
- *   - expandAllClass: CSS class for controlling the layout of expand all buttons.
- *   - collapseAllClass: CSS class for controlling the layout of collapse all buttons.
- *   - btnDisablingClass: CSS class applied to disable expand/collapse all buttons.
- *   - dtActivatingClass: CSS class used to indicate an active/expanded state for definition terms.
- *   - ddRevealingClass: CSS class used to realize a revealed, visible state on definitions.
+ * Automatically creates and binds events to expand/collapse all buttons designed for improving UX
+ * of OUE site definition lists.
+ *
+ * @param {string} slctrDefList - Selector string for locating definition list elements within the
+ *     DOM that contain collapsible definitions.
+ * @param {string} expandAllClass - CSS class for controlling the layout of expand all buttons.
+ * @param {string} collapseAllClass - CSS class for controlling the layout of collapse all buttons.
+ * @param {string} btnDisablingClass - CSS class applied to disable expand/collapse all buttons.
+ * @param {string} dtActivatingClass - CSS class used to indicate an active/expanded state for
+ *     definition terms.
+ * @param {string} ddRevealingClass - CSS class used to realize a revealed, visible state on
+ *     definitions.
  */
 function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClass, 
 		btnDisablingClass, dtActivatingClass, ddRevealingClass, animSldDrtn ) {

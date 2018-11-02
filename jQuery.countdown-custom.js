@@ -60,12 +60,7 @@ function CountdownTimerSelectors( timer, container, message, prependedHtml, appe
 	var argTypeMask = 0;
 	var validSelectorNeedle = /\.[a-zA-Z0-9\-_]+$/;
 	var validSelectorMask = 0;
-	var error = {
-		fileName: thisFileName,
-		fName: 'CountdownTimerSelectors',
-		fDesc: 'Validated settings for class-based OUE countdown timers.',
-		errorMsg: ''
-	};
+	var error;
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// PUBLIC PROPERTIES
@@ -79,14 +74,15 @@ function CountdownTimerSelectors( timer, container, message, prependedHtml, appe
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// MAIN CONSTRUCTOR EXECUTION
 
-	checkArgTypes();
-	checkSelectorStructure();
-	throwAnyErrors();
+	_initErrorMessages();
+	_checkArgTypes();
+	_checkSelectorStructure();
+	_throwAnyErrors();
 
 	////////////////////////////////////////////////////////////////////////////////////////////
-	// MAIN CONSTRUCTOR EXECUTION
+	// PRIVATE FUNCTION DEFINITIONS
 
-	function checkArgTypes() {
+	function _checkArgTypes() {
 		argTypeMask = typeof timer === 'string';
 		argTypeMask = ( argTypeMask << 1 ) | typeof container === 'string';
 		argTypeMask = ( argTypeMask << 1 ) | typeof message === 'string';
@@ -94,7 +90,7 @@ function CountdownTimerSelectors( timer, container, message, prependedHtml, appe
 		argTypeMask = ( argTypeMask << 1 ) | typeof appendedHtml === 'string';
 	}
 
-	function checkSelectorStructure() {
+	function _checkSelectorStructure() {
 		validSelectorMask = !!validSelectorNeedle.exec( timer );
 		validSelectorMask = ( validSelectorMask << 1 ) | !!validSelectorNeedle.exec( container );
 		validSelectorMask = ( validSelectorMask << 1 ) | !!validSelectorNeedle.exec( message );
@@ -103,7 +99,25 @@ function CountdownTimerSelectors( timer, container, message, prependedHtml, appe
 		validSelectorMask = ( validSelectorMask << 1 ) | !!validSelectorNeedle.exec( appendedHtml );
 	}
 
-	function throwAnyErrors() {
+	function _initErrorMessages() {
+		try {
+			error = {
+				fileName: thisFileName,
+				fName: 'CountdownTimerSelectors',
+				fDesc: 'Validated settings for class-based OUE countdown timers.',
+				errorMsg: ''
+			};	
+		} catch ( e ) {
+			error = {
+				fileName: 'Unidentified file',
+				fName: 'CountdownTimerSelectors',
+				fDesc: 'Validated settings for class-based OUE countdown timers.',
+				errorMsg: ''
+			};	
+		}
+	}
+
+	function _throwAnyErrors() {
 		if ( !argTypeMask || !validSelectorMask ) {
 			if ( !argTypeMask ) {
 				error.errorMsg = 'I encountered a wrongly typed argument during construction.';
@@ -122,6 +136,10 @@ erly formed class selector as required.';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTION DEFINITIONS
+
+function processCountdownTimersByClass(  ) {
+
+}
 
 /**
  * Find and process a countdown timer element that has been marked with the ID attribute.

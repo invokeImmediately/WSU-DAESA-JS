@@ -58,7 +58,7 @@ function CountdownTimerSelectors( timer, container, message, prependedHtml, appe
 	// PRIVATE PROPERTIES
 
 	var argTypeMask = 0;
-	var validSelectorNeedle = /\.[a-zA-Z0-9\-_]+$/;
+	var validSelectorNeedle = /^\.[a-zA-Z0-9\-_]+$/;
 	var validSelectorMask = 0;
 	var error;
 
@@ -106,14 +106,14 @@ function CountdownTimerSelectors( timer, container, message, prependedHtml, appe
 				fName: 'CountdownTimerSelectors',
 				fDesc: 'Validated settings for class-based OUE countdown timers.',
 				errorMsg: ''
-			};	
+			};
 		} catch ( e ) {
 			error = {
 				fileName: 'Unidentified file',
 				fName: 'CountdownTimerSelectors',
 				fDesc: 'Validated settings for class-based OUE countdown timers.',
 				errorMsg: ''
-			};	
+			};
 		}
 	}
 
@@ -134,11 +134,280 @@ erly formed class selector as required.';
 	}
 }
 
+/**
+ * Collection of jQuery objects that represent the components of a single countdown timer.
+ *
+ * @param {CountdownTimerSelectors} selectors - Collection of class selectors for isolating
+ *     countdown timer components.
+ *
+ * TODO: @throws {?} ?
+ */
+function CountdownTimerObjs( selectors ) {
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// PRIVATE PROPERTIES
+
+	var _argTypeMask = 0;
+	var _objFoundMask = undefined;
+	var _error;
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// PUBLIC PROPERTIES
+
+	this.selectors = undefined;
+	this.$timers = undefined;
+	this.timerComponents = undefined;
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// MAIN CONSTRUCTOR EXECUTION
+
+	_initErrorMessages();
+	_checkArgType();
+	_findJQueryObjs();
+	_throwAnyErrors();
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// PRIVATE FUNCTION DEFINITIONS
+
+	function _checkArgTypes() {
+		_argTypeMask = selectors instanceof CountdownTimerSelectors;
+		if ( _argTypeMask ) {
+			this.selectors = selectors;
+		}
+	}
+
+	/**
+	 * Find the appended HTML component element associated with a previously selected countdown
+	 * timer element.
+	 *
+	 * It is assumed that the appended HTML component should be a child element of the timer.
+	 *
+	 * @param {jQuery} $timer - The previously selected timer element.
+	 * @param {string} selector - Class-based selector for the timer's appended HTML component.
+	 *
+	 * @return {(jQuery|undefined)} Either a jQuery object representing the appended HTML component
+	 *     or undefined if nothing was found.
+	 */
+	function _findAppendedHtml( $timer, selector ) {
+		var $obj;
+
+			// Step[0]: Look for the appended HTML component among the children of the timer
+			// element.
+			$obj = $timer.find( selector );
+			if ( !$obj.length ) {
+				// Step[1]: No appended HTML component was found, ∴ return undefined instead of
+				// empty jQuery object.
+				$obj = undefined;
+			}
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * Find the container component element associated with a previously selected countdown timer
+	 * element.
+	 *
+	 * It is assumed that the container component should either be the same element as the timer or
+	 * a child of it.
+	 *
+	 * @param {jQuery} $timer - The previously selected timer element.
+	 * @param {string} selector - Class-based selector for the timer's container component.
+	 *
+	 * @return {(jQuery|undefined)} Either a jQuery object representing the container component or
+	 *     undefined if nothing was found.
+	 */
+	function _findContainer( $timer, selector ) {
+		var $obj;
+
+		// Step[0]: First check the originally selected timer element to see if it is also the
+		// container.
+		if ( $timer.hasClass( selector ) ) {
+			$obj = $timer;
+		} else {
+			// Step[1]: Now try looking for the container among the children of the timer element.
+			$obj = $timer.find( selector );
+			if ( !$obj.length ) {
+				// Step[2]: No container was found, ∴ return undefined instead of empty jQuery
+				// object.
+				$obj = undefined;
+			}
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * Find all countdown timer elements within the document, along with their components, using the
+	 * selectors specified during construction.
+	 */
+	// TODO: Finish writing function.
+	function _findJQueryObjs() {
+		var $timer_i;
+		var components_i = {
+			$timer: undefined,
+			$container: undefined,
+			$message: undefined,
+			$prependedHtml: undefined,
+			$appendedHtml: undefined
+		}
+		var timerComponents;
+
+		if ( _argTypeMask ) {
+			timerComponents = [];
+			this.$timers = $( selectors.timer );
+			this.$timers.each( function() {
+				components_i.$timer = $timer_i = $( this );
+				components_i.$container = _findContainer( $timer_i, selectors.container );
+				components_i.$message = _findMessage( $timer_i, selectors.message );
+				components_i.$prependedHtml = _findPrependedHtml( $timer_i,
+					selectors.prependedHtml );
+				components_i.$appendedHtml = _findAppendedHtml( $timer_i, selectors.appendedHtml );
+				timerComponents.push( components_i );
+			} );
+			this.timerComponents = timerComponents;
+
+			// TODO: Set _objFoundMask based on results.
+/*TODO*/			_validateFoundObjects();
+		}
+	}
+
+	/**
+	 * Find the message component element associated with a previously selected countdown timer
+	 * element.
+	 *
+	 * It is assumed that the message component should be a child element of the timer.
+	 *
+	 * @param {jQuery} $timer - The previously selected timer element.
+	 * @param {string} selector - Class-based selector for the timer's message component.
+	 *
+	 * @return {(jQuery|undefined)} Either a jQuery object representing the message component or
+	 *     undefined if nothing was found.
+	 */
+	function _findMessage( $timer, selector ) {
+		var $obj;
+
+			// Step[0]: Look for the message component among the children of the timer element.
+			$obj = $timer.find( selector );
+			if ( !$obj.length ) {
+				// Step[1]: No message component was found, ∴ return undefined instead of empty
+				// jQuery object.
+				$obj = undefined;
+			}
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * Find the prepended HTML component element associated with a previously selected countdown
+	 * timer element.
+	 *
+	 * It is assumed that the prepended HTML component should be a child element of the timer.
+	 *
+	 * @param {jQuery} $timer - The previously selected timer element.
+	 * @param {string} selector - Class-based selector for the timer's prepended HTML component.
+	 *
+	 * @return {(jQuery|undefined)} Either a jQuery object representing the prepended HTML component
+	 *     or undefined if nothing was found.
+	 */
+	function _findPrependedHtml( $timer, selector ) {
+		var $obj;
+
+			// Step[0]: Look for the prepended HTML component among the children of the timer
+			// element.
+			$obj = $timer.find( selector );
+			if ( !$obj.length ) {
+				// Step[1]: No prepended HTML component was found, ∴ return undefined instead of
+				// empty jQuery object.
+				$obj = undefined;
+			}
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * Set default values for the private member that internally tracks errors.
+	 */
+	function _initErrorMessages() {
+		try {
+			_error = {
+				fileName: thisFileName,
+				fName: 'CountdownTimerObjs',
+				fDesc: 'Collection of jQuery objects that represent countdown timer elements and th\
+eir components.',
+				errorMsg: ''
+			};
+		} catch ( e ) {
+			_error = {
+				fileName: 'Unidentified file',
+				fName: 'CountdownTimerObjs',
+				fDesc: 'Collection of jQuery objects that represent countdown timer elements and th\
+eir components.',
+				errorMsg: ''
+			};
+		}
+	}
+
+	// TODO: Copied from CountdownTimerSelectors; rewrite.
+	function _throwAnyErrors() {
+		if ( !argTypeMask || !validSelectorMask ) {
+			if ( !argTypeMask ) {
+				_error.errorMsg = 'I encountered a wrongly typed argument during construction.';
+				if ( !validSelectorMask ) {
+					_error.errorMsg += ' Also, ';
+				}
+			}
+			if ( !validSelectorMask ) {
+				_error.errorMsg += 'I found that at least one of my arguments did not contain a pro\
+perly formed class selector as required.';
+			}
+			throw _error;
+		}
+	}
+
+	function _validateFoundObjects() {
+		var timerComponents;
+
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTION DEFINITIONS
 
-function processCountdownTimersByClass(  ) {
+/**
+ * Find and process a countdown timer element that has been marked with the ID attribute.
+ *
+ * @param {CountdownTimerSelectors} selectors - Selectors necessary for isolating and initializing
+ *     the countdown timer.
+ */
+function processCountdownTimersByClass( selectors ) {
+	var $components;
+	var error = {
+		fileName: thisFileName,
+		fName: 'processCountdownTimersByClass',
+		fDesc: 'Find and process a countdown timer element that has been marked with an ID attribut\
+e.',
+		msg: ''
+	};
 
+	try {
+		if (selectors instanceof CountdownTimerSelectors) {
+			// TODO: Get components.
+		} else {
+			error.msg = 'I was passed an invalidly typed argument.';
+			throw error;
+		}
+	} catch ( thrownError ) {
+		$.logError( thrownError.fileName, thrownError.fName, thrownError.fDesc, thrownError.msg );		
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// SUB FUNCTIONS
+// TODO:
+//	function …( … ) {
+//		…
+//	}
 }
 
 /**

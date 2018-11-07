@@ -399,7 +399,7 @@ e.',
 			throw error;
 		}
 	} catch ( thrownError ) {
-		$.logError( thrownError.fileName, thrownError.fName, thrownError.fDesc, thrownError.msg );		
+		$.logError( thrownError.fileName, thrownError.fName, thrownError.fDesc, thrownError.msg );
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

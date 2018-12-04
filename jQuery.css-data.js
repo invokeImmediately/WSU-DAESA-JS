@@ -105,8 +105,9 @@ x parameter; instead, I was passed something that was typeof ' + typeof dataPref
 			throw errorMsg;
 			// TODO: Write & apply OueError class.
 		}
+
 		return data;
-	}
+	};
 
 	/**
 	 * Sets a new target for data extraction.
@@ -118,7 +119,7 @@ x parameter; instead, I was passed something that was typeof ' + typeof dataPref
 		_$obj = $newObj;
 		_ValidateTargetingArgs();
 		_LoadClassList();
-	}
+	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS

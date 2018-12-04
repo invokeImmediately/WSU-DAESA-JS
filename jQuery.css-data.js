@@ -88,7 +88,7 @@ ut it did not contain a single element as required.'
 				if (matchResult.length === 2) {
 					data = matchResult[1];
 				} else {
-					errorMsg := 'Error in CssData.getThis: I found ' + (matchResult.length - 1)
+					errorMsg = 'Error in CssData.getThis: I found ' + (matchResult.length - 1)
 						+ ' CSS classes that encode data associated with the prefix ' + dataPrefix
 						+ '. Matching results were:';
 					for ( idx = 1; idx <= matchResult.length - 1; idx++ ) {
@@ -100,10 +100,9 @@ ut it did not contain a single element as required.'
 		} else if ( !_targetIsValid ) {
 			_ReportTargetingErrors();
 		} else {
-			errorMsg := 'Error in CssData.getThis: I was expecting to be passed a string for my dataPrefi\
-x parameter; instead, I was passed something that was typeof ' + typeof dataPrefix + '.';
+			errorMsg = 'Error in CssData.getThis: I was expecting to be passed a string for my data\
+Prefix parameter; instead, I was passed something that was typeof ' + typeof dataPrefix + '.';
 			throw errorMsg;
-			// TODO: Write & apply OueError class.
 		}
 
 		return data;

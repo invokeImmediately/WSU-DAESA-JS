@@ -3,7 +3,7 @@
  * -------------------------------------------------------------------------------------------------
  * SUMMARY: Declares the CssData class for use on OUE websites.
  *
- * DESCRIPTION: Provides 
+ * DESCRIPTION: Provides an interface for interpreting CSS class names as information encodings.
  *
  * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  *

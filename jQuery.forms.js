@@ -546,26 +546,43 @@ var WsuIdInputs = ( function ( $ ) {
 	/**
 	 * Constructor for WsuIdInputs class.
 	 *
-	 * @param {object} sels - Selectors required for setting up validation.
-	 * @param {string} sels.gfield - Selects the Gravity Form field containing the input in which
-	 *     the WSU ID number is to be entered.
+	 * @param {string} selGField - Selects the Gravity Form field containing the input in which the
+	 *     WSU ID number will be entered.
 	 */
 	function WsuIdInputs( selGfield ) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// PRIVATE PROPERTIES
 
-		var _sels = {};
-		_sels.gform = '.gform_wrapper';
-		_sels.gfield = selGfield;
-		_sels.inputs = "input[type='text']";
-		var _keyCodes = [ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ];
-		var _reFinalPattern = /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
+		/**
+		 * The collection of selectors used to find inputs accepting WSU ID numbers in the DOM.
+		 *
+		 * @private
+		 */
+		var _sels;
+
+		/**
+		 * Key codes for acceptable keystrokes when a WSU ID input has focus.
+		 *
+		 * @private
+		 */
+		var _keyCodes;
+
+		/**
+		 * Regular expression pattern representing valid complete or incomple WSU ID input.
+		 *
+		 * @private
+		 */
+		var _reFinalPattern;
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// PRIVATE METHODS
 
-		// TODO: Add inline documentation.
+		/**
+		 * Handler for keydown events triggered in inputs accepting WSU ID numbers.
+		 *
+		 * @param {Event} e - Contains information about the keydown event.
+		 */
 		function _onKeydown( e ) {
 			var $this = $( this );
 			var inputText = $this.val();
@@ -579,7 +596,11 @@ var WsuIdInputs = ( function ( $ ) {
 			}
 		}
 
-		// TODO: Add inline documentation.
+		/**
+		 * Handler for paste events triggered in inputs accepting WSU ID numbers.
+		 *
+		 * @param {Event} e - Contains information about the paste event.
+		 */
 		function _onPaste( e ) {
 			var $this = $( this );
 			var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
@@ -612,7 +633,9 @@ d.' );
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// PROTECTED METHODS
 
-		// TODO: Inline documentation
+		/**
+		 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
+		 */
 		this.initialize = function () {
 			var $forms = $( _sels.gform );
 			var inputSel = _sels.gfield + ' ' + _sels.inputs;
@@ -620,6 +643,16 @@ d.' );
 			$forms.on( 'keydown', inputSel, _onKeyDown );
 			$forms.on( 'paste', inputSel, _onPaste );
 		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// CONSTRUCTOR EXECUTION SECTION
+
+		_sels = {};
+		_sels.gform = '.gform_wrapper';
+		_sels.gfield = selGfield;
+		_sels.inputs = "input[type='text']";
+		_keyCodes = [ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ];
+		_reFinalPattern = /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
 	}
 
 	return WsuIdInputs;

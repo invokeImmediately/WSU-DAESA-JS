@@ -9,9 +9,12 @@
 
 	$( function () {
 		var $requiredFields;
+		var wsuIds;
 
 		if ( $( '.gform_body' ).length > 0 ) {
-			initWsuIdInputs( '.gf-is-wsu-id' );
+			wsuIds = new WsuIdInputs( '.gf-is-wsu-id' );
+			wsuIds.initialize();
+
 			setupActvtrChckbxs( '.oue-gf-actvtr-checkbox' );
 			setupActvtrChain( '.oue-gf-actvtr-chain' );
 			setupUploadChain( '.oue-gf-upload-chain' );
@@ -243,70 +246,6 @@
 	}
 
 	/**
-	 * Initialize RegEx filtration of gravity form inputs that accept WSU ID numbers.
-	 *
-	 * @param {string} selInputs - Selector string for isolating gravity form field from the DOM who
-	 *     contain the text input elements to be filtered.
-	 */
-	function initWsuIdInputs( selInputs ) {
-		// TODO: Add type validation and improved error reporting.
-		var $wsuIdInputs = $( selInputs ).find( "input[type='text']" );
-		$wsuIdInputs.keydown( function( e ) {
-			var $this = $( this );
-			var inputText = $this.val();
-			if ( ( e.keyCode < 48 || ( e.keyCode > 57 && e.keyCode < 96 ) || e.keyCode > 105 ) &&
-			 !~[ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ].indexOf( e.keyCode ) &&
-			 !( e.keyCode == 86 && e.ctrlKey ) ) {
-				e.preventDefault();
-			} else if ( !~[ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ].indexOf( e.keyCode ) &&
-					inputText.length >= 9 ) {
-				e.preventDefault();
-				alert( 'Note: WSU ID numbers are no greater than nine (9) digits in length.' );
-			}
-		} );
-		$wsuIdInputs.on( 'paste', function ( e ) {
-			var $this = $( this );
-			var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
-			var inputText = clipboardData.getData( 'Text' );
-			var regExMask = /[^0-9]+/g;
-			if ( regExMask.exec( inputText ) != null ) {
-				var errorMsg = 'Note: WSU ID numbers can only contain digits.';
-				e.stopPropagation();
-				e.preventDefault();
-				$this.val( inputText.replace( regExMask, '' ) );
-				inputText = $this.val();
-				if ( inputText.length > 9 ) {
-					$this.val( inputText.slice( 0, 9 ) );
-					errorMsg += ' Also, they must be no greater than nine (9) digits in length.';
-				}
-				errorMsg += ' What you pasted will automatically be corrected; please check the res\
-ult to see if further corrections are needed.'
-				alert( errorMsg );
-			} else if ( inputText.length > 9 ) {
-				e.stopPropagation();
-				e.preventDefault();
-				$this.val( inputText.slice( 0,9 ) );
-				alert( 'WSU ID numbers are no greater than nine (9) digits in length. What you past\
-ed will automatically be corrected. Please check the result to see if further corrections are neede\
-d.' );
-			}
-		} );
-		$wsuIdInputs.blur( function () {
-			var $this = $( this );
-			var regExFinalPttrn = /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
-			var inputText = $this.val();
-			if ( inputText != '' ) {
-				if ( regExFinalPttrn.exec( inputText ) == null ) {
-					$this.val( '' );
-					alert( 'The WSU ID you entered did not follow the correct pattern; please try a\
-gain. When the leading zero is included, WSU ID numbers are 9 digits long. You can also drop the le\
-ading zero and enter in 8 digits.' );
-				}
-			}
-		} );
-	}
-
-	/**
 	 * Set up activator checkboxes that disappear once one is selected.
 	 *
 	 * @param {string} selector - String for selecting from the DOM gravity form fields designated
@@ -439,17 +378,17 @@ ading zero and enter in 8 digits.' );
 var GfCheckboxValidators = ( function( $ ) {
 	function GfCheckboxValidators( sels ) {
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// Declare/set private properties
+		// PRIVATE PROPERTIES
 
 		var _$form;
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// Declare/set public properties
+		// PUBLIC PROPERTIES
 
 		this.sels = sels;
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// Declare privileged methods
+		// PRIVILEGED METHODS
 
 		this.get$form = function () {
 			return _$form;
@@ -465,12 +404,12 @@ var GfCheckboxValidators = ( function( $ ) {
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// Perform main constructor execution
+		// MAIN CONSTRUCTOR EXECUTION
 		this.findForm();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	// Declare public methods
+	// PUBLIC METHODS
 
 	/**
 	 * Finish the process of hiding validator fields from the user.
@@ -595,4 +534,94 @@ var GfCheckboxValidators = ( function( $ ) {
 	};
 
 	return GfCheckboxValidators;
+} )( jQuery );
+
+/**
+ * Provides RegEx mediated validation of gravity form inputs that accept WSU ID numbers.
+ *
+ * @class
+ */
+var WsuIdInputs = ( function ( $ ) {
+
+	/**
+	 * Constructor for WsuIdInputs class.
+	 *
+	 * @param {object} sels - Selectors required for setting up validation.
+	 * @param {string} sels.gfield - Selects the Gravity Form field containing the input in which
+	 *     the WSU ID number is to be entered.
+	 */
+	function WsuIdInputs( selGfield ) {
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// PRIVATE PROPERTIES
+
+		var _sels = {};
+		_sels.gform = '.gform_wrapper';
+		_sels.gfield = selGfield;
+		_sels.inputs = "input[type='text']";
+		var _keyCodes = [ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ];
+		var _reFinalPattern = /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// PRIVATE METHODS
+
+		// TODO: Add inline documentation.
+		function _onKeydown( e ) {
+			var $this = $( this );
+			var inputText = $this.val();
+
+			if ( ( e.keyCode < 48 || ( e.keyCode > 57 && e.keyCode < 96 ) || e.keyCode > 105 )
+					&& !~_keyCodes.indexOf( e.keyCode ) && !( e.keyCode == 86 && e.ctrlKey ) ) {
+				e.preventDefault();
+			} else if ( !~_keyCodes.indexOf( e.keyCode ) && inputText.length >= 9 ) {
+				e.preventDefault();
+				alert( 'Note: WSU ID numbers are no greater than nine (9) digits in length.' );
+			}
+		}
+
+		// TODO: Add inline documentation.
+		function _onPaste( e ) {
+			var $this = $( this );
+			var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
+			var inputText = clipboardData.getData( 'Text' );
+			var regExMask = /[^0-9]+/g;
+
+			if ( regExMask.exec( inputText ) != null ) {
+				var errorMsg = 'Note: WSU ID numbers can only contain digits.';
+				e.stopPropagation();
+				e.preventDefault();
+				$this.val( inputText.replace( regExMask, '' ) );
+				inputText = $this.val();
+				if ( inputText.length > 9 ) {
+					$this.val( inputText.slice( 0, 9 ) );
+					errorMsg += ' Also, they must be no greater than nine (9) digits in length.';
+				}
+				errorMsg += ' What you pasted will automatically be corrected; please check the res\
+ult to see if further corrections are needed.';
+				alert( errorMsg );
+			} else if ( inputText.length > 9 ) {
+				e.stopPropagation();
+				e.preventDefault();
+				$this.val( inputText.slice( 0,9 ) );
+				alert( 'WSU ID numbers are no greater than nine (9) digits in length. What you past\
+ed will automatically be corrected. Please check the result to see if further corrections are neede\
+d.' );
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// PROTECTED METHODS
+
+		// TODO: Inline documentation
+		this.initialize = function () {
+			var $forms = $( _sels.gform );
+			var inputSel = _sels.gfield + ' ' + _sels.inputs;
+
+			$forms.on( 'keydown', inputSel, _onKeyDown );
+			$forms.on( 'paste', inputSel, _onPaste );
+		}
+	}
+
+	return WsuIdInputs;
+
 } )( jQuery );

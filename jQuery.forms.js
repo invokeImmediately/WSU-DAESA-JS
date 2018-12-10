@@ -710,7 +710,31 @@ var WsuIdInputs = ( function ( $ ) {
 		// §2.3.2: Private methods
 
 		/**
+		 * Handler for blur events triggered in inputs accepting WSU ID numbers.
+		 *
+		 * @private
+		 *
+		 * @param {Event} e - Contains information about the blur event.
+		 */
+
+		function _onBlur( e ) {
+			var $this = $( this );
+			var inputText = $this.val();
+
+			if ( inputText != '' ) {
+				if ( _reFinalPattern.exec( inputText ) == null ) {
+					$this.val( '' );
+					alert( 'The WSU ID you entered did not follow the correct pattern; please try a\
+gain. When the leading zero is included, WSU ID numbers are 9 digits long. You can also drop the le\
+ading zero and enter in 8 digits.' );
+				}
+			}
+		}
+
+		/**
 		 * Handler for keydown events triggered in inputs accepting WSU ID numbers.
+		 *
+		 * @private
 		 *
 		 * @param {Event} e - Contains information about the keydown event.
 		 */
@@ -729,6 +753,8 @@ var WsuIdInputs = ( function ( $ ) {
 
 		/**
 		 * Handler for paste events triggered in inputs accepting WSU ID numbers.
+		 *
+		 * @private
 		 *
 		 * @param {Event} e - Contains information about the paste event.
 		 */
@@ -766,11 +792,14 @@ d.' );
 
 		/**
 		 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
+		 *
+		 * @protected
 		 */
 		this.initialize = function () {
 			var $forms = $( _sels.gform );
 			var inputSel = _sels.gfield + ' ' + _sels.inputs;
 
+			$forms.on( 'blur', inputSel, _onBlur );
 			$forms.on( 'keydown', inputSel, _onKeydown );
 			$forms.on( 'paste', inputSel, _onPaste );
 		}

@@ -26,23 +26,28 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: OUE-Wide Gravity Forms Enhancements......................................................50
-//     §1.1: Document ready bindings............................................................56
-//     §1.2: Binding of Handlers to Window Load.................................................82
-//     §1.3: Window Load Event Bindings.........................................................94
-//     §1.4: Function declarations.............................................................101
-// §2: Optional Gravity Forms Enhancements.....................................................415
-//     §2.1: GfCheckboxValidators..............................................................419
-//         §2.1.1: Private properties..........................................................433
-//         §2.1.2: Public properties...........................................................438
-//         §2.1.3: Privileged methods..........................................................443
-//         §2.1.4: Constructor's main execution section........................................459
-//         §2.1.5: Public methods..............................................................465
-//     §2.2: WsuIdInputs.......................................................................593
-//         §2.2.1: Private properties..........................................................611
-//         §2.2.2: Private methods.............................................................635
-//         §2.2.3: Protected methods...........................................................690
-//         §2.2.4: Constructor's main execution section........................................704
+// §1: OUE-Wide Gravity Forms Enhancements......................................................55
+//     §1.1: Document ready bindings............................................................61
+//     §1.2: Binding of Handlers to Window Load.................................................86
+//     §1.3: Window Load Event Bindings.........................................................98
+//     §1.4: Function declarations.............................................................105
+// §2: Optional Gravity Forms Enhancements.....................................................419
+//     §2.1: GfCheckboxValidators class........................................................423
+//         §2.1.1: Private properties..........................................................438
+//         §2.1.2: Public properties...........................................................443
+//         §2.1.3: Privileged methods..........................................................448
+//         §2.1.4: Constructor's main execution section........................................464
+//         §2.1.5: Public methods..............................................................470
+//     §2.2: OueGFs class......................................................................598
+//         §2.2.1: Private properties..........................................................614
+//         §2.2.2: Private methods.............................................................624
+//         §2.2.3: Protected methods...........................................................639
+//         §2.2.4: Constructor's main execution section........................................655
+//     §2.3: WsuIdInputs class.................................................................668
+//         §2.3.1: Private properties..........................................................686
+//         §2.3.2: Private methods.............................................................710
+//         §2.3.3: Protected methods...........................................................765
+//         §2.3.4: Constructor's main execution section........................................779
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -57,12 +62,11 @@
 
 	$( function () {
 		var $requiredFields;
-		var wsuIds;
+		var oueGfs;
 
+		oueGfs = new OueGFs();
+		oueGfs.initialize();
 		if ( $( '.gform_body' ).length > 0 ) {
-			wsuIds = new WsuIdInputs( '.gf-is-wsu-id' );
-			wsuIds.initialize();
-
 			setupActvtrChckbxs( '.oue-gf-actvtr-checkbox' );
 			setupActvtrChain( '.oue-gf-actvtr-chain' );
 			setupUploadChain( '.oue-gf-upload-chain' );
@@ -415,8 +419,8 @@
 // §2: Optional Gravity Forms Enhancements
 
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.1: GfCheckboxValidators
+////////////////////////////////////////////////////////////////////////////////////////////////
+// §2.1: GfCheckboxValidators
 
 /**
  * Gravity Form Checkbox Validators interface.
@@ -429,6 +433,7 @@
  */
 var GfCheckboxValidators = ( function( $ ) {
 	function GfCheckboxValidators( sels ) {
+
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// §2.1.1: Private properties
 
@@ -461,8 +466,8 @@ var GfCheckboxValidators = ( function( $ ) {
 		this.findForm();
 	}
 
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.1.5: Public methods
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §2.1.5: Public methods
 
 	/**
 	 * Finish the process of hiding validator fields from the user.
@@ -589,8 +594,78 @@ var GfCheckboxValidators = ( function( $ ) {
 	return GfCheckboxValidators;
 } )( jQuery );
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.2: WsuIdInputs
+////////////////////////////////////////////////////////////////////////////////////////////////
+// §2.2: OueGFs
+
+/**
+ * Interface for adding enhancements to Gravity Forms found on OUE websites.
+ *
+ * @class
+ */
+
+var OueGFs = ( function( $ ) {
+
+	/**
+	 * Constructor for OueGFs.
+	 */
+	function OueGFs() {
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §2.2.1: Private properties
+
+		/**
+		 * Collection of selectors used to find form elements in the DOM.
+		 *
+		 * @private
+		 */
+		var _sels;
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §2.2.2: Private methods
+
+		/**
+		 * Initialize inputs accepting WSU ID numbers.
+		 *
+		 * @private
+		 */
+		function _initWsuIdInputs() {
+			var wsuIds;
+
+			wsuIds = new WsuIdInputs( _sels.wsuIds );
+			wsuIds.initialize();			
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §2.2.3: Protected methods
+
+		/**
+		 * Initialize Gravity Forms found on the page.
+		 *
+		 * Meant to be called after the DOM has loaded.
+		 *
+		 * @protected
+		 */
+		this.initialize = function () {
+			if ( $( _sels.gforms ).length ) {
+				_initWsuIdInputs();
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §2.2.4: Constructor's main execution section
+
+		_sels = {
+			gforms: '.gform_wrapper',
+			wsuIds: '.gf-is-wsu-id'
+		};
+	}
+
+	return OueGFs;
+
+} )( jQuery );
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// §2.3: WsuIdInputs
 
 /**
  * Provides RegEx mediated validation of gravity form inputs that accept WSU ID numbers.
@@ -608,7 +683,7 @@ var WsuIdInputs = ( function ( $ ) {
 	function WsuIdInputs( selGfield ) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.1: Private properties
+		// §2.3.1: Private properties
 
 		/**
 		 * The collection of selectors used to find inputs accepting WSU ID numbers in the DOM.
@@ -632,7 +707,7 @@ var WsuIdInputs = ( function ( $ ) {
 		var _reFinalPattern;
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.2: Private methods
+		// §2.3.2: Private methods
 
 		/**
 		 * Handler for keydown events triggered in inputs accepting WSU ID numbers.
@@ -687,7 +762,7 @@ d.' );
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.3: Protected methods
+		// §2.3.3: Protected methods
 
 		/**
 		 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
@@ -696,12 +771,12 @@ d.' );
 			var $forms = $( _sels.gform );
 			var inputSel = _sels.gfield + ' ' + _sels.inputs;
 
-			$forms.on( 'keydown', inputSel, _onKeyDown );
+			$forms.on( 'keydown', inputSel, _onKeydown );
 			$forms.on( 'paste', inputSel, _onPaste );
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.4: Constructor's main execution section
+		// §2.3.4: Constructor's main execution section
 
 		_sels = {};
 		_sels.gform = '.gform_wrapper';

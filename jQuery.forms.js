@@ -26,27 +26,26 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: OUE-Wide Gravity Forms Enhancements......................................................54
-//     §1.1: Document ready bindings............................................................60
-//     §1.2: Binding of Handlers to Window Load.................................................85
-//     §1.3: Window Load Event Bindings.........................................................97
-//     §1.4: Function declarations.............................................................104
-// §2: Optional Gravity Forms Enhancements.....................................................418
-//     §2.1: GfCheckboxValidators class........................................................422
-//         §2.1.1: Private properties..........................................................437
-//         §2.1.2: Public properties...........................................................442
-//         §2.1.3: Privileged methods..........................................................447
-//         §2.1.4: Constructor's main execution section........................................463
-//         §2.1.5: Public methods..............................................................469
-//     §2.2: OueGFs class......................................................................597
-//         §2.2.1: Public properties...........................................................613
-//         §2.2.2: Public methods..............................................................634
-//         §2.2.3: Lexically scoped supporting functions.......................................650
-//     §2.3: WsuIdInputs class.................................................................667
-//         §2.3.1: Private properties..........................................................685
-//         §2.3.2: Private methods.............................................................709
-//         §2.3.3: Protected methods...........................................................790
-//         §2.3.4: Constructor's main execution section........................................807
+// §1: OUE-Wide Gravity Forms Enhancements......................................................53
+//     §1.1: Document ready bindings............................................................59
+//     §1.2: Binding of Handlers to Window Load.................................................84
+//     §1.3: Window Load Event Bindings.........................................................96
+//     §1.4: Function declarations.............................................................103
+// §2: Optional Gravity Forms Enhancements.....................................................417
+//     §2.1: GfCheckboxValidators class........................................................421
+//         §2.1.1: Private properties..........................................................436
+//         §2.1.2: Public properties...........................................................441
+//         §2.1.3: Privileged methods..........................................................446
+//         §2.1.4: Constructor's main execution section........................................462
+//         §2.1.5: Public methods..............................................................468
+//     §2.2: OueGFs class......................................................................596
+//         §2.2.1: Public properties...........................................................612
+//         §2.2.2: Public methods..............................................................633
+//         §2.2.3: Lexically scoped supporting functions.......................................649
+//     §2.3: WsuIdInputs class.................................................................666
+//         §2.3.1: Public properties...........................................................684
+//         §2.3.2: Public methods..............................................................699
+//         §2.3.3: Lexically scoped supporting functions.......................................796
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -682,136 +681,136 @@ var WsuIdInputs = ( function ( $ ) {
 	function WsuIdInputs( selGfield ) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.3.1: Private properties
+		// §2.3.1: Public properties
 
 		/**
 		 * The collection of selectors used to find inputs accepting WSU ID numbers in the DOM.
 		 *
-		 * @private
+		 * @public
 		 */
-		var _sels;
+		this.sels = {
+			gform: '.gform_wrapper',
+			gfield: selGfield,
+			inputs: "input[type='text']"
+		};
+	}
 
-		/**
-		 * Key codes for acceptable keystrokes when a WSU ID input has focus.
-		 *
-		 * @private
-		 */
-		var _keyCodes;
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §2.3.2: Public methods
 
-		/**
-		 * Regular expression pattern representing valid complete or incomple WSU ID input.
-		 *
-		 * @private
-		 */
-		var _reFinalPattern;
+	/**
+	 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
+	 *
+	 * @public
+	 */
+	WsuIdInputs.prototype.init = function () {
+		var $forms = $( this.sels.gform );
+		var inputSel = this.sels.gfield + ' ' + this.sels.inputs;
 
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.3.2: Private methods
+		$forms.on( 'blur', inputSel, this.onBlur );
+		$forms.on( 'keydown', inputSel, this.onKeydown );
+		$forms.on( 'paste', inputSel, this.onPaste );
+	}
 
-		/**
-		 * Handler for blur events triggered in inputs accepting WSU ID numbers.
-		 *
-		 * @private
-		 *
-		 * @param {Event} e - Contains information about the blur event.
-		 */
+	/**
+	 * Handler for blur events triggered in inputs accepting WSU ID numbers.
+	 *
+	 * @private
+	 *
+	 * @param {Event} e - Contains information about the blur event.
+	 */
 
-		function _onBlur( e ) {
-			var $this = $( this );
-			var inputText = $this.val();
+	WsuIdInputs.prototype.onBlur = function( e ) {
+		var $this = $( this );
+		var inputText = $this.val();
+		var frep = getFinalRegExPattern();
 
-			if ( inputText != '' ) {
-				if ( _reFinalPattern.exec( inputText ) == null ) {
-					$this.val( '' );
-					alert( 'The WSU ID you entered did not follow the correct pattern; please try a\
-gain. When the leading zero is included, WSU ID numbers are 9 digits long. You can also drop the le\
-ading zero and enter in 8 digits.' );
-				}
+		if ( inputText != '' ) {
+			if ( frep.exec( inputText ) == null ) {
+				$this.val( '' );
+				alert( 'The WSU ID you entered did not follow the correct pattern; please try again\
+. When the leading zero is included, WSU ID numbers are 9 digits long. You can also drop the leadin\
+g zero and enter in 8 digits.' );
 			}
 		}
+	}
 
-		/**
-		 * Handler for keydown events triggered in inputs accepting WSU ID numbers.
-		 *
-		 * @private
-		 *
-		 * @param {Event} e - Contains information about the keydown event.
-		 */
-		function _onKeydown( e ) {
-			var $this = $( this );
-			var inputText = $this.val();
+	/**
+	 * Handler for keydown events triggered in inputs accepting WSU ID numbers.
+	 *
+	 * @public
+	 *
+	 * @param {Event} e - Contains information about the keydown event.
+	 */
+	WsuIdInputs.prototype.onKeydown = function ( e ) {
+		var $this = $( this );
+		var inputText = $this.val();
+		var akc = getAcceptableKeyCodes();
 
-			if ( ( e.keyCode < 48 || ( e.keyCode > 57 && e.keyCode < 96 ) || e.keyCode > 105 )
-					&& !~_keyCodes.indexOf( e.keyCode ) && !( e.keyCode == 86 && e.ctrlKey ) ) {
-				e.preventDefault();
-			} else if ( !~_keyCodes.indexOf( e.keyCode ) && inputText.length >= 9 ) {
-				e.preventDefault();
-				alert( 'Note: WSU ID numbers are no greater than nine (9) digits in length.' );
+		if ( ( e.keyCode < 48 || ( e.keyCode > 57 && e.keyCode < 96 ) || e.keyCode > 105 )
+				&& !~akc.indexOf( e.keyCode ) && !( e.keyCode == 86 && e.ctrlKey ) ) {
+			e.preventDefault();
+		} else if ( !~akc.indexOf( e.keyCode ) && inputText.length >= 9 ) {
+			e.preventDefault();
+			alert( 'Note: WSU ID numbers are no greater than nine (9) digits in length.' );
+		}
+	}
+
+	/**
+	 * Handler for paste events triggered in inputs accepting WSU ID numbers.
+	 *
+	 * @public
+	 *
+	 * @param {Event} e - Contains information about the paste event.
+	 */
+	WsuIdInputs.prototype.onPaste = function ( e ) {
+		var $this = $( this );
+		var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
+		var inputText = clipboardData.getData( 'Text' );
+		var regExMask = /[^0-9]+/g;
+
+		if ( regExMask.exec( inputText ) != null ) {
+			var errorMsg = 'Note: WSU ID numbers can only contain digits.';
+			e.stopPropagation();
+			e.preventDefault();
+			$this.val( inputText.replace( regExMask, '' ) );
+			inputText = $this.val();
+			if ( inputText.length > 9 ) {
+				$this.val( inputText.slice( 0, 9 ) );
+				errorMsg += ' Also, they must be no greater than nine (9) digits in length.';
 			}
+			errorMsg += ' What you pasted will automatically be corrected; please check the result \
+to see if further corrections are needed.';
+			alert( errorMsg );
+		} else if ( inputText.length > 9 ) {
+			e.stopPropagation();
+			e.preventDefault();
+			$this.val( inputText.slice( 0,9 ) );
+			alert( 'WSU ID numbers are no greater than nine (9) digits in length. What you pasted w\
+ill automatically be corrected. Please check the result to see if further corrections are needed.'
+				);
 		}
+	}
 
-		/**
-		 * Handler for paste events triggered in inputs accepting WSU ID numbers.
-		 *
-		 * @private
-		 *
-		 * @param {Event} e - Contains information about the paste event.
-		 */
-		function _onPaste( e ) {
-			var $this = $( this );
-			var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
-			var inputText = clipboardData.getData( 'Text' );
-			var regExMask = /[^0-9]+/g;
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §2.3.3: Lexically scoped supporting functions
 
-			if ( regExMask.exec( inputText ) != null ) {
-				var errorMsg = 'Note: WSU ID numbers can only contain digits.';
-				e.stopPropagation();
-				e.preventDefault();
-				$this.val( inputText.replace( regExMask, '' ) );
-				inputText = $this.val();
-				if ( inputText.length > 9 ) {
-					$this.val( inputText.slice( 0, 9 ) );
-					errorMsg += ' Also, they must be no greater than nine (9) digits in length.';
-				}
-				errorMsg += ' What you pasted will automatically be corrected; please check the res\
-ult to see if further corrections are needed.';
-				alert( errorMsg );
-			} else if ( inputText.length > 9 ) {
-				e.stopPropagation();
-				e.preventDefault();
-				$this.val( inputText.slice( 0,9 ) );
-				alert( 'WSU ID numbers are no greater than nine (9) digits in length. What you past\
-ed will automatically be corrected. Please check the result to see if further corrections are neede\
-d.' );
-			}
-		}
+	/**
+	 * Obtains the regular expression pattern representing valid complete or incomple WSU ID input.
+	 *
+	 * @return {RegExp}
+	 */
+	function getFinalRegExPattern() {
+		return /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
+	}
 
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.3.3: Protected methods
-
-		/**
-		 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
-		 *
-		 * @protected
-		 */
-		this.init = function () {
-			var $forms = $( _sels.gform );
-			var inputSel = _sels.gfield + ' ' + _sels.inputs;
-
-			$forms.on( 'blur', inputSel, _onBlur );
-			$forms.on( 'keydown', inputSel, _onKeydown );
-			$forms.on( 'paste', inputSel, _onPaste );
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.3.4: Constructor's main execution section
-
-		_sels = {};
-		_sels.gform = '.gform_wrapper';
-		_sels.gfield = selGfield;
-		_sels.inputs = "input[type='text']";
-		_keyCodes = [ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ];
-		_reFinalPattern = /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
+	/**
+	 * Obtains the list of key codes for acceptable keystrokes when a WSU ID input has focus.
+	 *
+	 * @return {Array}
+	 */
+	function getAcceptableKeyCodes() {
+		return [ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ];
 	}
 
 	return WsuIdInputs;

@@ -26,44 +26,469 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: OUE-Wide Gravity Forms Enhancements......................................................53
-//     §1.1: Document ready bindings............................................................59
-//     §1.2: Binding of Handlers to Window Load.................................................84
-//     §1.3: Window Load Event Bindings.........................................................96
-//     §1.4: Function declarations.............................................................103
-// §2: Optional Gravity Forms Enhancements.....................................................417
-//     §2.1: GfCheckboxValidators class........................................................421
-//         §2.1.1: Private properties..........................................................436
-//         §2.1.2: Public properties...........................................................441
-//         §2.1.3: Privileged methods..........................................................446
-//         §2.1.4: Constructor's main execution section........................................462
-//         §2.1.5: Public methods..............................................................468
-//     §2.2: OueGFs class......................................................................596
-//         §2.2.1: Public properties...........................................................612
-//         §2.2.2: Public methods..............................................................633
-//         §2.2.3: Lexically scoped supporting functions.......................................649
-//     §2.3: WsuIdInputs class.................................................................666
-//         §2.3.1: Public properties...........................................................684
-//         §2.3.2: Public methods..............................................................699
-//         §2.3.3: Lexically scoped supporting functions.......................................796
+// §1: Gravity Forms enhancement modules........................................................53
+//     §1.1: GfCheckboxValidators class.........................................................57
+//         §1.1.1: Private properties...........................................................75
+//         §1.1.2: Public properties............................................................80
+//         §1.1.3: Privileged methods...........................................................85
+//         §1.1.4: Constructor's main execution section........................................101
+//         §1.1.5: Public methods..............................................................107
+//     §1.2: OueGFs class......................................................................235
+//         §1.2.1: Public properties...........................................................253
+//         §1.2.2: Public methods..............................................................274
+//         §1.2.3: Lexically scoped supporting functions.......................................300
+//     §1.3: WsuIdInputs class.................................................................317
+//         §1.3.1: Public properties...........................................................337
+//         §1.3.2: Public methods..............................................................352
+//         §1.3.3: Lexically scoped supporting functions.......................................449
+// §2: Application of OUE-wide Gravity Forms enhancements......................................474
+//     §2.1: Document ready bindings...........................................................480
+//     §2.2: Document ready bindings...........................................................488
+//     §2.3: Binding of Handlers to Window Load................................................509
+//     §2.4: Window Load Event Bindings........................................................521
+//     §2.5: Function declarations.............................................................528
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §1: Gravity Forms enhancement modules
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// §1.1: GfCheckboxValidators
+
+/**
+ * Gravity Form Checkbox Validators interface.
+ *
+ * An interface for linking the state of a gravity forms checkbox field to a subsequent (and ideally
+ * hidden) validator field. Currently, all of the checkboxes must be selected for the field to be
+ * validated.
+ *
+ * @class
+ */
+var GfCheckboxValidators = ( function( $ ) {
+	
+	"use strict";
+
+	function GfCheckboxValidators( sels ) {
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §1.1.1: Private properties
+
+		var _$form;
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §1.1.2: Public properties
+
+		this.sels = sels;
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §1.1.3: Privileged methods
+
+		this.get$form = function () {
+			return _$form;
+		}
+
+		this.findForm = function () {
+			if ( this.IsObjValid() ) {
+				_$form = $ ( this.sels.formContainer )
+			} else {
+				console.log( "Object wasn't valid." );
+				_$form = $( [] );
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §1.1.4: Constructor's main execution section
+
+		this.findForm();
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §1.1.5: Public methods
+
+	/**
+	 * Finish the process of hiding validator fields from the user.
+	 *
+	 * Removes tab indexing from the field so that JavaScript can safely automate population of the
+	 * validator field with input based on the state of the preceding checkbox field.
+	 *
+	 * @access public
+	 *
+	 * @memberof GfCheckboxValidators
+	 */
+	GfCheckboxValidators.prototype.finishHidingValidators = function () {
+		var $form;
+		var $field;
+		var $validator;
+		var $validator_input;
+
+		$form = this.get$form();
+		if ( this.IsObjValid() && $form.length) {
+			// Isolate validator and its target field in the DOM.
+			$field = $form.find( this.sels.validatedField );
+			$validator = $field.next( this.sels.validator );
+
+			// Disable tab indexing to form validators.
+			if ( $field.length && $validator.length ) {
+				$validator_input = $validator.find( "input" );
+				$validator_input.attr( 'tabindex', '-1' );
+			}
+		}
+	};
+
+	/**
+	 * Initialize validation of validated checkbox fields by their subsequent validator fields.
+	 *
+	 * The validator's input element will be set to "validated" if all checkboxes are checked,
+	 * otherwise it will be set to an empty string.
+	 *
+	 * @access public
+	 *
+	 * @memberof GfCheckboxValidators
+	 *
+	 * @throws {Error} Member function IsObjValid will automatically be called and must return true.
+	 * @throws {Error} The specified validated and validator fields must be found within the form,
+	 *     and each validated field must be followed by a validator field as a sibling.
+	 * @throws {Error} Validated fields must contain checkbox input elements, and validator fields
+	 *     must contain a single input element.
+	 */
+	GfCheckboxValidators.prototype.initValidation = function() {
+		var $form;
+		var sels = this.sels;
+		var stillValid;
+
+		stillValid = this.IsObjValid();
+		if ( !stillValid ) {
+			throw Error( "Object properties did not pass validity check." );
+		} else {
+			// Find the form appropriate fields within the form.
+			$form = this.get$form();
+			$form.on('change', sels.validatedField + " :checkbox", function () {
+				var $checkBoxes;
+				var $parentField;
+				var $this;
+				var $validator_input;
+				var allChecked = true;
+				var stillValid = true;
+
+				$this = $( this );
+				$parentField = $this.parents( sels.validatedField );
+				$checkBoxes = $parentField.find( " :checkbox" );
+				$validator_input = $parentField.next( sels.validator ).find( "input" );
+				stillValid = $validator_input.length === 1;
+				try {
+					if ( !stillValid ) {
+						throw Error( "Found a validated field in the DOM that was not followed by a\
+ matching, properly formed validator sibling; checkbox state cannot be properly validated." );
+					} else {
+						// Check the state of all the checkbox inputs within the validated field.
+						$checkBoxes.each( function () {
+							if ( allChecked && !this.checked) {
+								allChecked = false;
+							}
+						} );
+
+						// Appropriately set the state of the validator's input element.
+						if ( allChecked && $validator_input.val() != "validated" ) {
+							$validator_input.val( "validated" );
+						} else if ( $validator_input.val() != "" ) {
+							$validator_input.val( "" );
+						}
+					}
+				} catch ( err ) {
+					console.log(err.name + ": " + err.message);
+				}
+			} );
+		}
+	}
+
+	/**
+	 * Check the validity of the instance based on the types and values of its members.
+	 *
+	 * @return {boolean} Returns true if members are properly typed and their values conform to
+	 *     expectations. Returns false otherwise.
+	 */
+	GfCheckboxValidators.prototype.IsObjValid = function() {
+		var stillValid = true;
+		var selsProps;
+
+		if ( !( typeof this.sels === 'object' ) ) {
+			stillValid = false
+		} else if ( stillValid ) {
+			selsProps = Object.getOwnPropertyNames( this.sels );
+		}
+		if ( stillValid && !( selsProps.length === 3 &&
+				selsProps.find( function( elem ) { return elem === 'formContainer'; } ) &&
+				selsProps.find( function( elem ) { return elem === 'validatedField'; } ) &&
+				selsProps.find( function( elem ) { return elem === 'validator'; } ) ) ) {
+			stillValid = false;
+		}
+		// TODO: Check for properly formed selector strings.
+
+		return stillValid;
+	};
+
+	return GfCheckboxValidators;
+} )( jQuery );
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// §1.2: OueGFs
+
+/**
+ * Interface for adding enhancements to Gravity Forms found on OUE websites.
+ *
+ * @class
+ */
+
+var OueGFs = ( function( $ ) {
+	
+	"use strict";
+
+	/**
+	 * Constructor for OueGFs.
+	 */
+	function OueGFs() {
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §1.2.1: Public properties
+
+		/**
+		 * Collection of selectors used to find form elements in the DOM.
+		 *
+		 * @public
+		 */
+		this.selectors = {
+			gforms: '.gform_wrapper',
+			wsuIds: '.gf-is-wsu-id'
+		};
+
+		/**
+		 * Interface to form inputs that accept WSU ID numbers.
+		 *
+		 * @public
+		 */
+		this.wsuIds = null;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §1.2.2: Public methods
+
+	/**
+	 * Initialize Gravity Forms found on the page.
+	 *
+	 * @public
+	 */
+	OueGFs.prototype.init = function () {
+		this.completeDomLoadedTasks();
+	}
+
+	/**
+	 * Perform Gravity Forms intialization steps that should take place once the DOM has loaded.
+	 *
+	 * @public
+	 */
+	OueGFs.prototype.completeDomLoadedTasks = function () {
+		var instance = this;
+		$( function () {
+			if ( $( instance.selectors.gforms ).length ) {
+				initWsuIdInputs( instance );
+			}
+		} );
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §1.2.3: Lexically scoped supporting functions
+
+	/**
+	 * Initialize inputs accepting WSU ID numbers.
+	 *
+	 * @param {OueGFs} obj - An OueGFs instance that needs to be initialized.
+	 */
+	function initWsuIdInputs( obj ) {
+		obj.wsuIds = new WsuIdInputs( obj.selectors.wsuIds );
+		obj.wsuIds.init();
+	}
+
+	return OueGFs;
+
+} )( jQuery );
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// §1.3: WsuIdInputs
+
+/**
+ * Provides RegEx mediated validation of gravity form inputs that accept WSU ID numbers.
+ *
+ * @class
+ */
+var WsuIdInputs = ( function ( $ ) {
+	
+	"use strict";
+
+	/**
+	 * Constructor for WsuIdInputs class.
+	 *
+	 * @param {string} selGField - Selects the Gravity Form field containing the input in which the
+	 *     WSU ID number will be entered.
+	 */
+	function WsuIdInputs( selGfield ) {
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §1.3.1: Public properties
+
+		/**
+		 * The collection of selectors used to find inputs accepting WSU ID numbers in the DOM.
+		 *
+		 * @public
+		 */
+		this.sels = {
+			gform: '.gform_wrapper',
+			gfield: selGfield,
+			inputs: "input[type='text']"
+		};
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §1.3.2: Public methods
+
+	/**
+	 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
+	 *
+	 * @public
+	 */
+	WsuIdInputs.prototype.init = function () {
+		var $forms = $( this.sels.gform );
+		var inputSel = this.sels.gfield + ' ' + this.sels.inputs;
+
+		$forms.on( 'blur', inputSel, this.onBlur );
+		$forms.on( 'keydown', inputSel, this.onKeydown );
+		$forms.on( 'paste', inputSel, this.onPaste );
+	}
+
+	/**
+	 * Handler for blur events triggered in inputs accepting WSU ID numbers.
+	 *
+	 * @private
+	 *
+	 * @param {Event} e - Contains information about the blur event.
+	 */
+
+	WsuIdInputs.prototype.onBlur = function( e ) {
+		var $this = $( this );
+		var inputText = $this.val();
+		var frep = getFinalRegExPattern();
+
+		if ( inputText != '' ) {
+			if ( frep.exec( inputText ) == null ) {
+				$this.val( '' );
+				alert( 'The WSU ID you entered did not follow the correct pattern; please try again\
+. When the leading zero is included, WSU ID numbers are 9 digits long. You can also drop the leadin\
+g zero and enter in 8 digits.' );
+			}
+		}
+	}
+
+	/**
+	 * Handler for keydown events triggered in inputs accepting WSU ID numbers.
+	 *
+	 * @public
+	 *
+	 * @param {Event} e - Contains information about the keydown event.
+	 */
+	WsuIdInputs.prototype.onKeydown = function ( e ) {
+		var $this = $( this );
+		var inputText = $this.val();
+		var akc = getAcceptableKeyCodes();
+
+		if ( ( e.keyCode < 48 || ( e.keyCode > 57 && e.keyCode < 96 ) || e.keyCode > 105 )
+				&& !~akc.indexOf( e.keyCode ) && !( e.keyCode == 86 && e.ctrlKey ) ) {
+			e.preventDefault();
+		} else if ( !~akc.indexOf( e.keyCode ) && inputText.length >= 9 ) {
+			e.preventDefault();
+			alert( 'Note: WSU ID numbers are no greater than nine (9) digits in length.' );
+		}
+	}
+
+	/**
+	 * Handler for paste events triggered in inputs accepting WSU ID numbers.
+	 *
+	 * @public
+	 *
+	 * @param {Event} e - Contains information about the paste event.
+	 */
+	WsuIdInputs.prototype.onPaste = function ( e ) {
+		var $this = $( this );
+		var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
+		var inputText = clipboardData.getData( 'Text' );
+		var regExMask = /[^0-9]+/g;
+
+		if ( regExMask.exec( inputText ) != null ) {
+			var errorMsg = 'Note: WSU ID numbers can only contain digits.';
+			e.stopPropagation();
+			e.preventDefault();
+			$this.val( inputText.replace( regExMask, '' ) );
+			inputText = $this.val();
+			if ( inputText.length > 9 ) {
+				$this.val( inputText.slice( 0, 9 ) );
+				errorMsg += ' Also, they must be no greater than nine (9) digits in length.';
+			}
+			errorMsg += ' What you pasted will automatically be corrected; please check the result \
+to see if further corrections are needed.';
+			alert( errorMsg );
+		} else if ( inputText.length > 9 ) {
+			e.stopPropagation();
+			e.preventDefault();
+			$this.val( inputText.slice( 0,9 ) );
+			alert( 'WSU ID numbers are no greater than nine (9) digits in length. What you pasted w\
+ill automatically be corrected. Please check the result to see if further corrections are needed.'
+				);
+		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §1.3.3: Lexically scoped supporting functions
+
+	/**
+	 * Obtains the regular expression pattern representing valid complete or incomple WSU ID input.
+	 *
+	 * @return {RegExp}
+	 */
+	function getFinalRegExPattern() {
+		return /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
+	}
+
+	/**
+	 * Obtains the list of key codes for acceptable keystrokes when a WSU ID input has focus.
+	 *
+	 * @return {Array}
+	 */
+	function getAcceptableKeyCodes() {
+		return [ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ];
+	}
+
+	return WsuIdInputs;
+
+} )( jQuery );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// §1: OUE-Wide Gravity Forms Enhancements
+// §2: Application of OUE-wide Gravity Forms enhancements
 
 ( function ( $ ) {
 	"use strict";
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.1: Document ready bindings
+	// §2.1: Application of OueGFs module
+
+	var oueGfs;
+
+	oueGfs = new OueGFs();
+	oueGfs.init();
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// §2.2: Document ready bindings
 
 	$( function () {
 		var $requiredFields;
-		var oueGfs;
-
-		oueGfs = new OueGFs();
-		oueGfs.init();
 		if ( $( '.gform_body' ).length > 0 ) {
 			setupActvtrChckbxs( '.oue-gf-actvtr-checkbox' );
 			setupActvtrChain( '.oue-gf-actvtr-chain' );
@@ -81,7 +506,7 @@
 	} );
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.2: Binding of Handlers to Window Load
+	// §2.3: Binding of Handlers to Window Load
 
 	$( document ).on( 'gform_post_render', function () {
 		var $requiredFields =  $( 'li.gfield_contains_required' );
@@ -93,14 +518,14 @@
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.3: Window Load Event Bindings
+	// §2.4: Window Load Event Bindings
 
 	$( window ).load( function () {
 		hghlghtRqrdRchTxtEdtrs( $( '.gfield_contains_required.uses-rich-editor' ) );
 	} );
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.4: Function declarations
+	// §2.5: Function declarations
 
 	/**
 	 * Check each input element within a required gravity form field to determine if an entry has
@@ -409,410 +834,4 @@
 			} );
 		}
 	}
-	
- } )( jQuery );
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// §2: Optional Gravity Forms Enhancements
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-// §2.1: GfCheckboxValidators
-
-/**
- * Gravity Form Checkbox Validators interface.
- *
- * An interface for linking the state of a gravity forms checkbox field to a subsequent (and ideally
- * hidden) validator field. Currently, all of the checkboxes must be selected for the field to be
- * validated.
- *
- * @class
- */
-var GfCheckboxValidators = ( function( $ ) {
-	function GfCheckboxValidators( sels ) {
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.1.1: Private properties
-
-		var _$form;
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.1.2: Public properties
-
-		this.sels = sels;
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.1.3: Privileged methods
-
-		this.get$form = function () {
-			return _$form;
-		}
-
-		this.findForm = function () {
-			if ( this.IsObjValid() ) {
-				_$form = $ ( this.sels.formContainer )
-			} else {
-				console.log( "Object wasn't valid." );
-				_$form = $( [] );
-			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.1.4: Constructor's main execution section
-
-		this.findForm();
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.1.5: Public methods
-
-	/**
-	 * Finish the process of hiding validator fields from the user.
-	 *
-	 * Removes tab indexing from the field so that JavaScript can safely automate population of the
-	 * validator field with input based on the state of the preceding checkbox field.
-	 *
-	 * @access public
-	 *
-	 * @memberof GfCheckboxValidators
-	 */
-	GfCheckboxValidators.prototype.finishHidingValidators = function () {
-		var $form;
-		var $field;
-		var $validator;
-		var $validator_input;
-
-		$form = this.get$form();
-		if ( this.IsObjValid() && $form.length) {
-			// Isolate validator and its target field in the DOM.
-			$field = $form.find( this.sels.validatedField );
-			$validator = $field.next( this.sels.validator );
-
-			// Disable tab indexing to form validators.
-			if ( $field.length && $validator.length ) {
-				$validator_input = $validator.find( "input" );
-				$validator_input.attr( 'tabindex', '-1' );
-			}
-		}
-	};
-
-	/**
-	 * Initialize validation of validated checkbox fields by their subsequent validator fields.
-	 *
-	 * The validator's input element will be set to "validated" if all checkboxes are checked,
-	 * otherwise it will be set to an empty string.
-	 *
-	 * @access public
-	 *
-	 * @memberof GfCheckboxValidators
-	 *
-	 * @throws {Error} Member function IsObjValid will automatically be called and must return true.
-	 * @throws {Error} The specified validated and validator fields must be found within the form,
-	 *     and each validated field must be followed by a validator field as a sibling.
-	 * @throws {Error} Validated fields must contain checkbox input elements, and validator fields
-	 *     must contain a single input element.
-	 */
-	GfCheckboxValidators.prototype.initValidation = function() {
-		var $form;
-		var sels = this.sels;
-		var stillValid;
-
-		stillValid = this.IsObjValid();
-		if ( !stillValid ) {
-			throw Error( "Object properties did not pass validity check." );
-		} else {
-			// Find the form appropriate fields within the form.
-			$form = this.get$form();
-			$form.on('change', sels.validatedField + " :checkbox", function () {
-				var $checkBoxes;
-				var $parentField;
-				var $this;
-				var $validator_input;
-				var allChecked = true;
-				var stillValid = true;
-
-				$this = $( this );
-				$parentField = $this.parents( sels.validatedField );
-				$checkBoxes = $parentField.find( " :checkbox" );
-				$validator_input = $parentField.next( sels.validator ).find( "input" );
-				stillValid = $validator_input.length === 1;
-				try {
-					if ( !stillValid ) {
-						throw Error( "Found a validated field in the DOM that was not followed by a\
- matching, properly formed validator sibling; checkbox state cannot be properly validated." );
-					} else {
-						// Check the state of all the checkbox inputs within the validated field.
-						$checkBoxes.each( function () {
-							if ( allChecked && !this.checked) {
-								allChecked = false;
-							}
-						} );
-
-						// Appropriately set the state of the validator's input element.
-						if ( allChecked && $validator_input.val() != "validated" ) {
-							$validator_input.val( "validated" );
-						} else if ( $validator_input.val() != "" ) {
-							$validator_input.val( "" );
-						}
-					}
-				} catch ( err ) {
-					console.log(err.name + ": " + err.message);
-				}
-			} );
-		}
-	}
-
-	/**
-	 * Check the validity of the instance based on the types and values of its members.
-	 *
-	 * @return {boolean} Returns true if members are properly typed and their values conform to
-	 *     expectations. Returns false otherwise.
-	 */
-	GfCheckboxValidators.prototype.IsObjValid = function() {
-		var stillValid = true;
-		var selsProps;
-
-		if ( !( typeof this.sels === 'object' ) ) {
-			stillValid = false
-		} else if ( stillValid ) {
-			selsProps = Object.getOwnPropertyNames( this.sels );
-		}
-		if ( stillValid && !( selsProps.length === 3 &&
-				selsProps.find( function( elem ) { return elem === 'formContainer'; } ) &&
-				selsProps.find( function( elem ) { return elem === 'validatedField'; } ) &&
-				selsProps.find( function( elem ) { return elem === 'validator'; } ) ) ) {
-			stillValid = false;
-		}
-		// TODO: Check for properly formed selector strings.
-
-		return stillValid;
-	};
-
-	return GfCheckboxValidators;
-} )( jQuery );
-
-////////////////////////////////////////////////////////////////////////////////////////////
-// §2.2: OueGFs
-
-/**
- * Interface for adding enhancements to Gravity Forms found on OUE websites.
- *
- * @class
- */
-
-var OueGFs = ( function( $ ) {
-
-	/**
-	 * Constructor for OueGFs.
-	 */
-	function OueGFs() {
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.1: Public properties
-
-		/**
-		 * Collection of selectors used to find form elements in the DOM.
-		 *
-		 * @public
-		 */
-		this.selectors = {
-			gforms: '.gform_wrapper',
-			wsuIds: '.gf-is-wsu-id'
-		};
-
-		/**
-		 * Interface to form inputs that accept WSU ID numbers.
-		 *
-		 * @public
-		 */
-		this.wsuIds = null;
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.2.2: Public methods
-
-	/**
-	 * Initialize Gravity Forms found on the page.
-	 *
-	 * Meant to be called after the DOM has loaded.
-	 *
-	 * @public
-	 */
-	OueGFs.prototype.init = function () {
-		if ( $( this.selectors.gforms ).length ) {
-			initWsuIdInputs(this);
-		}
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.2.3: Lexically scoped supporting functions
-
-	/**
-	 * Initialize inputs accepting WSU ID numbers.
-	 *
-	 * @param {OueGFs} obj - An OueGFs instance that needs to be initialized.
-	 */
-	function initWsuIdInputs( obj ) {
-		obj.wsuIds = new WsuIdInputs( obj.selectors.wsuIds );
-		obj.wsuIds.init();
-	}
-
-	return OueGFs;
-
-} )( jQuery );
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-// §2.3: WsuIdInputs
-
-/**
- * Provides RegEx mediated validation of gravity form inputs that accept WSU ID numbers.
- *
- * @class
- */
-var WsuIdInputs = ( function ( $ ) {
-
-	/**
-	 * Constructor for WsuIdInputs class.
-	 *
-	 * @param {string} selGField - Selects the Gravity Form field containing the input in which the
-	 *     WSU ID number will be entered.
-	 */
-	function WsuIdInputs( selGfield ) {
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.3.1: Public properties
-
-		/**
-		 * The collection of selectors used to find inputs accepting WSU ID numbers in the DOM.
-		 *
-		 * @public
-		 */
-		this.sels = {
-			gform: '.gform_wrapper',
-			gfield: selGfield,
-			inputs: "input[type='text']"
-		};
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.3.2: Public methods
-
-	/**
-	 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
-	 *
-	 * @public
-	 */
-	WsuIdInputs.prototype.init = function () {
-		var $forms = $( this.sels.gform );
-		var inputSel = this.sels.gfield + ' ' + this.sels.inputs;
-
-		$forms.on( 'blur', inputSel, this.onBlur );
-		$forms.on( 'keydown', inputSel, this.onKeydown );
-		$forms.on( 'paste', inputSel, this.onPaste );
-	}
-
-	/**
-	 * Handler for blur events triggered in inputs accepting WSU ID numbers.
-	 *
-	 * @private
-	 *
-	 * @param {Event} e - Contains information about the blur event.
-	 */
-
-	WsuIdInputs.prototype.onBlur = function( e ) {
-		var $this = $( this );
-		var inputText = $this.val();
-		var frep = getFinalRegExPattern();
-
-		if ( inputText != '' ) {
-			if ( frep.exec( inputText ) == null ) {
-				$this.val( '' );
-				alert( 'The WSU ID you entered did not follow the correct pattern; please try again\
-. When the leading zero is included, WSU ID numbers are 9 digits long. You can also drop the leadin\
-g zero and enter in 8 digits.' );
-			}
-		}
-	}
-
-	/**
-	 * Handler for keydown events triggered in inputs accepting WSU ID numbers.
-	 *
-	 * @public
-	 *
-	 * @param {Event} e - Contains information about the keydown event.
-	 */
-	WsuIdInputs.prototype.onKeydown = function ( e ) {
-		var $this = $( this );
-		var inputText = $this.val();
-		var akc = getAcceptableKeyCodes();
-
-		if ( ( e.keyCode < 48 || ( e.keyCode > 57 && e.keyCode < 96 ) || e.keyCode > 105 )
-				&& !~akc.indexOf( e.keyCode ) && !( e.keyCode == 86 && e.ctrlKey ) ) {
-			e.preventDefault();
-		} else if ( !~akc.indexOf( e.keyCode ) && inputText.length >= 9 ) {
-			e.preventDefault();
-			alert( 'Note: WSU ID numbers are no greater than nine (9) digits in length.' );
-		}
-	}
-
-	/**
-	 * Handler for paste events triggered in inputs accepting WSU ID numbers.
-	 *
-	 * @public
-	 *
-	 * @param {Event} e - Contains information about the paste event.
-	 */
-	WsuIdInputs.prototype.onPaste = function ( e ) {
-		var $this = $( this );
-		var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
-		var inputText = clipboardData.getData( 'Text' );
-		var regExMask = /[^0-9]+/g;
-
-		if ( regExMask.exec( inputText ) != null ) {
-			var errorMsg = 'Note: WSU ID numbers can only contain digits.';
-			e.stopPropagation();
-			e.preventDefault();
-			$this.val( inputText.replace( regExMask, '' ) );
-			inputText = $this.val();
-			if ( inputText.length > 9 ) {
-				$this.val( inputText.slice( 0, 9 ) );
-				errorMsg += ' Also, they must be no greater than nine (9) digits in length.';
-			}
-			errorMsg += ' What you pasted will automatically be corrected; please check the result \
-to see if further corrections are needed.';
-			alert( errorMsg );
-		} else if ( inputText.length > 9 ) {
-			e.stopPropagation();
-			e.preventDefault();
-			$this.val( inputText.slice( 0,9 ) );
-			alert( 'WSU ID numbers are no greater than nine (9) digits in length. What you pasted w\
-ill automatically be corrected. Please check the result to see if further corrections are needed.'
-				);
-		}
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.3.3: Lexically scoped supporting functions
-
-	/**
-	 * Obtains the regular expression pattern representing valid complete or incomple WSU ID input.
-	 *
-	 * @return {RegExp}
-	 */
-	function getFinalRegExPattern() {
-		return /(?:^[0-9]{8}$)|(?:^0[0-9]{8}$)/;
-	}
-
-	/**
-	 * Obtains the list of key codes for acceptable keystrokes when a WSU ID input has focus.
-	 *
-	 * @return {Array}
-	 */
-	function getAcceptableKeyCodes() {
-		return [ 8, 9, 20, 35, 36, 37, 39, 46, 110, 144 ];
-	}
-
-	return WsuIdInputs;
-
 } )( jQuery );

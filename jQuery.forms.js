@@ -65,7 +65,7 @@
 		var oueGfs;
 
 		oueGfs = new OueGFs();
-		oueGfs.initialize();
+		oueGfs.init();
 		if ( $( '.gform_body' ).length > 0 ) {
 			setupActvtrChckbxs( '.oue-gf-actvtr-checkbox' );
 			setupActvtrChain( '.oue-gf-actvtr-chain' );
@@ -594,7 +594,7 @@ var GfCheckboxValidators = ( function( $ ) {
 	return GfCheckboxValidators;
 } )( jQuery );
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
 // §2.2: OueGFs
 
 /**
@@ -611,53 +611,53 @@ var OueGFs = ( function( $ ) {
 	function OueGFs() {
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.1: Private properties
+		// §2.2.1: Public properties
 
 		/**
 		 * Collection of selectors used to find form elements in the DOM.
 		 *
-		 * @private
+		 * @public
 		 */
-		var _sels;
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.2: Private methods
-
-		/**
-		 * Initialize inputs accepting WSU ID numbers.
-		 *
-		 * @private
-		 */
-		function _initWsuIdInputs() {
-			var wsuIds;
-
-			wsuIds = new WsuIdInputs( _sels.wsuIds );
-			wsuIds.initialize();			
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.3: Protected methods
-
-		/**
-		 * Initialize Gravity Forms found on the page.
-		 *
-		 * Meant to be called after the DOM has loaded.
-		 *
-		 * @protected
-		 */
-		this.initialize = function () {
-			if ( $( _sels.gforms ).length ) {
-				_initWsuIdInputs();
-			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// §2.2.4: Constructor's main execution section
-
-		_sels = {
+		this.selectors = {
 			gforms: '.gform_wrapper',
 			wsuIds: '.gf-is-wsu-id'
 		};
+
+		/**
+		 * Interface to form inputs that accept WSU ID numbers.
+		 *
+		 * @public
+		 */
+		this.wsuIds = null;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §2.2.3: Public methods
+
+	/**
+	 * Initialize Gravity Forms found on the page.
+	 *
+	 * Meant to be called after the DOM has loaded.
+	 *
+	 * @public
+	 */
+	OueGFs.prototype.init = function () {
+		if ( $( this.selectors.gforms ).length ) {
+			initWsuIdInputs(this);
+		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §2.2.4: Lexically scoped supporting functions
+
+	/**
+	 * Initialize inputs accepting WSU ID numbers.
+	 *
+	 * @param {OueGFs} obj - An OueGFs instance that needs to be initialized.
+	 */
+	function initWsuIdInputs( obj ) {
+		obj.wsuIds = new WsuIdInputs( obj.selectors.wsuIds );
+		obj.wsuIds.init();
 	}
 
 	return OueGFs;
@@ -795,7 +795,7 @@ d.' );
 		 *
 		 * @protected
 		 */
-		this.initialize = function () {
+		this.init = function () {
 			var $forms = $( _sels.gform );
 			var inputSel = _sels.gfield + ' ' + _sels.inputs;
 

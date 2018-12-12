@@ -26,42 +26,117 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: Gravity Forms enhancement modules........................................................53
-//     §1.1: GfCheckboxValidators class.........................................................57
-//         §1.1.1: Private properties...........................................................75
-//         §1.1.2: Public properties............................................................80
-//         §1.1.3: Privileged methods...........................................................85
-//         §1.1.4: Constructor's main execution section........................................101
-//         §1.1.5: Public methods..............................................................107
-//     §1.2: OueGFs class......................................................................235
-//         §1.2.1: Public properties...........................................................253
-//         §1.2.2: Public methods..............................................................274
-//         §1.2.3: Lexically scoped supporting functions.......................................300
-//     §1.3: WsuIdInputs class.................................................................317
-//         §1.3.1: Public properties...........................................................337
-//         §1.3.2: Public methods..............................................................352
-//         §1.3.3: Lexically scoped supporting functions.......................................449
-// §2: Application of OUE-wide Gravity Forms enhancements......................................474
-//     §2.1: Document ready bindings...........................................................480
-//     §2.2: Document ready bindings...........................................................488
-//     §2.3: Binding of Handlers to Window Load................................................509
-//     §2.4: Window Load Event Bindings........................................................521
-//     §2.5: Function declarations.............................................................528
+// §1: Gravity Forms enhancement modules........................................................56
+//     §1.1: EmailConfirmations class...........................................................59
+//         §1.1.1: Public properties............................................................84
+//         §1.1.2: Public methods..............................................................100
+//     §1.2: GfCheckboxValidators class........................................................130
+//         §1.2.1: Private properties..........................................................148
+//         §1.2.2: Public properties...........................................................153
+//         §1.2.3: Privileged methods..........................................................158
+//         §1.2.4: Constructor's main execution section........................................174
+//         §1.2.5: Public methods..............................................................180
+//     §1.3: OueGFs class......................................................................308
+//         §1.3.1: Public properties...........................................................326
+//         §1.3.2: Public methods..............................................................347
+//         §1.3.3: Lexically scoped supporting functions.......................................373
+//     §1.4: WsuIdInputs class.................................................................390
+//         §1.4.1: Public properties...........................................................410
+//         §1.4.2: Public methods..............................................................425
+//         §1.4.3: Lexically scoped supporting functions.......................................522
+// §2: Application of OUE-wide Gravity Forms enhancements......................................547
+//     §2.1: Document ready bindings...........................................................553
+//     §2.2: Document ready bindings...........................................................561
+//     §2.3: Binding of Handlers to Window Load................................................582
+//     §2.4: Window Load Event Bindings........................................................594
+//     §2.5: Function declarations.............................................................601
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // §1: Gravity Forms enhancement modules
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////
-// §1.1: GfCheckboxValidators
+// §1.1: EmailConfirmations class
 
 /**
- * Gravity Form Checkbox Validators interface.
+ * Gravity Forms enhancement module for preventing the user from pasting input into email
+ * confirmation fields.
  *
- * An interface for linking the state of a gravity forms checkbox field to a subsequent (and ideally
- * hidden) validator field. Currently, all of the checkboxes must be selected for the field to be
- * validated.
+ * Keeps users from being lazy and circumventing the mistake prevention effects of having to
+ * explicitly enter emails twice.
+ *
+ * @class
+ */
+
+var EmailConfirmations = ( function( $ ) {
+
+	"use strict";
+
+	/**
+	 * Constructor for EmailConfirmations.
+	 *
+	 * @param {string} selGField - Selects the Gravity Form field containing the input in which the
+	 *     email and its confirmation will be entered.
+	 */
+	function EmailConfirmations( selGfield ) {
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// §1.1.1: Public properties
+
+		/**
+		 * The collection of selectors used to find inputs accepting emails and email confirmations
+		 * in the DOM.
+		 *
+		 * @public
+		 */
+		this.sels = {
+			gform: '.gform_wrapper',
+			gfield: selGfield,
+			inputs: ".ginput_right input[type='text']"
+		};
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// §1.1.2: Public methods
+
+	/**
+	 * Initializes the event handling that will prevent misuse of the email confirmation field.
+	 *
+	 * @public
+	 */
+	EmailConfirmations.prototype.init = function () {
+		var $forms = $( this.sels.gform );
+		var inputSel = this.sels.gfield + ' ' + this.sels.inputs;
+
+		if ( $forms.length ) {	
+			$forms.on( 'paste', inputSel, this.onPaste );
+		}
+	};
+
+	/**
+	 * Handler for paste events triggered in inputs accepting email confirmations.
+	 *
+	 * @public
+	 *
+	 * @param {Event} e - Contains information about the paste event.
+	 */
+	EmailConfirmations.prototype.onPaste = function ( e ) {
+		e.stopPropagation();
+		e.preventDefault();
+	};
+
+	return EmailConfirmations;
+} )( jQuery );
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// §1.2: GfCheckboxValidators
+
+/**
+ * Gravity Forms enhancement module for validating checkbox input containers wherein all checkboxes
+ * must be checked.
+ *
+ * Links the state of a Gravity Forms checkbox field to a subsequent (and ideally hidden) validator
+ * field. Currently, all of the checkboxes must be selected for the field to be validated.
  *
  * @class
  */
@@ -72,17 +147,17 @@ var GfCheckboxValidators = ( function( $ ) {
 	function GfCheckboxValidators( sels ) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §1.1.1: Private properties
+		// §1.2.1: Private properties
 
 		var _$form;
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §1.1.2: Public properties
+		// §1.2.2: Public properties
 
 		this.sels = sels;
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §1.1.3: Privileged methods
+		// §1.2.3: Privileged methods
 
 		this.get$form = function () {
 			return _$form;
@@ -98,13 +173,13 @@ var GfCheckboxValidators = ( function( $ ) {
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §1.1.4: Constructor's main execution section
+		// §1.2.4: Constructor's main execution section
 
 		this.findForm();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.1.5: Public methods
+	// §1.2.5: Public methods
 
 	/**
 	 * Finish the process of hiding validator fields from the user.
@@ -200,7 +275,7 @@ var GfCheckboxValidators = ( function( $ ) {
 				}
 			} );
 		}
-	}
+	};
 
 	/**
 	 * Check the validity of the instance based on the types and values of its members.
@@ -232,10 +307,10 @@ var GfCheckboxValidators = ( function( $ ) {
 } )( jQuery );
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// §1.2: OueGFs
+// §1.3: OueGFs
 
 /**
- * Interface for adding enhancements to Gravity Forms found on OUE websites.
+ * Module for adding enhancements to Gravity Forms found on OUE websites.
  *
  * @class
  */
@@ -250,7 +325,7 @@ var OueGFs = ( function( $ ) {
 	function OueGFs() {
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §1.2.1: Public properties
+		// §1.3.1: Public properties
 
 		/**
 		 * Collection of selectors used to find form elements in the DOM.
@@ -259,19 +334,27 @@ var OueGFs = ( function( $ ) {
 		 */
 		this.selectors = {
 			gforms: '.gform_wrapper',
-			wsuIds: '.gf-is-wsu-id'
+			wsuIds: '.gf-is-wsu-id',
+			emailConfirmations: '.ginput_container_email'
 		};
 
 		/**
-		 * Interface to form inputs that accept WSU ID numbers.
+		 * Module for enhancing form inputs that accept WSU ID numbers.
 		 *
 		 * @public
 		 */
 		this.wsuIds = null;
+
+		/**
+		 * Module for enhancing to form inputs that accept WSU ID numbers.
+		 *
+		 * @public
+		 */
+		this.emailConfirmations = null;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.2.2: Public methods
+	// §1.3.2: Public methods
 
 	/**
 	 * Initialize Gravity Forms found on the page.
@@ -280,7 +363,7 @@ var OueGFs = ( function( $ ) {
 	 */
 	OueGFs.prototype.init = function () {
 		this.completeDomLoadedTasks();
-	}
+	};
 
 	/**
 	 * Perform Gravity Forms intialization steps that should take place once the DOM has loaded.
@@ -291,13 +374,24 @@ var OueGFs = ( function( $ ) {
 		var instance = this;
 		$( function () {
 			if ( $( instance.selectors.gforms ).length ) {
+				initEmailConfirmations( instance );
 				initWsuIdInputs( instance );
 			}
 		} );
-	}
+	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.2.3: Lexically scoped supporting functions
+	// §1.3.3: Lexically scoped supporting functions
+
+	/**
+	 * Initialize inputs accepting WSU ID numbers.
+	 *
+	 * @param {OueGFs} obj - An OueGFs instance that needs to be initialized.
+	 */
+	function initEmailConfirmations( obj ) {
+		obj.emailConfirmations = new EmailConfirmations( obj.selectors.emailConfirmations );
+		obj.emailConfirmations.init();
+	}
 
 	/**
 	 * Initialize inputs accepting WSU ID numbers.
@@ -314,7 +408,7 @@ var OueGFs = ( function( $ ) {
 } )( jQuery );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-// §1.3: WsuIdInputs
+// §1.4: WsuIdInputs
 
 /**
  * Provides RegEx mediated validation of gravity form inputs that accept WSU ID numbers.
@@ -334,7 +428,7 @@ var WsuIdInputs = ( function ( $ ) {
 	function WsuIdInputs( selGfield ) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// §1.3.1: Public properties
+		// §1.4.1: Public properties
 
 		/**
 		 * The collection of selectors used to find inputs accepting WSU ID numbers in the DOM.
@@ -349,7 +443,7 @@ var WsuIdInputs = ( function ( $ ) {
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.3.2: Public methods
+	// §1.4.2: Public methods
 
 	/**
 	 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
@@ -363,7 +457,7 @@ var WsuIdInputs = ( function ( $ ) {
 		$forms.on( 'blur', inputSel, this.onBlur );
 		$forms.on( 'keydown', inputSel, this.onKeydown );
 		$forms.on( 'paste', inputSel, this.onPaste );
-	}
+	};
 
 	/**
 	 * Handler for blur events triggered in inputs accepting WSU ID numbers.
@@ -386,7 +480,7 @@ var WsuIdInputs = ( function ( $ ) {
 g zero and enter in 8 digits.' );
 			}
 		}
-	}
+	};
 
 	/**
 	 * Handler for keydown events triggered in inputs accepting WSU ID numbers.
@@ -407,7 +501,7 @@ g zero and enter in 8 digits.' );
 			e.preventDefault();
 			alert( 'Note: WSU ID numbers are no greater than nine (9) digits in length.' );
 		}
-	}
+	};
 
 	/**
 	 * Handler for paste events triggered in inputs accepting WSU ID numbers.
@@ -443,10 +537,10 @@ to see if further corrections are needed.';
 ill automatically be corrected. Please check the result to see if further corrections are needed.'
 				);
 		}
-	}
+	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////
-	// §1.3.3: Lexically scoped supporting functions
+	// §1.4.3: Lexically scoped supporting functions
 
 	/**
 	 * Obtains the regular expression pattern representing valid complete or incomple WSU ID input.

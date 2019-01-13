@@ -1,14 +1,15 @@
-/**
+/*!
  * jQuery.forms.js
  * -------------------------------------------------------------------------------------------------
- * SUMMARY: Enhancements, intended for OUE websites, mediated by jQuery to dynamic behavior of
- * Gravity Forms.
+ * PROJECT SUMMARY: Enhancements mediated by jQuery to dynamic behavior of Gravity Forms and
+ * intended for Washington State University (WSU) websites built in the WSU WordPress platform.
+ * Designed especially for the websites of the WSU Office of Undergraduate Education.
  *
  * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  *
  * REPOSITORY: https://github.com/invokeImmediately/WSU-UE---JS
  *
- * LICENSE: ISC - Copyright (c) 2018 Daniel C. Rieck.
+ * LICENSE: ISC - Copyright (c) 2019 Daniel C. Rieck.
  *
  *   Permission to use, copy, modify, and/or distribute this software for any purpose with or
  *   without fee is hereby granted, provided that the above copyright notice and this permission

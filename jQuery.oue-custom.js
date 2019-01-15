@@ -5,40 +5,38 @@
 /**************************************************************************************************
  * TABLE OF CONTENTS                                                                              *
  * -----------------                                                                              *
- *   §1: Addition of functions to jQuery......................................................49  *
- *     §1.1: jQuery.isCssClass................................................................52  *
- *     §1.2: jQuery.isJQueryObj...............................................................70  *
- *     §1.3: jQuery.logError..................................................................82  *
- *   §2: OUE website initilization modules...................................................153  *
- *     §2.1: OueDropDownToggle class.........................................................156  *
- *   §3: After dom is ready excution section.................................................363  *
- *   §4: After window loaded event bindings..................................................524  *
- *   §5: Window resize event bindings........................................................570  *
- *   §6: Function declarations...............................................................578  *
- *     §6.1: addA11yTabPressListener.........................................................581  *
- *     §6.2: addBlankTargetAttributes........................................................595  *
- *     §6.3: addDefinitionListButtons........................................................647  *
- *     §6.4: checkForLrgFrmtSingle...........................................................761  *
- *     §6.5: effectDropDownTogglePermanence..................................................778  *
- *     §6.6: finalizeLrgFrmtSideRight........................................................810  *
- *     §6.7: fixDogears......................................................................830  *
- *     §6.8: handleMouseClickForA11y.........................................................855  *
- *     §6.9: handleTabPressForA11y...........................................................864  *
- *     §6.10: initContentFlippers............................................................875  *
- *     §6.11: initDefinitionLists............................................................891  *
- *     §6.12: initDropDownToggles............................................................941  *
- *     §6.13: initFancyHrH2Motif.............................................................966  *
- *     §6.14: initFancyHrH3Motif.............................................................975  *
- *     §6.15: initHrH2Motif..................................................................984  *
- *     §6.16: initHrH3Motif..................................................................999  *
- *     §6.17: initQuickTabs.................................................................1008  *
- *     §6.18: initReadMoreToggles...........................................................1072  *
- *     §6.19: initTocFloating...............................................................1092  *
- *     §6.20: initTriggeredByHover..........................................................1169  *
- *     §6.21: initWelcomeMessage............................................................1188  *
- *     §6.22: resizeLrgFrmtSideRight........................................................1198  *
- *     §6.23: setupDropDownTogglePermanence.................................................1206  *
- *     §6.24: showDefinitionListButtons.....................................................1232  *
+ *   §1: Addition of functions to jQuery......................................................47  *
+ *     §1.1: jQuery.isCssClass................................................................50  *
+ *     §1.2: jQuery.isJQueryObj...............................................................68  *
+ *     §1.3: jQuery.logError..................................................................80  *
+ *   §2: OUE website initilization modules...................................................151  *
+ *     §2.1: OueDropDownToggle class.........................................................154  *
+ *   §3: After dom is ready excution section.................................................358  *
+ *   §4: After window loaded event bindings..................................................517  *
+ *   §5: Window resize event bindings........................................................563  *
+ *   §6: Function declarations...............................................................571  *
+ *     §6.1: addA11yTabPressListener.........................................................574  *
+ *     §6.2: addBlankTargetAttributes........................................................588  *
+ *     §6.3: addDefinitionListButtons........................................................640  *
+ *     §6.4: checkForLrgFrmtSingle...........................................................754  *
+ *     §6.5: finalizeLrgFrmtSideRight........................................................771  *
+ *     §6.6: fixDogears......................................................................791  *
+ *     §6.7: handleMouseClickForA11y.........................................................816  *
+ *     §6.8: handleTabPressForA11y...........................................................825  *
+ *     §6.9: initContentFlippers.............................................................836  *
+ *     §6.10: initDefinitionLists............................................................852  *
+ *     §6.11: initDropDownToggles............................................................902  *
+ *     §6.12: initFancyHrH2Motif.............................................................924  *
+ *     §6.13: initFancyHrH3Motif.............................................................933  *
+ *     §6.14: initHrH2Motif..................................................................942  *
+ *     §6.15: initHrH3Motif..................................................................957  *
+ *     §6.16: initQuickTabs..................................................................966  *
+ *     §6.17: initReadMoreToggles...........................................................1030  *
+ *     §6.18: initTocFloating...............................................................1050  *
+ *     §6.19: initTriggeredByHover..........................................................1127  *
+ *     §6.20: initWelcomeMessage............................................................1146  *
+ *     §6.21: resizeLrgFrmtSideRight........................................................1156  *
+ *     §6.22: showDefinitionListButtons.....................................................1164  *
  **************************************************************************************************/
 
 ( function ( $, thisFileName ) {
@@ -190,10 +188,8 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 		stillValid = typeof this.sels === 'object';
 		if ( stillValid ) {
 			props = Object.getOwnPropertyNames( this.sels );
-			stillValid = props.length === 3 && props.find ( function( elem ) {
+			stillValid = props.length === 2 && props.find ( function( elem ) {
 				return elem === 'toggles';
-			} ) && props.find ( function( elem ) {
-				return elem === 'targets';
 			} ) && props.find ( function( elem ) {
 				return elem === 'containers';
 			} );
@@ -224,8 +220,7 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 			preventAnchorHighlighting( $toggles );
 			effectToggleStatePermanence( $toggles, this.activatingClass );
 			bindClickHandlers( $containers, this.sels.toggles, this.activatingClass );
-			bindKeydownHandlers( $containers, this.sels.toggles, this.sels.targets,
-				this.activatingClass );			
+			bindKeydownHandlers( $containers, this.sels.toggles, this.activatingClass );			
 		} else {
 			$.logError( thisFileName, funcName, funcDesc, 'I was not constructed with valid argumen\
 ts. Here\'s what I was passed:\nthis.sels.toString() = ' +  this.sels.toString() + '\nthis.activati\
@@ -436,14 +431,12 @@ $( function () {
 		args.animAddDrtn );
 
 	argsList.initDropDownToggles = {
-		slctrToggle: ".drop-down-toggle",
-		slctrWhatsToggled: ".toggled-panel",
+		selToggles: ".drop-down-toggle",
+		selContainers: ".column",
 		activatingClass: "activated",
-		animDuration: 500
 	};
 	args = argsList.initDropDownToggles;
-	initDropDownToggles( args.slctrToggle, args.slctrWhatsToggled, args.activatingClass, 
-		args.animDuration );
+	initDropDownToggles( args.selToggles, args.selContainers, args.activatingClass );
 
 	argsList.initReadMoreToggles = {
 		slctrToggleIn: ".read-more-toggle-in-ctrl",
@@ -775,39 +768,7 @@ function checkForLrgFrmtSingle( slctrSingle, slctrMainHdr, slctrHdrGroup, center
 }
 
 ////////
-// §6.5: effectDropDownTogglePermanence
-
-function effectDropDownTogglePermanence( $toggles, slctrWhatsToggled, activatingClass, 
-		animDuration ) {
-	var thisFuncName = "effectDropDownTogglePermanence";
-	var thisFuncDesc = "Upon page load, sets the expansion state of a drop down toggle element \
-based on previous user interactions during the session.";
-	if ( $.isJQueryObj( $toggles ) ) {
-		$toggles.each( function() {
-			var $this = $( this );
-			if ( $this[0].id ) {
-				try {
-					var state = sessionStorage.getItem( $this[0].id );
-					if ( state == "expanded" ) {
-						$this.toggleClass( activatingClass );
-					}
-				} catch( e ) {
-					$.logError( thisFileName, thisFuncName, thisFuncDesc, e.message );
-				}
-			} else {
-				$.logError( thisFileName, thisFuncName, thisFuncDesc,
-					"No ID was set for this drop down toggle element; thus, expansion state \
-permanence cannot be effected." );
-			}
-		} );
-	} else {
-		$.logError( thisFileName, thisFuncName, thisFuncDesc,
-			"I was not passed a valid jQuery object." );
-	}
-}
-
-////////
-// §6.6: finalizeLrgFrmtSideRight
+// §6.5: finalizeLrgFrmtSideRight
 
 function finalizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, 
 		animDuration ) {
@@ -827,7 +788,7 @@ function finalizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trg
 }
 
 ////////
-// §6.7: fixDogears
+// §6.6: fixDogears
 
 function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 	// Fix bug wherein the wrong items in the spine become dogeared
@@ -852,7 +813,7 @@ function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 }
 
 ////////
-// §6.8: handleMouseClickForA11y
+// §6.7: handleMouseClickForA11y
 
 function handleMouseClickForA11y( e ) {
 	$( "body" ).removeClass( "user-is-tabbing" )
@@ -861,7 +822,7 @@ function handleMouseClickForA11y( e ) {
 }
 
 ////////
-// §6.9: handleTabPressForA11y
+// §6.8: handleTabPressForA11y
 
 function handleTabPressForA11y( e ) {
 	if ( e.keyCode === 9 ) {
@@ -872,7 +833,7 @@ function handleTabPressForA11y( e ) {
 }
 
 ////////
-// §6.10: initContentFlippers
+// §6.9: initContentFlippers
 
 function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, animDuration ) {
 	$( slctrCntntFlppr ).click( function () {
@@ -888,7 +849,7 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 }
 
 ////////
-// §6.11: initDefinitionLists
+// §6.10: initDefinitionLists
 
 function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, slctrColTwo,
  dtActivatingClass, ddRevealingClass, animHghtDrtn ) {
@@ -938,32 +899,29 @@ function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, sl
 }
 
 ////////
-// §6.12: initDropDownToggles
+// §6.11: initDropDownToggles
 
-function initDropDownToggles( slctrToggle, slctrWhatsToggled, activatingClass, animDuration ) {
-	var $toggles =  $( slctrToggle );
-	$toggles.attr( "tabindex", 0 );
-	$toggles.addClass( "no-anchor-highlighting" );
-	effectDropDownTogglePermanence( $toggles, slctrWhatsToggled, activatingClass, animDuration );
-	$toggles.click( function () {
-		var $this = $( this );
-		$this.blur();
-		$this.toggleClass( activatingClass );
-		setupDropDownTogglePermanence( $this, activatingClass );
-	} );
-	$toggles.on( "keydown", function( e ) {
-		var regExMask = /Enter| /g;
-		if ( regExMask.exec( e.key ) != null ) {
-			e.preventDefault();
-			var $this = $( this );
-			$this.toggleClass( activatingClass );
-			setupDropDownTogglePermanence( $this, activatingClass );
-		}
-	} );
+/**
+ * Initialize drop down toggle elements to respond to user interaction.
+ *
+ * @param {string} selToggles - Selector string for isolating drop down toggle elements.
+ * @param {string} selContainers - Selector string for isolating containers that may contain drop
+ *     down toggle elements.
+ * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
+ *     causes it to enter an activated state.
+ */
+function initDropDownToggles( selToggles, selContainers, activatingClass ) {
+	var dropDownToggles;
+
+	dropDownToggles =  new OueDropDownToggles( {
+		toggles: selToggles,
+		containers: selContainers
+	}, slctrWhatsToggled );
+	dropDownToggles.initialize();
 }
 
 ////////
-// §6.13: initFancyHrH2Motif
+// §6.12: initFancyHrH2Motif
 
 function initFancyHrH2Motif( slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrFancyH2 ).each( function () {
@@ -972,7 +930,7 @@ function initFancyHrH2Motif( slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddD
 }
 
 ////////
-// §6.14: initFancyHrH3Motif
+// §6.13: initFancyHrH3Motif
 
 function initFancyHrH3Motif( slctrFancyH3, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrFancyH3 ).each( function () {
@@ -981,7 +939,7 @@ function initFancyHrH3Motif( slctrFancyH3, slctrPrevHr, hrClassesAdded, animAddD
 }
 
 ////////
-// §6.15: initHrH2Motif
+// §6.14: initHrH2Motif
 
 function initHrH2Motif( slctrStandardH2, slctrPrevHr, h2ClassesAdded, hrClassesAdded,
 		animAddDrtn ) {
@@ -996,7 +954,7 @@ function initHrH2Motif( slctrStandardH2, slctrPrevHr, h2ClassesAdded, hrClassesA
 }
 
 ////////
-// §6.16: initHrH3Motif
+// §6.15: initHrH3Motif
 
 function initHrH3Motif( slctrStandardH3, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrStandardH3 ).each( function () {
@@ -1005,7 +963,7 @@ function initHrH3Motif( slctrStandardH3, slctrPrevHr, hrClassesAdded, animAddDrt
 }
 
 ////////
-// §6.17: initQuickTabs
+// §6.16: initQuickTabs
 
 // TODO: Convert to a class-based initialization module
 function initQuickTabs( slctrQtSctn ) {
@@ -1069,7 +1027,7 @@ function initQuickTabs( slctrQtSctn ) {
 }
 
 ////////
-// §6.18: initReadMoreToggles
+// §6.17: initReadMoreToggles
 
 function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDuration ) {
 	$( slctrToggleIn ).click( function () {
@@ -1089,7 +1047,7 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 }
 
 ////////
-// §6.19: initTocFloating
+// §6.18: initTocFloating
 
 function initTocFloating( slctrToc, slctrBackToToc ) {
 	var thisFuncName = "initTocFloating";
@@ -1166,7 +1124,7 @@ contents elements; this function only works with one table of contents.' }" );
 }
 
 ////////
-// §6.20: initTriggeredByHover
+// §6.19: initTriggeredByHover
 
 function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration ) {
 	$( slctrTrggrdOnHvr ).mouseenter( function () {
@@ -1185,7 +1143,7 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 }
 
 ////////
-// §6.21: initWelcomeMessage
+// §6.20: initWelcomeMessage
 
 function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDuration, 
 		fadeInDuration ) {
@@ -1195,7 +1153,7 @@ function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDu
 }
 
 ////////
-// §6.22: resizeLrgFrmtSideRight
+// §6.21: resizeLrgFrmtSideRight
 
 function resizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggrWidth,
 		animDuration ) {
@@ -1203,33 +1161,7 @@ function resizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggr
 }
 
 ////////
-// §6.23: setupDropDownTogglePermanence
-
-function setupDropDownTogglePermanence( $toggle, activatingClass ) {
-	var thisFuncName = "setupDropDownTogglePermanence";
-	var thisFuncDesc = "Records the expansion state of a drop down toggle element in local storage \
-to later effect permanence.";
-	if ( $.isJQueryObj( $toggle ) ) {
-		if ( $toggle[0].id ) {
-			try {
-				var state = $toggle.hasClass( activatingClass ) ? "expanded" : "collapsed";
-				sessionStorage.setItem( $toggle[0].id, state );
-			} catch( e ) {
-				$.logError( thisFileName, thisFuncName, thisFuncDesc, e.message );
-			}
-		} else {
-			$.logError( thisFileName, thisFuncName, thisFuncDesc,
-				"No ID was set for this drop down toggle element; thus, expansion state permanence \
-cannot be effected." );
-		}
-	} else {
-		$.logError( thisFileName, thisFuncName, thisFuncDesc,
-			"I was not passed a valid jQuery object." );
-	}
-}
-
-////////
-// §6.24: showDefinitionListButtons
+// §6.22: showDefinitionListButtons
 
 /**
  * Display expand/collapse all buttons, which were initially hidden

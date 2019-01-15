@@ -262,13 +262,16 @@ ngClass.toString() = ' + this.activatingClass.toString() );
 	 *     causes it to enter an activated state.
 	 */
 	function bindKeydownHandlers( $containers, selToggles, activatingClass ) {
-		var $this;
-
 		$containers.on( 'keydown', selToggles, function ( e ) {
-			e.preventDefault();
-			$this = $ ( this );
-			$this.toggleClass( activatingClass );
-			setUpToggleStatePermanence( $this, activatingClass );
+			var $this;
+			var reActivatingKeys = /Enter| /g;
+
+			if ( reActivatingKeys.test( e.key ) ) {
+				e.preventDefault();
+				$this = $ ( this );
+				$this.toggleClass( activatingClass );
+				setUpToggleStatePermanence( $this, activatingClass );
+			}
 		} );
 	}
 
@@ -916,7 +919,7 @@ function initDropDownToggles( selToggles, selContainers, activatingClass ) {
 	dropDownToggles =  new OueDropDownToggles( {
 		toggles: selToggles,
 		containers: selContainers
-	}, slctrWhatsToggled );
+	}, activatingClass );
 	dropDownToggles.initialize();
 }
 

@@ -11,34 +11,34 @@
  *     §1.3: jQuery.logError..................................................................82  *
  *   §2: OUE website initilization modules...................................................153  *
  *     §2.1: OueDropDownToggle class.........................................................156  *
- *   §3: After dom is ready excution section.................................................303  *
- *   §4: After window loaded event bindings..................................................464  *
- *   §5: Window resize event bindings........................................................510  *
- *   §6: Function declarations...............................................................518  *
- *     §6.1: addA11yTabPressListener.........................................................521  *
- *     §6.2: addBlankTargetAttributes........................................................535  *
- *     §6.3: addDefinitionListButtons........................................................587  *
- *     §6.4: checkForLrgFrmtSingle...........................................................701  *
- *     §6.5: effectDropDownTogglePermanence..................................................718  *
- *     §6.6: finalizeLrgFrmtSideRight........................................................750  *
- *     §6.7: fixDogears......................................................................770  *
- *     §6.8: handleMouseClickForA11y.........................................................795  *
- *     §6.9: handleTabPressForA11y...........................................................804  *
- *     §6.10: initContentFlippers............................................................815  *
- *     §6.11: initDefinitionLists............................................................831  *
- *     §6.12: initDropDownToggles............................................................881  *
- *     §6.13: initFancyHrH2Motif.............................................................906  *
- *     §6.14: initFancyHrH3Motif.............................................................915  *
- *     §6.15: initHrH2Motif..................................................................924  *
- *     §6.16: initHrH3Motif..................................................................939  *
- *     §6.17: initQuickTabs..................................................................948  *
- *     §6.18: initReadMoreToggles...........................................................1012  *
- *     §6.19: initTocFloating...............................................................1032  *
- *     §6.20: initTriggeredByHover..........................................................1109  *
- *     §6.21: initWelcomeMessage............................................................1128  *
- *     §6.22: resizeLrgFrmtSideRight........................................................1138  *
- *     §6.23: setupDropDownTogglePermanence.................................................1146  *
- *     §6.24: showDefinitionListButtons.....................................................1172  *
+ *   §3: After dom is ready excution section.................................................363  *
+ *   §4: After window loaded event bindings..................................................524  *
+ *   §5: Window resize event bindings........................................................570  *
+ *   §6: Function declarations...............................................................578  *
+ *     §6.1: addA11yTabPressListener.........................................................581  *
+ *     §6.2: addBlankTargetAttributes........................................................595  *
+ *     §6.3: addDefinitionListButtons........................................................647  *
+ *     §6.4: checkForLrgFrmtSingle...........................................................761  *
+ *     §6.5: effectDropDownTogglePermanence..................................................778  *
+ *     §6.6: finalizeLrgFrmtSideRight........................................................810  *
+ *     §6.7: fixDogears......................................................................830  *
+ *     §6.8: handleMouseClickForA11y.........................................................855  *
+ *     §6.9: handleTabPressForA11y...........................................................864  *
+ *     §6.10: initContentFlippers............................................................875  *
+ *     §6.11: initDefinitionLists............................................................891  *
+ *     §6.12: initDropDownToggles............................................................941  *
+ *     §6.13: initFancyHrH2Motif.............................................................966  *
+ *     §6.14: initFancyHrH3Motif.............................................................975  *
+ *     §6.15: initHrH2Motif..................................................................984  *
+ *     §6.16: initHrH3Motif..................................................................999  *
+ *     §6.17: initQuickTabs.................................................................1008  *
+ *     §6.18: initReadMoreToggles...........................................................1072  *
+ *     §6.19: initTocFloating...............................................................1092  *
+ *     §6.20: initTriggeredByHover..........................................................1169  *
+ *     §6.21: initWelcomeMessage............................................................1188  *
+ *     §6.22: resizeLrgFrmtSideRight........................................................1198  *
+ *     §6.23: setupDropDownTogglePermanence.................................................1206  *
+ *     §6.24: showDefinitionListButtons.....................................................1232  *
  **************************************************************************************************/
 
 ( function ( $, thisFileName ) {
@@ -167,13 +167,21 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 * Constructor for EmailConfirmations.
 	 *
 	 * @param {object} sels - Collection of selectors to drop down toggles and their components.
+	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
+	 *     causes it to enter an activated state.
 	 */
-	function OueDropDownToggles( sels, activatingClass, animDuration ) {
+	function OueDropDownToggles( sels, activatingClass ) {
 		this.sels = sels;
 		this.activatingClass = activatingClass;
-		this.animDuration = animDuration;
 	}
 
+	/**
+	 * Check the state of the OueDropDownToggles object's paremeters to ensure it was appropriately
+	 * constructed.
+	 *
+	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
+	 *     typed and appropriately set arguments.
+	 */
 	OueDropDownToggles.prototype.isValid = function () {
 		var stillValid;
 		var props;
@@ -197,17 +205,17 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 				$.isCssClass( this. activatingClass);
 		}
 
-		// Check the integrity of the animDuration member.
-		if ( stillValid ) {
-			stillValid = typeof this.animDuration === 'number' && animDuration > 0;
-		}	
-
 		return stillValid;
 	}
 
+	/**
+	 * Initialize drop down toggles to respond to user interaction.
+	 */
 	OueDropDownToggles.prototype.initialize = function () {
 		var $containers;
 		var $toggles;
+		var funcName = 'OueDropDownToggles.prototype.initialize';
+		var funcDesc = 'Initialize drop down toggles to respond to user interaction.'
 
 		if ( this.isValid() ) {
 			$containers = $( this.sels.containers );
@@ -218,9 +226,24 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 			bindClickHandlers( $containers, this.sels.toggles, this.activatingClass );
 			bindKeydownHandlers( $containers, this.sels.toggles, this.sels.targets,
 				this.activatingClass );			
+		} else {
+			$.logError( thisFileName, funcName, funcDesc, 'I was not constructed with valid argumen\
+ts. Here\'s what I was passed:\nthis.sels.toString() = ' +  this.sels.toString() + '\nthis.activati\
+ngClass.toString() = ' + this.activatingClass.toString() );
 		}
 	}
 
+	/**
+	 * Bind a click handler to drop down toggles that enables the user to interact with them using
+	 * mouse input.
+	 *
+	 * @param {jquery} $containers - Collection of the containers which may contain drop down
+	 *     toggles.
+	 * @param {string} selToggles - Selector string for isolating drop down toggle elements within
+	 *     the provided collection of containers.
+	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
+	 *     causes it to enter an activated state.
+	 */
 	function bindClickHandlers( $containers, selToggles, activatingClass ) {
 		var $this;
 
@@ -232,6 +255,17 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 		} );
 	}
 
+	/**
+	 * Bind a keydown handler to drop down toggles that enables the user to interact with them using
+	 * keyboard input.
+	 *
+	 * @param {jquery} $containers - Collection of the containers which may contain drop down
+	 *     toggles.
+	 * @param {string} selToggles - Selector string for isolating drop down toggle elements within
+	 *     the provided collection of containers.
+	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
+	 *     causes it to enter an activated state.
+	 */
 	function bindKeydownHandlers( $containers, selToggles, activatingClass ) {
 		var $this;
 
@@ -243,6 +277,14 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 		} );
 	}
 
+	/**
+	 * During page load, set the expansion state of drop down toggle elements based on previous user
+	 * interactions during the session.
+	 *
+	 * @param {jquery} $toggles - Collection of the drop down toggle elements within the page.
+	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
+	 *     causes it to enter an activated state.
+	 */
 	function effectToggleStatePermanence( $toggles, activatingClass ) {
 		var $this;
 		var state;
@@ -269,14 +311,32 @@ nce cannot be effected." );
 		} );
 	}
 
+	/**
+	 * Apply a CSS class that keeps anchor highlighting styles from being applied to drop down
+	 * toggles.
+	 *
+	 * @param {jquery} $toggles - Collection of the drop down toggle elements within the page.
+	 */
 	function preventAnchorHighlighting( $toggles ) {
 		$toggles.addClass( 'no-anchor-highlighting' );
 	}
 
+	/**
+	 * Ensure that drop down toggles are properly included in the web page's tab order.
+	 *
+	 * @param {jquery} $toggles - Collection of the drop down toggle elements within the page.
+	 */
 	function setTabIndices( $toggles ) {
 		$toggles.attr( 'tabindex', 0 );
 	}
 
+	/**
+	 * Cause expansion state of drop down toggles to be remembered during the session.
+	 *
+	 * @param {jquery} $toggles - Collection of the drop down toggle elements within the page.
+	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
+	 *     causes it to enter an activated state.
+	 */
 	function setUpToggleStatePermanence( $toggle, activatingClass ) {
 		var state;
 		var thisFuncName = 'setUpToggleStatePermanence';

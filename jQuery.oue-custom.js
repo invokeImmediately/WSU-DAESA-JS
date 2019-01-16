@@ -165,6 +165,11 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 * Constructor for EmailConfirmations.
 	 *
 	 * @param {object} sels - Collection of selectors to drop down toggles and their components.
+	 * @param {string} sels.toggles - Selector for isolating drop down toggle elements.
+	 * @param {string} sels.containers - Selector for isolating containers of drop down toggle
+	 *     elements.
+	 * @param {string} sels.targets - Selector for isolating the expandable targets of drop down
+	 *     toggle elements.
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
 	 *     causes it to enter an activated state.
 	 */
@@ -188,10 +193,12 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 		stillValid = typeof this.sels === 'object';
 		if ( stillValid ) {
 			props = Object.getOwnPropertyNames( this.sels );
-			stillValid = props.length === 2 && props.find ( function( elem ) {
+			stillValid = props.length === 3 && props.find ( function( elem ) {
 				return elem === 'toggles';
 			} ) && props.find ( function( elem ) {
 				return elem === 'containers';
+			} ) && props.find ( function( elem ) {
+				return elem === 'targets';
 			} );
 		}
 
@@ -209,6 +216,7 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 */
 	OueDropDownToggles.prototype.initialize = function () {
 		var $containers;
+		var $targets;
 		var $toggles;
 		var funcName = 'OueDropDownToggles.prototype.initialize';
 		var funcDesc = 'Initialize drop down toggles to respond to user interaction.'
@@ -216,16 +224,47 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 		if ( this.isValid() ) {
 			$containers = $( this.sels.containers );
 			$toggles = $containers.find( this.sels.toggles );
+			$targets = $containers.find( this.sels.targets );
 			setTabIndices( $toggles );
 			preventAnchorHighlighting( $toggles );
 			effectToggleStatePermanence( $toggles, this.activatingClass );
 			bindClickHandlers( $containers, this.sels.toggles, this.activatingClass );
-			bindKeydownHandlers( $containers, this.sels.toggles, this.activatingClass );			
+			bindKeydownHandlers( $containers, this.sels.toggles, this.activatingClass );
+			bindChildFocusHandlers( $targets, this.sels.targets, this.sels.toggles,
+				this.activatingClass );
 		} else {
 			$.logError( thisFileName, funcName, funcDesc, 'I was not constructed with valid argumen\
 ts. Here\'s what I was passed:\nthis.sels.toString() = ' +  this.sels.toString() + '\nthis.activati\
 ngClass.toString() = ' + this.activatingClass.toString() );
 		}
+	}
+
+	/**
+	 * Bind a handler to ensure that a drop down toggle has been activated if one of its child
+	 * elements receives focus.
+	 *
+	 * @param {jquery} $containers - Collection of the containers which may contain drop down
+	 *     toggles.
+	 * @param {string} selToggles - Selector string for isolating drop down toggle elements within
+	 *     the provided collection of containers.
+	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
+	 *     causes it to enter an activated state.
+	 */
+	function bindChildFocusHandlers( $targets, selTargets, selToggles, activatingClass ) {
+		$targets.on( 'focusin', '*', function () {
+			var $parentTargets;
+			var $this;
+
+			$this = $( this );
+			$parentTargets = $this.parents( selTargets );
+			$parentTargets.each( function() {
+				var $thisTarget = $( this );
+				var $toggle = $thisTarget.prev( selToggles );
+
+				$toggle.addClass( activatingClass );
+				setUpToggleStatePermanence( $toggle, activatingClass );
+			} );
+		} );
 	}
 
 	/**
@@ -436,10 +475,12 @@ $( function () {
 	argsList.initDropDownToggles = {
 		selToggles: ".drop-down-toggle",
 		selContainers: ".column",
+		selTargets: ".toggled-panel",
 		activatingClass: "activated",
 	};
 	args = argsList.initDropDownToggles;
-	initDropDownToggles( args.selToggles, args.selContainers, args.activatingClass );
+	initDropDownToggles( args.selToggles, args.selContainers, args.selTargets,
+		args.activatingClass );
 
 	argsList.initReadMoreToggles = {
 		slctrToggleIn: ".read-more-toggle-in-ctrl",
@@ -913,12 +954,13 @@ function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, sl
  * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
  *     causes it to enter an activated state.
  */
-function initDropDownToggles( selToggles, selContainers, activatingClass ) {
+function initDropDownToggles( selToggles, selContainers, selTargets, activatingClass ) {
 	var dropDownToggles;
 
 	dropDownToggles =  new OueDropDownToggles( {
 		toggles: selToggles,
-		containers: selContainers
+		containers: selContainers,
+		targets: selTargets
 	}, activatingClass );
 	dropDownToggles.initialize();
 }

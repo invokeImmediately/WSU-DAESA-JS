@@ -1,4 +1,4 @@
-/*!
+/*!*************************************************************************************************
  * jQuery.forms.js
  * -------------------------------------------------------------------------------------------------
  * PROJECT SUMMARY: Enhancements mediated by jQuery to dynamic behavior of Gravity Forms and
@@ -21,36 +21,35 @@
  *   DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
  *   CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *   PERFORMANCE OF THIS SOFTWARE.
- */
-
+ **************************************************************************************************/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
 // §1: Gravity Forms enhancement modules........................................................56
 //     §1.1: EmailConfirmations class...........................................................59
-//         §1.1.1: Public properties............................................................84
-//         §1.1.2: Public methods..............................................................100
-//     §1.2: GfCheckboxValidators class........................................................132
-//         §1.2.1: Private properties..........................................................150
-//         §1.2.2: Public properties...........................................................155
-//         §1.2.3: Privileged methods..........................................................160
-//         §1.2.4: Constructor's main execution section........................................176
-//         §1.2.5: Public methods..............................................................182
-//     §1.3: OueGFs class......................................................................310
-//         §1.3.1: Public properties...........................................................328
-//         §1.3.2: Public methods..............................................................357
-//         §1.3.3: Lexically scoped supporting functions.......................................384
-//     §1.4: WsuIdInputs class.................................................................411
-//         §1.4.1: Public properties...........................................................431
-//         §1.4.2: Public methods..............................................................446
-//         §1.4.3: Lexically scoped supporting functions.......................................543
-// §2: Application of OUE-wide Gravity Forms enhancements......................................568
-//     §2.1: Application of OueGFs module......................................................574
-//     §2.2: Document ready bindings...........................................................582
-//     §2.3: Binding of Handlers to Window Load................................................603
-//     §2.4: Window Load Event Bindings........................................................615
-//     §2.5: Function declarations.............................................................622
+//         §1.1.1: Public properties............................................................83
+//         §1.1.2: Public methods...............................................................99
+//     §1.2: GfCheckboxValidators class........................................................131
+//         §1.2.1: Private properties..........................................................149
+//         §1.2.2: Public properties...........................................................154
+//         §1.2.3: Privileged methods..........................................................159
+//         §1.2.4: Constructor's main execution section........................................175
+//         §1.2.5: Public methods..............................................................181
+//     §1.3: OueGFs class......................................................................309
+//         §1.3.1: Public properties...........................................................326
+//         §1.3.2: Public methods..............................................................355
+//         §1.3.3: Lexically scoped supporting functions.......................................382
+//     §1.4: WsuIdInputs class.................................................................409
+//         §1.4.1: Public properties...........................................................429
+//         §1.4.2: Public methods..............................................................444
+//         §1.4.3: Lexically scoped supporting functions.......................................541
+// §2: Application of OUE-wide Gravity Forms enhancements......................................566
+//     §2.1: Application of OueGFs module......................................................572
+//     §2.2: Document ready bindings...........................................................580
+//     §2.3: Binding of Handlers to Window Load................................................601
+//     §2.4: Window Load Event Bindings........................................................613
+//     §2.5: Function declarations.............................................................620
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,10 +67,9 @@
  *
  * @class
  */
-
 var EmailConfirmations = ( function( $ ) {
 
-	"use strict";
+	'use strict';
 
 	/**
 	 * Constructor for EmailConfirmations.
@@ -143,7 +141,7 @@ var EmailConfirmations = ( function( $ ) {
  */
 var GfCheckboxValidators = ( function( $ ) {
 	
-	"use strict";
+	'use strict';
 
 	function GfCheckboxValidators( sels ) {
 
@@ -315,10 +313,9 @@ var GfCheckboxValidators = ( function( $ ) {
  *
  * @class
  */
-
 var OueGFs = ( function( $ ) {
 	
-	"use strict";
+	'use strict';
 
 	/**
 	 * Constructor for OueGFs.
@@ -418,7 +415,7 @@ var OueGFs = ( function( $ ) {
  */
 var WsuIdInputs = ( function ( $ ) {
 	
-	"use strict";
+	'use strict';
 
 	/**
 	 * Constructor for WsuIdInputs class.
@@ -569,7 +566,7 @@ ill automatically be corrected. Please check the result to see if further correc
 // §2: Application of OUE-wide Gravity Forms enhancements
 
 ( function ( $ ) {
-	"use strict";
+	'use strict';
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// §2.1: Application of OueGFs module

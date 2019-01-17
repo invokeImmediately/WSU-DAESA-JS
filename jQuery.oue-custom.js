@@ -1,43 +1,63 @@
-/*!************************************************************************************************
- * jQuery.oue-custom.js: custom JS code common to all WSU Undergraduate Education websites        *
+/*!*************************************************************************************************
+ * jQuery.oue-custom.js
+ * -------------------------------------------------------------------------------------------------
+ * PROJECT SUMMARY: Custom JS code common to all WSU Undergraduate Education websites.
+ *
+ * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
+ *
+ * REPOSITORY: https://github.com/invokeImmediately/WSU-UE---JS
+ *
+ * LICENSE: ISC - Copyright (c) 2019 Daniel C. Rieck.
+ *
+ *   Permission to use, copy, modify, and/or distribute this software for any purpose with or
+ *   without fee is hereby granted, provided that the above copyright notice and this permission
+ *   notice appear in all copies.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS" AND DANIEL RIECK DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+ *   SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+ *   DANIEL RIECK BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
+ *   DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+ *   CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ *   PERFORMANCE OF THIS SOFTWARE.
  **************************************************************************************************/
 
-/**************************************************************************************************
- * TABLE OF CONTENTS                                                                              *
- * -----------------                                                                              *
- *   §1: Addition of functions to jQuery......................................................47  *
- *     §1.1: jQuery.isCssClass................................................................50  *
- *     §1.2: jQuery.isJQueryObj...............................................................68  *
- *     §1.3: jQuery.logError..................................................................80  *
- *   §2: OUE website initilization modules...................................................151  *
- *     §2.1: OueDropDownToggle class.........................................................154  *
- *   §3: After dom is ready excution section.................................................358  *
- *   §4: After window loaded event bindings..................................................517  *
- *   §5: Window resize event bindings........................................................563  *
- *   §6: Function declarations...............................................................571  *
- *     §6.1: addA11yTabPressListener.........................................................574  *
- *     §6.2: addBlankTargetAttributes........................................................588  *
- *     §6.3: addDefinitionListButtons........................................................640  *
- *     §6.4: checkForLrgFrmtSingle...........................................................754  *
- *     §6.5: finalizeLrgFrmtSideRight........................................................771  *
- *     §6.6: fixDogears......................................................................791  *
- *     §6.7: handleMouseClickForA11y.........................................................816  *
- *     §6.8: handleTabPressForA11y...........................................................825  *
- *     §6.9: initContentFlippers.............................................................836  *
- *     §6.10: initDefinitionLists............................................................852  *
- *     §6.11: initDropDownToggles............................................................902  *
- *     §6.12: initFancyHrH2Motif.............................................................924  *
- *     §6.13: initFancyHrH3Motif.............................................................933  *
- *     §6.14: initHrH2Motif..................................................................942  *
- *     §6.15: initHrH3Motif..................................................................957  *
- *     §6.16: initQuickTabs..................................................................966  *
- *     §6.17: initReadMoreToggles...........................................................1030  *
- *     §6.18: initTocFloating...............................................................1050  *
- *     §6.19: initTriggeredByHover..........................................................1127  *
- *     §6.20: initWelcomeMessage............................................................1146  *
- *     §6.21: resizeLrgFrmtSideRight........................................................1156  *
- *     §6.22: showDefinitionListButtons.....................................................1164  *
- **************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// TABLE OF CONTENTS
+// -----------------
+//   §1: Addition of functions to jQuery......................................................47
+//     §1.1: jQuery.isCssClass................................................................50
+//     §1.2: jQuery.isJQueryObj...............................................................68
+//     §1.3: jQuery.logError..................................................................80
+//   §2: OUE website initilization modules...................................................151
+//     §2.1: OueDropDownToggle class.........................................................154
+//     §2.2: OueEventCalendarFixer class.....................................................154
+//   §3: After dom is ready excution section.................................................358
+//   §4: After window loaded event bindings..................................................517
+//   §5: Window resize event bindings........................................................563
+//   §6: Function declarations...............................................................571
+//     §6.1: addA11yTabPressListener.........................................................574
+//     §6.2: addBlankTargetAttributes........................................................588
+//     §6.3: addDefinitionListButtons........................................................640
+//     §6.4: checkForLrgFrmtSingle...........................................................754
+//     §6.5: finalizeLrgFrmtSideRight........................................................771
+//     §6.6: fixDogears......................................................................791
+//     §6.7: handleMouseClickForA11y.........................................................816
+//     §6.8: handleTabPressForA11y...........................................................825
+//     §6.9: initContentFlippers.............................................................836
+//     §6.10: initDefinitionLists............................................................852
+//     §6.11: initDropDownToggles............................................................902
+//     §6.12: initFancyHrH2Motif.............................................................924
+//     §6.13: initFancyHrH3Motif.............................................................933
+//     §6.14: initHrH2Motif..................................................................942
+//     §6.15: initHrH3Motif..................................................................957
+//     §6.16: initQuickTabs..................................................................966
+//     §6.17: initReadMoreToggles...........................................................1030
+//     §6.18: initTocFloating...............................................................1050
+//     §6.19: initTriggeredByHover..........................................................1127
+//     §6.20: initWelcomeMessage............................................................1146
+//     §6.21: resizeLrgFrmtSideRight........................................................1156
+//     §6.22: showDefinitionListButtons.....................................................1164
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
 
@@ -162,7 +182,7 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	'use strict';
 
 	/**
-	 * Constructor for EmailConfirmations.
+	 * Constructor for OueDropDownToggles.
 	 *
 	 * @param {object} sels - Collection of selectors to drop down toggles and their components.
 	 * @param {string} sels.toggles - Selector for isolating drop down toggle elements.
@@ -394,6 +414,104 @@ age to later effect permanence.';
 	}
 
 	return OueDropDownToggles;
+} )( jQuery, 'jQuery.oue-custom.js' );
+
+////////
+// §2.2: OueEventCalendarFixer class
+
+/**
+ * Module for fixing event calendar pages on OUE websites.
+ *
+ * @class
+ */
+var OueEventCalendarFixer = ( function( $, thisFileName ) {
+	'use strict';
+
+	////////
+	// §2.2.1: Constructor
+
+	/**
+	 * Constructor for OueEventCalendarFixer.
+	 *
+	 * @param {object} sels - Collection of selectors to event calendar pages and their elements.
+	 * @param {string} sels.singleEventPage - Selector for isolating a tribe events single event
+	 *     viewing page.
+	 * @param {string} sels.sepLocationText - Selector for isolating the text describing the
+	 *     location of an event on a single event page.
+	 * @param {string} sels.sepEventSchedule - Selector for isolating the schedule for an event on a
+	 *     SEP single event page.
+	 */
+	function OueEventCalendarFixer( sels ) {
+		this.sels = sels;
+	}
+
+	////////
+	// §2.2.2: Public members
+
+	/**
+	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
+	 * appropriately constructed.
+	 *
+	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
+	 *     typed and appropriately set arguments.
+	 */
+	OueEventCalendarFixer.prototype.fixSingleEventPage = function () {
+		var $elemWithLocation;
+		var $page;
+
+		if ( this.isValid() ) {
+			$page = $( this.sels.singleEventPage );
+			if ( $page.length === 1 ) {
+				copyLocationIntoEventTitle( $page, this.sels.sepLocationText,
+					this.sels.sepEventSchedule );
+			}
+		}
+	}
+
+	/**
+	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
+	 * appropriately constructed.
+	 *
+	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
+	 *     typed and appropriately set arguments.
+	 */
+	OueEventCalendarFixer.prototype.isValid = function () {
+		var stillValid;
+		var props;
+
+		// Check the integrity of the sels member.
+		stillValid = typeof this.sels === 'object';
+		if ( stillValid ) {
+			props = Object.getOwnPropertyNames( this.sels );
+			stillValid = props.length === 3 && props.find ( function( elem ) {
+				return elem === 'singleEventPage';
+			} ) && props.find ( function( elem ) {
+				return elem === 'sepLocationText';
+			} ) && props.find ( function( elem ) {
+				return elem === 'sepEventSchedule';
+			} );
+		}
+
+		return stillValid;
+	}
+
+	////////
+	// §2.2.3: Lexically scoped supporting functions
+
+	function copyLocationIntoEventTitle( $page, selLocationText, selSchedule ) {
+		var $location;
+		var $schedule;
+		var locationText;
+		var newHtml;
+
+		$location = $page.find( selLocationText );
+		locationText = $location.text();
+		$schedule = $page.find( selSchedule );
+		newHtml = '<span class="tribe-event-location">/ ' + locationText + '</span>';
+		$schedule.append( newHtml );
+	}
+
+	return OueEventCalendarFixer;
 } )( jQuery, 'jQuery.oue-custom.js' );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

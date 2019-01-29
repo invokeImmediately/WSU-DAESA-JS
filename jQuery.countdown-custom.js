@@ -33,7 +33,7 @@
 //      §2.2: Window-loaded execution sequence................................................190
 //      §2.3: Class definitions...............................................................198
 //         §2.3.1: Private properties.........................................................210
-//         §2.3.2:  Public properties.........................................................217
+//         §2.3.2: Public properties..........................................................217
 //         §2.3.3: Main constructor execution sequence........................................224
 //         §2.3.4: Private function definitions...............................................232
 //      §2.3: Function definitions............................................................439
@@ -253,14 +253,13 @@ function CountdownTimerObjs( selectors ) {
 	function _findAppendedHtml( $timer, selector ) {
 		var $obj;
 
-			// Step[0]: Look for the appended HTML component among the children of the timer
-			// element.
-			$obj = $timer.find( selector );
-			if ( !$obj.length ) {
-				// Step[1]: No appended HTML component was found, ∴ return undefined instead of
-				// empty jQuery object.
-				$obj = undefined;
-			}
+		// Step[0]: Look for the appended HTML component among the children of the timer
+		// element.
+		$obj = $timer.find( selector );
+		if ( !$obj.length ) {
+			// Step[1]: No appended HTML component was found, ∴ return undefined instead of
+			// empty jQuery object.
+			$obj = undefined;
 		}
 
 		return $obj;
@@ -376,15 +375,15 @@ function CountdownTimerObjs( selectors ) {
 	function _findPrependedHtml( $timer, selector ) {
 		var $obj;
 
-			// Step[0]: Look for the prepended HTML component among the children of the timer
-			// element.
-			$obj = $timer.find( selector );
-			if ( !$obj.length ) {
-				// Step[1]: No prepended HTML component was found, ∴ return undefined instead of
-				// empty jQuery object.
-				$obj = undefined;
-			}
+		// Step[0]: Look for the prepended HTML component among the children of the timer
+		// element.
+		$obj = $timer.find( selector );
+		if ( !$obj.length ) {
+			// Step[1]: No prepended HTML component was found, ∴ return undefined instead of
+			// empty jQuery object.
+			$obj = undefined;
 		}
+
 
 		return $obj;
 	}
@@ -431,7 +430,6 @@ perly formed class selector as required.';
 
 	function _validateFoundObjects() {
 		var timerComponents;
-
 	}
 }
 

@@ -1,4 +1,4 @@
-/*!
+/*!*************************************************************************************************
  * jQuery.countdown-custom.js 
  * -------------------------------------------------------------------------------------------------
  * DESCRIPTION: Application of "The Final Countdown" jQuery plugin, written by Edson Hilios, to WSU
@@ -8,107 +8,138 @@
  * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  *
  * REPOSITORY: https://github.com/invokeImmediately/WSU-UE---JS
- */
-( function ( $ ) {
-
-var $countdownTimerById;
-var $countdownTimersByClass;
-var animationTiming = 400;	// Controls the speed at which jQuery-induced countdown animations occur
-var thisFileName = 'jQuery.countdown-custom';
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// DOM-READY EXECUTION SECTION
-
-$( function () {
-	$countdownTimerById = processCountdownTimerById( '#countdown-clock' );
-	// TODO: $countdownTimersByClass = processCountdownTimersByClass( … );
-} );
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// WINDOW-LOADED EXECUTION SECTION
-
-$( window ).on( 'load', function () {
-	showIdSelectedCountdownTimer( $countdownTimerById, animationTiming );
-	// TODO: showClassSelectedCountdownTimers( $countdownTimersByClass );
-} );
+ *
+ * LICENSE: ISC - Copyright (c) 2019 Daniel C. Rieck.
+ *
+ *   Permission to use, copy, modify, and/or distribute this software for any purpose with or
+ *   without fee is hereby granted, provided that the above copyright notice and this permission
+ *   notice appear in all copies.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS" AND DANIEL RIECK DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+ *   SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+ *   DANIEL RIECK BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
+ *   DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+ *   CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ *   PERFORMANCE OF THIS SOFTWARE.
+ **************************************************************************************************/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// CLASS DEFINITIONS
+// TABLE OF CONTENTS
+// -----------------
+//   §1: Modules used to initialize countdown timers...........................................43
+//      §1.1: CountdownTimerSelectors class....................................................46
+//   §2: Initilization of countdown timers....................................................172
+//      §2.1: Document-ready execution sequence...............................................182
+//      §2.2: Window-loaded execution sequence................................................190
+//      §2.3: Class definitions...............................................................198
+//         §2.3.1: Private properties.........................................................210
+//         §2.3.2:  Public properties.........................................................217
+//         §2.3.3: Main constructor execution sequence........................................224
+//         §2.3.4: Private function definitions...............................................232
+//      §2.3: Function definitions............................................................439
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §1: Modules for initializing countdown timers
+
+////////
+// §1.1: CountdownTimerSelectors class
 
 /**
- * Validated settings for OUE countdown timers designed to be functionalized via jQuery class
- * selectors.
+ * Module for storing validated settings for OUE countdown timers designed to be functionalized via
+ * jQuery class selectors.
  *
- * @param {string} timer - Class selector for isolating countdown timer elements.
- * @param {string} container - Class selector for obtaining the container component of a countdown
- *     timer.
- * @param {string} message -  Class selector targeting the message component of a countdown timer.
- * @param {string} prependedHtml - Class selector for isolating the component of a countdown timer
- *     that contains HTML to be prepended to the inner HTML of the message.
- * @param {string} appendedHtml - Class selector for isolating the component of a countdown timer
- *     that contains HTML to be appended to the inner HTML of the message.
- *
- * @throws {object} If the type of any argument is invalid and/or an argument is not a properly
- *     formatted class selector, an object will be thrown containing four string-typed parameters:
- *     fileName, fName, fDesc, and errorMsg. The thrown object is thus meant to be utilized with the
- *     jQuery.logError function.
+ * @class
  */
-function CountdownTimerSelectors( timer, container, message, prependedHtml, appendedHtml ) {
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// PRIVATE PROPERTIES
 
-	var argTypeMask = 0;
-	var validSelectorNeedle = /^\.[a-zA-Z0-9\-_]+$/;
-	var validSelectorMask = 0;
-	var error;
+var CountdownTimerSelectors = ( function( $, thisFile ) {
 
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// PUBLIC PROPERTIES
+	'use strict';
+	/**
+	 * Validated settings for OUE countdown timers designed to be functionalized via jQuery class
+	 * selectors.
+	 *
+	 * @param {string} timer - Class-based selector for isolating countdown timer elements.
+	 * @param {string} container - Class-based selector for obtaining the container component of a
+	 *     countdown timer.
+	 * @param {string} message -  Class-based selector targeting the message component of a countdown
+	 *     timer.
+	 * @param {string} prependedHtml - Class-based selector for isolating the component of a countdown
+	 *     timer that contains HTML to be prepended to the inner HTML of the message.
+	 * @param {string} appendedHtml - Class-based selector for isolating the component of a countdown
+	 *     timer that contains HTML to be appended to the inner HTML of the message.
+	 *
+	 * @throws {object} If the type of any argument is invalid and/or an argument is not a properly
+	 *     formatted class selector, an object will be thrown containing four string-typed parameters:
+	 *     fileName, fName, fDesc, and errorMsg. The thrown object is thus meant to be utilized with the
+	 *     jQuery.logError function.
+	 */
+	function CountdownTimerSelectors( timer, container, message, prependedHtml, appendedHtml ) {
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// PUBLIC PROPERTIES
 
-	this.timer = timer;
-	this.container = container;
-	this.message = message;
-	this.prependedHtml = prependedHtml;
-	this.prependedHtml = appendedHtml;
+		this.timer = timer;
+		this.container = container;
+		this.message = message;
+		this.prependedHtml = prependedHtml;
+		this.prependedHtml = appendedHtml;
 
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// MAIN CONSTRUCTOR EXECUTION
+		this.argTypeMask = 0;
+		this.validSelectorMask = 0;
+		this.validSelectorNeedle = /\.[a-zA-Z0-9\-_]+$/;
 
-	_initErrorMessages();
-	_checkArgTypes();
-	_checkSelectorStructure();
-	_throwAnyErrors();
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// MAIN CONSTRUCTOR EXECUTION
+
+		this.validate();
+	}
+
+	CountdownTimerSelectors.prototype.validate = function () {
+		initErrorMessages(this);
+		checkArgTypes(this);
+		checkSelectorStructure(this);
+		throwAnyErrors(this);		
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE FUNCTION DEFINITIONS
 
-	function _checkArgTypes() {
-		argTypeMask = typeof timer === 'string';
-		argTypeMask = ( argTypeMask << 1 ) | typeof container === 'string';
-		argTypeMask = ( argTypeMask << 1 ) | typeof message === 'string';
-		argTypeMask = ( argTypeMask << 1 ) | typeof prependedHtml === 'string';
-		argTypeMask = ( argTypeMask << 1 ) | typeof appendedHtml === 'string';
+	/**
+	 *
+	 */
+	function checkArgTypes( obj ) {
+		obj.argTypeMask = typeof obj.timer === 'string';
+		obj.argTypeMask = ( obj.argTypeMask << 1 ) | typeof obj.container === 'string';
+		obj.argTypeMask = ( obj.argTypeMask << 1 ) | typeof obj.message === 'string';
+		obj.argTypeMask = ( obj.argTypeMask << 1 ) | typeof obj.prependedHtml === 'string';
+		obj.argTypeMask = ( obj.argTypeMask << 1 ) | typeof obj.appendedHtml === 'string';
 	}
 
-	function _checkSelectorStructure() {
-		validSelectorMask = !!validSelectorNeedle.exec( timer );
-		validSelectorMask = ( validSelectorMask << 1 ) | !!validSelectorNeedle.exec( container );
-		validSelectorMask = ( validSelectorMask << 1 ) | !!validSelectorNeedle.exec( message );
-		validSelectorMask = ( validSelectorMask << 1 ) |
-			!!validSelectorNeedle.exec( prependedHtml );
-		validSelectorMask = ( validSelectorMask << 1 ) | !!validSelectorNeedle.exec( appendedHtml );
+	/**
+	 *
+	 */
+	function checkSelectorStructure( obj ) {
+		obj.validSelectorMask = !!obj.validSelectorNeedle.exec( obj.timer );
+		obj.validSelectorMask = ( obj.validSelectorMask << 1 ) |
+			!!obj.validSelectorNeedle.exec( obj.container );
+		obj.validSelectorMask = ( obj.validSelectorMask << 1 ) |
+			!!obj.validSelectorNeedle.exec( obj.message );
+		obj.validSelectorMask = ( obj.validSelectorMask << 1 ) |
+			!!obj.validSelectorNeedle.exec( obj.prependedHtml );
+		obj.validSelectorMask = ( obj.validSelectorMask << 1 ) |
+			!!obj.validSelectorNeedle.exec( obj.appendedHtml );
 	}
 
-	function _initErrorMessages() {
+	function initErrorMessages( obj ) {
 		try {
-			error = {
-				fileName: thisFileName,
+			obj.error = {
+				fileName: thisFile,
 				fName: 'CountdownTimerSelectors',
 				fDesc: 'Validated settings for class-based OUE countdown timers.',
 				errorMsg: ''
 			};
 		} catch ( e ) {
-			error = {
+			obj.error = {
 				fileName: 'Unidentified file',
 				fName: 'CountdownTimerSelectors',
 				fDesc: 'Validated settings for class-based OUE countdown timers.',
@@ -117,22 +148,54 @@ function CountdownTimerSelectors( timer, container, message, prependedHtml, appe
 		}
 	}
 
-	function _throwAnyErrors() {
-		if ( !argTypeMask || !validSelectorMask ) {
-			if ( !argTypeMask ) {
-				error.errorMsg = 'I encountered a wrongly typed argument during construction.';
-				if ( !validSelectorMask ) {
-					error.errorMsg += ' Also, ';
+	function throwAnyErrors( obj ) {
+		if ( !obj.argTypeMask || !obj.validSelectorMask ) {
+			if ( !obj.argTypeMask ) {
+				obj.error.errorMsg = 'I encountered a wrongly typed argument during construction.';
+				if ( !obj.validSelectorMask ) {
+					obj.error.errorMsg += ' Also, ';
 				}
 			}
-			if ( !validSelectorMask ) {
-				error.errorMsg += 'I found that at least one of my arguments did not contain a prop\
-erly formed class selector as required.';
+			if ( !obj.validSelectorMask ) {
+				obj.error.errorMsg += 'I found that at least one of my arguments did not contain a \
+properly formed class selector as required.';
 			}
-			throw error;
+			throw obj.error;
 		}
 	}
-}
+
+	return CountdownTimerSelectors;
+
+} )( jQuery, 'jQuery.countdown-custom.js' );
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §2: Initialization of countdown timers
+
+( function ( $ ) {
+
+var $countdownTimerById;
+var $countdownTimersByClass;
+var animationTiming = 400;	// Controls the speed at which jQuery-induced countdown animations occur
+var thisFileName = 'jQuery.countdown-custom';
+
+////////
+// §2.1: Document-ready execution sequence
+
+$( function () {
+	$countdownTimerById = processCountdownTimerById( '#countdown-clock' );
+	// TODO: $countdownTimersByClass = processCountdownTimersByClass( … );
+} );
+
+////////
+// §2.2: Window-loaded execution sequence
+
+$( window ).on( 'load', function () {
+	showIdSelectedCountdownTimer( $countdownTimerById, animationTiming );
+	// TODO: showClassSelectedCountdownTimers( $countdownTimersByClass );
+} );
+
+////////
+// §2.3: Class definitions
 
 /**
  * Collection of jQuery objects that represent the components of a single countdown timer.
@@ -143,30 +206,30 @@ erly formed class selector as required.';
  * TODO: @throws {?} ?
  */
 function CountdownTimerObjs( selectors ) {
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// PRIVATE PROPERTIES
+	////////
+	// §2.3.1: Private properties
 
 	var _argTypeMask = 0;
 	var _objFoundMask = undefined;
 	var _error;
 
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// PUBLIC PROPERTIES
+	////////
+	// §2.3.2:  Public properties
 
 	this.selectors = undefined;
 	this.$timers = undefined;
 	this.timerComponents = undefined;
 
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// MAIN CONSTRUCTOR EXECUTION
+	////////
+	// §2.3.3: Main constructor execution sequence
 
 	_initErrorMessages();
 	_checkArgType();
 	_findJQueryObjs();
 	_throwAnyErrors();
 
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// PRIVATE FUNCTION DEFINITIONS
+	////////
+	// §2.3.4: Private function definitions
 
 	function _checkArgTypes() {
 		_argTypeMask = selectors instanceof CountdownTimerSelectors;
@@ -286,14 +349,14 @@ function CountdownTimerObjs( selectors ) {
 	function _findMessage( $timer, selector ) {
 		var $obj;
 
-			// Step[0]: Look for the message component among the children of the timer element.
-			$obj = $timer.find( selector );
-			if ( !$obj.length ) {
-				// Step[1]: No message component was found, ∴ return undefined instead of empty
-				// jQuery object.
-				$obj = undefined;
-			}
+		// Step[0]: Look for the message component among the children of the timer element.
+		$obj = $timer.find( selector );
+		if ( !$obj.length ) {
+			// Step[1]: No message component was found, ∴ return undefined instead of empty
+			// jQuery object.
+			$obj = undefined;
 		}
+		// …
 
 		return $obj;
 	}
@@ -372,8 +435,8 @@ perly formed class selector as required.';
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// FUNCTION DEFINITIONS
+////////
+// §2.4: Function definitions
 
 /**
  * Find and process a countdown timer element that has been marked with the ID attribute.

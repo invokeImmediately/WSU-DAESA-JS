@@ -1,7 +1,7 @@
 /*!*************************************************************************************************
  * jQuery.oue-custom.js
  * -------------------------------------------------------------------------------------------------
- * PROJECT SUMMARY: Custom JS code common to all WSU Undergraduate Education websites.
+ * SUMMARY: Custom JS code common to all WSU Undergraduate Education websites.
  *
  * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  *
@@ -24,43 +24,42 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-//   §1: Addition of functions to jQuery......................................................71
-//     §1.1: jQuery.isCssClass................................................................74
-//     §1.2: jQuery.isJQueryObj...............................................................92
-//     §1.3: jQuery.logError.................................................................104
-//   §2: OUE website initilization modules...................................................175
-//     §2.1: OueDropDownToggle class.........................................................178
-//     §2.2: OueEventCalendarFixer class.....................................................424
-//       §2.2.1: Constructor.................................................................435
-//       §2.2.2: Public members..............................................................453
-//       §2.2.3: Lexically scoped supporting functions.......................................503
-//   §3: After dom is ready excution section.................................................524
-//   §4: After window loaded event bindings..................................................691
-//   §5: Window resize event bindings........................................................737
-//   §6: Function declarations...............................................................745
-//     §6.1: addA11yTabPressListener.........................................................748
-//     §6.2: addBlankTargetAttributes........................................................762
-//     §6.3: addDefinitionListButtons........................................................814
-//     §6.4: checkForLrgFrmtSingle...........................................................928
-//     §6.5: finalizeLrgFrmtSideRight........................................................945
-//     §6.6: fixDogears......................................................................965
-//     §6.7: fixEventCalendars...............................................................990
-//     §6.8: handleMouseClickForA11y.........................................................999
-//     §6.9: handleTabPressForA11y..........................................................1008
-//     §6.10: initContentFlippers...........................................................1019
-//     §6.11: initDefinitionLists...........................................................1035
-//     §6.12: initDropDownToggles...........................................................1085
-//     §6.13: initFancyHrH2Motif............................................................1108
-//     §6.14: initFancyHrH3Motif............................................................1117
-//     §6.15: initHrH2Motif.................................................................1126
-//     §6.16: initHrH3Motif.................................................................1141
-//     §6.17: initQuickTabs.................................................................1150
-//     §6.18: initReadMoreToggles...........................................................1214
-//     §6.19: initTocFloating...............................................................1234
-//     §6.20: initTriggeredByHover..........................................................1311
-//     §6.21: initWelcomeMessage............................................................1330
-//     §6.22: resizeLrgFrmtSideRight........................................................1340
-//     §6.23: showDefinitionListButtons.....................................................1348
+//   §1: Addition of functions to jQuery......................................................70
+//     §1.1: jQuery.isCssClass................................................................73
+//     §1.2: jQuery.isJQueryObj...............................................................91
+//     §1.3: jQuery.logError.................................................................103
+//   §2: OUE website initilization modules...................................................174
+//     §2.1: OueDropDownToggle class.........................................................177
+//     §2.2: OueEventCalendarFixer class.....................................................423
+//       §2.2.1: Constructor.................................................................434
+//       §2.2.2: Public members..............................................................452
+//       §2.2.3: Lexically scoped supporting functions.......................................502
+//   §3: After dom is ready excution section.................................................523
+//   §4: After window loaded event bindings..................................................683
+//   §5: Window resize event bindings........................................................729
+//   §6: Function declarations...............................................................737
+//     §6.1: addA11yTabPressListener.........................................................740
+//     §6.2: addDefinitionListButtons........................................................754
+//     §6.3: checkForLrgFrmtSingle...........................................................868
+//     §6.4: finalizeLrgFrmtSideRight........................................................885
+//     §6.5: fixDogears......................................................................905
+//     §6.6: fixEventCalendars...............................................................930
+//     §6.7: handleMouseClickForA11y.........................................................939
+//     §6.8: handleTabPressForA11y...........................................................948
+//     §6.9: initContentFlippers.............................................................959
+//     §6.10: initDefinitionLists............................................................975
+//     §6.11: initDropDownToggles...........................................................1025
+//     §6.12: initFancyHrH2Motif............................................................1048
+//     §6.13: initFancyHrH3Motif............................................................1057
+//     §6.14: initHrH2Motif.................................................................1066
+//     §6.15: initHrH3Motif.................................................................1081
+//     §6.16: initQuickTabs.................................................................1090
+//     §6.17: initReadMoreToggles...........................................................1154
+//     §6.18: initTocFloating...............................................................1174
+//     §6.19: initTriggeredByHover..........................................................1251
+//     §6.20: initWelcomeMessage............................................................1270
+//     §6.21: resizeLrgFrmtSideRight........................................................1280
+//     §6.22: showDefinitionListButtons.....................................................1288
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -545,13 +544,6 @@ $( function () {
 		sepEventSchedule: '.tribe-events-schedule h2'
 	} );
 
-	argsList.addBlankTargetAttributes = {
-		slctrSpine: "#spine",
-		slctrExternalLinks: "a.external"
-	};
-	args = argsList.addBlankTargetAttributes;
-	addBlankTargetAttributes( args.slctrSpine, args.slctrExternalLinks );
-
 	argsList.checkForLrgFrmtSingle = {
 		slctrSingle: ".single.large-format-friendly",
 		slctrMainHdr: "header.main-header",
@@ -759,59 +751,7 @@ function addA11yTabPressListener( listenerCallback ) {
 }
 
 ////////
-// §6.2: addBlankTargetAttributes
-
-/**
- * Adds missing blank target attributes to links within the WSU Spine as needed.
- * 
- * @param {string} slctrSpine - Selector string for locating the spine object within the DOM.
- * @param {string} slctrExternalLinks - Selector string for locating links within the spine that
- *     lead to destination external to the domain.
- */
-function addBlankTargetAttributes( slctrSpine, slctrExternalLinks ) {
-	var thisFnctnName = "addBlankTargetAttributes";
-	var thisFnctnDesc = "Adds missing blank target attributes to links within the WSU Spine as \
-needed.";
-	if ( typeof slctrSpine === "string" && typeof slctrExternalLinks === "string" ) {
-		var $spine = $( slctrSpine );
-		if ( $spine.length === 1 ) {
-			var $links = $spine.find( slctrExternalLinks );
-			$links.each( function () {
-				var $thisLink = $( this );
-				if ( $thisLink.attr( "target" ) != "_blank" ) {
-					$thisLink.attr( "target", "_blank" );
-					var relStr = $thisLink.attr( "rel" );
-					if ( relStr == undefined ) {
-						$thisLink.attr( "rel", "noopener noreferrer" );
-					} else {
-						if ( relStr.search( /noopener/i ) < 0 ) {
-							relStr += " noopener";
-						}
-						if ( relStr.search( /noreferrer/i ) < 0 ) {
-							relStr += " noreferrer";
-						}
-						$thisLink.attr( "rel", relStr );
-					}
-				}
-			} );
-		} else {
-			$.logError( 
-				thisFileName, thisFnctnName, thisFnctnDesc,
-				"I could not locate the WSU Spine element within the DOM."
-			);
-		}
-	} else {
-		$.logError( 
-			thisFileName, thisFnctnName, thisFnctnDesc,
-			"I was passed one or more incorrectly typed parameters. Here's what I was \
-passed:\n\ttypeof slctrSpine = " + ( typeof slctrSpine ) + "\n\ttypeof slctrExternalLinks = " +
-				( typeof slctrExternalLinks )
-		);
-	}
-}
-
-////////
-// §6.3: addDefinitionListButtons
+// §6.2: addDefinitionListButtons
 
 /**
  * Automatically creates and binds events to expand/collapse all buttons designed for improving UX
@@ -925,7 +865,7 @@ parental definition list within the DOM."
 }
 
 ////////
-// §6.4: checkForLrgFrmtSingle
+// §6.3: checkForLrgFrmtSingle
 
 function checkForLrgFrmtSingle( slctrSingle, slctrMainHdr, slctrHdrGroup, centeringClass ) {
 	var $lrgFrmtSnglSctns;
@@ -942,7 +882,7 @@ function checkForLrgFrmtSingle( slctrSingle, slctrMainHdr, slctrHdrGroup, center
 }
 
 ////////
-// §6.5: finalizeLrgFrmtSideRight
+// §6.4: finalizeLrgFrmtSideRight
 
 function finalizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, 
 		animDuration ) {
@@ -962,7 +902,7 @@ function finalizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trg
 }
 
 ////////
-// §6.6: fixDogears
+// §6.5: fixDogears
 
 function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 	// Fix bug wherein the wrong items in the spine become dogeared
@@ -987,7 +927,7 @@ function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 }
 
 ////////
-// §6.7: fixEventCalendars
+// §6.6: fixEventCalendars
 
 function fixEventCalendars( sels ) {
 	var fixer = new OueEventCalendarFixer( sels );
@@ -996,7 +936,7 @@ function fixEventCalendars( sels ) {
 }
 
 ////////
-// §6.8: handleMouseClickForA11y
+// §6.7: handleMouseClickForA11y
 
 function handleMouseClickForA11y( e ) {
 	$( "body" ).removeClass( "user-is-tabbing" );
@@ -1005,7 +945,7 @@ function handleMouseClickForA11y( e ) {
 }
 
 ////////
-// §6.9: handleTabPressForA11y
+// §6.8: handleTabPressForA11y
 
 function handleTabPressForA11y( e ) {
 	if ( e.keyCode === 9 ) {
@@ -1016,7 +956,7 @@ function handleTabPressForA11y( e ) {
 }
 
 ////////
-// §6.10: initContentFlippers
+// §6.9: initContentFlippers
 
 function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, animDuration ) {
 	$( slctrCntntFlppr ).click( function () {
@@ -1032,7 +972,7 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 }
 
 ////////
-// §6.11: initDefinitionLists
+// §6.10: initDefinitionLists
 
 function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, slctrColTwo,
  dtActivatingClass, ddRevealingClass, animHghtDrtn ) {
@@ -1082,7 +1022,7 @@ function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, sl
 }
 
 ////////
-// §6.12: initDropDownToggles
+// §6.11: initDropDownToggles
 
 /**
  * Initialize drop down toggle elements to respond to user interaction.
@@ -1105,7 +1045,7 @@ function initDropDownToggles( selToggles, selContainers, selTargets, activatingC
 }
 
 ////////
-// §6.13: initFancyHrH2Motif
+// §6.12: initFancyHrH2Motif
 
 function initFancyHrH2Motif( slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrFancyH2 ).each( function () {
@@ -1114,7 +1054,7 @@ function initFancyHrH2Motif( slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddD
 }
 
 ////////
-// §6.14: initFancyHrH3Motif
+// §6.13: initFancyHrH3Motif
 
 function initFancyHrH3Motif( slctrFancyH3, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrFancyH3 ).each( function () {
@@ -1123,7 +1063,7 @@ function initFancyHrH3Motif( slctrFancyH3, slctrPrevHr, hrClassesAdded, animAddD
 }
 
 ////////
-// §6.15: initHrH2Motif
+// §6.14: initHrH2Motif
 
 function initHrH2Motif( slctrStandardH2, slctrPrevHr, h2ClassesAdded, hrClassesAdded,
 		animAddDrtn ) {
@@ -1138,7 +1078,7 @@ function initHrH2Motif( slctrStandardH2, slctrPrevHr, h2ClassesAdded, hrClassesA
 }
 
 ////////
-// §6.16: initHrH3Motif
+// §6.15: initHrH3Motif
 
 function initHrH3Motif( slctrStandardH3, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrStandardH3 ).each( function () {
@@ -1147,7 +1087,7 @@ function initHrH3Motif( slctrStandardH3, slctrPrevHr, hrClassesAdded, animAddDrt
 }
 
 ////////
-// §6.17: initQuickTabs
+// §6.16: initQuickTabs
 
 // TODO: Convert to a class-based initialization module
 function initQuickTabs( slctrQtSctn ) {
@@ -1211,7 +1151,7 @@ function initQuickTabs( slctrQtSctn ) {
 }
 
 ////////
-// §6.18: initReadMoreToggles
+// §6.17: initReadMoreToggles
 
 function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDuration ) {
 	$( slctrToggleIn ).click( function () {
@@ -1231,7 +1171,7 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 }
 
 ////////
-// §6.19: initTocFloating
+// §6.18: initTocFloating
 
 function initTocFloating( slctrToc, slctrBackToToc ) {
 	var thisFuncName = "initTocFloating";
@@ -1308,7 +1248,7 @@ contents elements; this function only works with one table of contents.' }" );
 }
 
 ////////
-// §6.20: initTriggeredByHover
+// §6.19: initTriggeredByHover
 
 function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration ) {
 	$( slctrTrggrdOnHvr ).mouseenter( function () {
@@ -1327,7 +1267,7 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 }
 
 ////////
-// §6.21: initWelcomeMessage
+// §6.20: initWelcomeMessage
 
 function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDuration, 
 		fadeInDuration ) {
@@ -1337,7 +1277,7 @@ function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDu
 }
 
 ////////
-// §6.22: resizeLrgFrmtSideRight
+// §6.21: resizeLrgFrmtSideRight
 
 function resizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggrWidth,
 		animDuration ) {
@@ -1345,7 +1285,7 @@ function resizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggr
 }
 
 ////////
-// §6.23: showDefinitionListButtons
+// §6.22: showDefinitionListButtons
 
 /**
  * Display expand/collapse all buttons, which were initially hidden

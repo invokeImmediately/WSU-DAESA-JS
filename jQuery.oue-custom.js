@@ -24,42 +24,39 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-//   §1: Addition of functions to jQuery......................................................70
-//     §1.1: jQuery.isCssClass................................................................73
-//     §1.2: jQuery.isJQueryObj...............................................................91
-//     §1.3: jQuery.logError.................................................................103
-//   §2: OUE website initilization modules...................................................174
-//     §2.1: OueDropDownToggle class.........................................................177
-//     §2.2: OueEventCalendarFixer class.....................................................423
-//       §2.2.1: Constructor.................................................................434
-//       §2.2.2: Public members..............................................................452
-//       §2.2.3: Lexically scoped supporting functions.......................................502
-//   §3: After dom is ready excution section.................................................523
-//   §4: After window loaded event bindings..................................................683
-//   §5: Window resize event bindings........................................................729
-//   §6: Function declarations...............................................................737
-//     §6.1: addA11yTabPressListener.........................................................740
-//     §6.2: addDefinitionListButtons........................................................754
-//     §6.3: checkForLrgFrmtSingle...........................................................868
-//     §6.4: finalizeLrgFrmtSideRight........................................................885
-//     §6.5: fixDogears......................................................................905
-//     §6.6: fixEventCalendars...............................................................930
-//     §6.7: handleMouseClickForA11y.........................................................939
-//     §6.8: handleTabPressForA11y...........................................................948
-//     §6.9: initContentFlippers.............................................................959
-//     §6.10: initDefinitionLists............................................................975
-//     §6.11: initDropDownToggles...........................................................1025
-//     §6.12: initFancyHrH2Motif............................................................1048
-//     §6.13: initFancyHrH3Motif............................................................1057
-//     §6.14: initHrH2Motif.................................................................1066
-//     §6.15: initHrH3Motif.................................................................1081
-//     §6.16: initQuickTabs.................................................................1090
-//     §6.17: initReadMoreToggles...........................................................1154
-//     §6.18: initTocFloating...............................................................1174
-//     §6.19: initTriggeredByHover..........................................................1251
-//     §6.20: initWelcomeMessage............................................................1270
-//     §6.21: resizeLrgFrmtSideRight........................................................1280
-//     §6.22: showDefinitionListButtons.....................................................1288
+//   §1: Addition of functions to jQuery......................................................67
+//     §1.1: jQuery.isCssClass................................................................70
+//     §1.2: jQuery.isJQueryObj...............................................................88
+//     §1.3: jQuery.logError.................................................................100
+//   §2: OUE website initilization modules...................................................171
+//     §2.1: OueDropDownToggle class.........................................................174
+//     §2.2: OueEventCalendarFixer class.....................................................420
+//       §2.2.1: Constructor.................................................................431
+//       §2.2.2: Public members..............................................................449
+//       §2.2.3: Lexically scoped supporting functions.......................................499
+//   §3: DOM-Ready execution sequence........................................................520
+//   §4: Window-loaded event binding.........................................................670
+//   §5: Window-resized event binding........................................................705
+//   §6: Function declarations...............................................................712
+//     §6.1: addA11yTabPressListener.........................................................715
+//     §6.2: addDefinitionListButtons........................................................729
+//     §6.3: fixDogears......................................................................843
+//     §6.4: fixEventCalendars...............................................................868
+//     §6.5: handleMouseClickForA11y.........................................................877
+//     §6.6: handleTabPressForA11y...........................................................886
+//     §6.7: initContentFlippers.............................................................897
+//     §6.8: initDefinitionLists.............................................................913
+//     §6.9: initDropDownToggles.............................................................965
+//     §6.10: initFancyHrH2Motif.............................................................988
+//     §6.11: initFancyHrH3Motif.............................................................997
+//     §6.12: initHrH2Motif.................................................................1006
+//     §6.13: initHrH3Motif.................................................................1021
+//     §6.14: initQuickTabs.................................................................1030
+//     §6.15: initReadMoreToggles...........................................................1094
+//     §6.16: initTocFloating...............................................................1114
+//     §6.17: initTriggeredByHover..........................................................1191
+//     §6.18: initWelcomeMessage............................................................1210
+//     §6.19: showDefinitionListButtons.....................................................1220
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -520,7 +517,7 @@ var OueEventCalendarFixer = ( function( $, thisFileName ) {
 } )( jQuery, 'jQuery.oue-custom.js' );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// §3: AFTER DOM IS READY excution section
+// §3: DOM-Ready execution sequence
 
 ( function( $, thisFileName ) {
 
@@ -543,16 +540,6 @@ $( function () {
 		sepLocationText: '.tribe-events-meta-group-venue .tribe-venue a',
 		sepEventSchedule: '.tribe-events-schedule h2'
 	} );
-
-	argsList.checkForLrgFrmtSingle = {
-		slctrSingle: ".single.large-format-friendly",
-		slctrMainHdr: "header.main-header",
-		slctrHdrGroup: ".header-group",
-		centeringClass: "centered"
-	};
-	args = argsList.checkForLrgFrmtSingle;
-	checkForLrgFrmtSingle( args.slctrSingle, args.slctrMainHdr, args.slctrHdrGroup, 
-		args.centeringClass );
 
 	argsList.initHrH2Motif = {
 		slctrStandardH2: ".column > h2:not(.fancy), .column > section > h2:not(.fancy)",
@@ -680,22 +667,11 @@ $( function () {
 } );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// §4: AFTER WINDOW LOADED event bindings
+// §4: Window-loaded event binding
 
 $( window ).on( "load", function () {
 	var argsList = new Object();
 	var args;
-
-	argsList.finalizeLrgFrmtSideRight = {
-		slctrSideRight: ".side-right.large-format-friendly",
-		slctrColOne: ".column.one",
-		slctrColTwo: ".column.two",
-		trggrWidth: 1051,
-		animDuration: 100
-	};
-	args = argsList.finalizeLrgFrmtSideRight;
-	finalizeLrgFrmtSideRight( args.slctrSideRight, args.slctrColOne, args.slctrColTwo, 
-		args.trggrWidth, args.animDuration );
 
 	argsList.showDefinitionListButtons = {
 		slctrDefList: "dl.toggled",
@@ -726,15 +702,14 @@ $( window ).on( "load", function () {
 } );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// §5: WINDOW RESIZE event bindings
+// §5: Window-resized event binding
 
 $( window ).resize( function () {
-	resizeLrgFrmtSideRight( ".side-right.large-format-friendly", "div.column.one",
-		"div.column.two", 1051, 100 );
+	// TODO: Add code as needed.
 } );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// §6: FUNCTION DECLARATIONS
+// §6: Function declarations
 
 ////////
 // §6.1: addA11yTabPressListener
@@ -865,44 +840,7 @@ parental definition list within the DOM."
 }
 
 ////////
-// §6.3: checkForLrgFrmtSingle
-
-function checkForLrgFrmtSingle( slctrSingle, slctrMainHdr, slctrHdrGroup, centeringClass ) {
-	var $lrgFrmtSnglSctns;
-	var $mainHeader;
-	var $mnHdrChldDiv;
-
-	$lrgFrmtSnglSctns = $( slctrSingle );
-	if ( $lrgFrmtSnglSctns.length > 0 ) {
-		$mainHeader = $( slctrMainHdr );
-		$mainHeader.addClass( centeringClass );
-		$mnHdrChldDiv = $mainHeader.find( slctrHdrGroup );
-		$mnHdrChldDiv.addClass( centeringClass );
-	}
-}
-
-////////
-// §6.4: finalizeLrgFrmtSideRight
-
-function finalizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, 
-		animDuration ) {
-	if( $( window ).width() >= trggrWidth ) {
-		$( slctrSideRight + ">" + slctrColTwo ).each( function () {
-			var $this = $( this );
-			var $thisPrev = $this.prev( slctrColOne );
-			if( $this.height() != $thisPrev.height() ) {
-				$this.height( $thisPrev.height() );
-			}
-			var crrntOpacity = $this.css( "opacity" );
-			if ( crrntOpacity == 0 ) {
-				$this.animate( {opacity: 1.0}, animDuration );
-			}
-		} );
-	}
-}
-
-////////
-// §6.5: fixDogears
+// §6.3: fixDogears
 
 function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 	// Fix bug wherein the wrong items in the spine become dogeared
@@ -927,7 +865,7 @@ function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 }
 
 ////////
-// §6.6: fixEventCalendars
+// §6.4: fixEventCalendars
 
 function fixEventCalendars( sels ) {
 	var fixer = new OueEventCalendarFixer( sels );
@@ -936,7 +874,7 @@ function fixEventCalendars( sels ) {
 }
 
 ////////
-// §6.7: handleMouseClickForA11y
+// §6.5: handleMouseClickForA11y
 
 function handleMouseClickForA11y( e ) {
 	$( "body" ).removeClass( "user-is-tabbing" );
@@ -945,7 +883,7 @@ function handleMouseClickForA11y( e ) {
 }
 
 ////////
-// §6.8: handleTabPressForA11y
+// §6.6: handleTabPressForA11y
 
 function handleTabPressForA11y( e ) {
 	if ( e.keyCode === 9 ) {
@@ -956,7 +894,7 @@ function handleTabPressForA11y( e ) {
 }
 
 ////////
-// §6.9: initContentFlippers
+// §6.7: initContentFlippers
 
 function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, animDuration ) {
 	$( slctrCntntFlppr ).click( function () {
@@ -972,8 +910,10 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 }
 
 ////////
-// §6.10: initDefinitionLists
+// §6.8: initDefinitionLists
 
+// TODO: Add inline documentation in JSDoc3 format.
+// TODO: Remove slctrLrgFrmtSection, slctrColOne, and slctrColTwo and related code.
 function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, slctrColTwo,
  dtActivatingClass, ddRevealingClass, animHghtDrtn ) {
 	var $listDts = $( slctrDefList + " dt" );
@@ -1022,7 +962,7 @@ function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, sl
 }
 
 ////////
-// §6.11: initDropDownToggles
+// §6.9: initDropDownToggles
 
 /**
  * Initialize drop down toggle elements to respond to user interaction.
@@ -1045,7 +985,7 @@ function initDropDownToggles( selToggles, selContainers, selTargets, activatingC
 }
 
 ////////
-// §6.12: initFancyHrH2Motif
+// §6.10: initFancyHrH2Motif
 
 function initFancyHrH2Motif( slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrFancyH2 ).each( function () {
@@ -1054,7 +994,7 @@ function initFancyHrH2Motif( slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddD
 }
 
 ////////
-// §6.13: initFancyHrH3Motif
+// §6.11: initFancyHrH3Motif
 
 function initFancyHrH3Motif( slctrFancyH3, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrFancyH3 ).each( function () {
@@ -1063,7 +1003,7 @@ function initFancyHrH3Motif( slctrFancyH3, slctrPrevHr, hrClassesAdded, animAddD
 }
 
 ////////
-// §6.14: initHrH2Motif
+// §6.12: initHrH2Motif
 
 function initHrH2Motif( slctrStandardH2, slctrPrevHr, h2ClassesAdded, hrClassesAdded,
 		animAddDrtn ) {
@@ -1078,7 +1018,7 @@ function initHrH2Motif( slctrStandardH2, slctrPrevHr, h2ClassesAdded, hrClassesA
 }
 
 ////////
-// §6.15: initHrH3Motif
+// §6.13: initHrH3Motif
 
 function initHrH3Motif( slctrStandardH3, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
 	$( slctrStandardH3 ).each( function () {
@@ -1087,7 +1027,7 @@ function initHrH3Motif( slctrStandardH3, slctrPrevHr, hrClassesAdded, animAddDrt
 }
 
 ////////
-// §6.16: initQuickTabs
+// §6.14: initQuickTabs
 
 // TODO: Convert to a class-based initialization module
 function initQuickTabs( slctrQtSctn ) {
@@ -1151,7 +1091,7 @@ function initQuickTabs( slctrQtSctn ) {
 }
 
 ////////
-// §6.17: initReadMoreToggles
+// §6.15: initReadMoreToggles
 
 function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDuration ) {
 	$( slctrToggleIn ).click( function () {
@@ -1171,7 +1111,7 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 }
 
 ////////
-// §6.18: initTocFloating
+// §6.16: initTocFloating
 
 function initTocFloating( slctrToc, slctrBackToToc ) {
 	var thisFuncName = "initTocFloating";
@@ -1248,7 +1188,7 @@ contents elements; this function only works with one table of contents.' }" );
 }
 
 ////////
-// §6.19: initTriggeredByHover
+// §6.17: initTriggeredByHover
 
 function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration ) {
 	$( slctrTrggrdOnHvr ).mouseenter( function () {
@@ -1267,7 +1207,7 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 }
 
 ////////
-// §6.20: initWelcomeMessage
+// §6.18: initWelcomeMessage
 
 function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDuration, 
 		fadeInDuration ) {
@@ -1277,15 +1217,7 @@ function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDu
 }
 
 ////////
-// §6.21: resizeLrgFrmtSideRight
-
-function resizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggrWidth,
-		animDuration ) {
-	finalizeLrgFrmtSideRight( slctrSideRight, slctrColOne, slctrColTwo, trggrWidth, animDuration );
-}
-
-////////
-// §6.22: showDefinitionListButtons
+// §6.19: showDefinitionListButtons
 
 /**
  * Display expand/collapse all buttons, which were initially hidden

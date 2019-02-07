@@ -57,38 +57,56 @@
 			$( window ).on( 'resize.textresize orientationchange.textresize' , resizer );
 		} );
 	};
-})(jQuery);
+} )( jQuery );
 
 // Now use the plugin on the WSU Undergraduate education website (i.e. delete or modify the
 // following statement if you are going to utilize this plugin on your own site).
 // TODO: Pass in default maximum column, spine widths
-( function( $ ) {
+( function( $, themeMinColumnWidth, themeSpineWidth, resizersClass, filename ) {
+
+try {
 	var clmnWidth; 
 	var dfltSpineWidth; // px - default width of spine
 	
+	if ( typeof themeMinColumnWidth !== 'number' || typeof themeSpineWidth !== 'number' ||
+			typeof resizersClass !== 'string' ) {
+		throw 'I was not set up with properly typed initialization parameters and am unable to proc\
+eed.';
+	}
+
 	// Set the default column width in pixels (passed in based on the theme)
-	clmnWidth = 926;
+	clmnWidth = themeMinColumnWidth;
 
 	// Set the default width of the Spine in pixels (passed in based on the theme)
-	dfltSpineWidth = 198;
+	dfltSpineWidth = themeSpineWidth;
 
 	$( document ).ready( function () {
-		initArticleHeaderText();
-		initTextAutoResizers( '.auto-fits-text' );
+		initArticleHeaderText( resizersClass );
+		initTextAutoResizers( '.' + resizersClass );
 	} );
 
-	function initArticleHeaderText() {
+	function initArticleHeaderText( resizersClass ) {
 		//TODO: Refactor to prefer relying on functionality mediated by auto-fits-text class
 		var $columns = $( '.column' );
+		var $this = $( this );
 
 		$columns.find( '.article-header .header-content h1' ).each( function () {
-			$( this ).textResize( 1.277142857142857, {'minFontSize' : '34.8' } );
+			$this = $( this );
+			if ( !$this.hasClass( resizersClass ) ) {
+				$this.textResize( 1.277142857142857, {'minFontSize' : '34.8' } );
+			}
 		} );
 		$columns.find( '.article-header .header-content h2').each( function () {
-			$( this ).textResize( 1.847840465639262, { 'minFontSize' : '24.0' } );
+			$this = $( this );
+			if ( !$this.hasClass( resizersClass ) ) {
+				$this.textResize( 1.847840465639262, { 'minFontSize' : '28' } );
+			}
 		} );
 		$columns.find( '.article-header .header-content h3').each( function () {
-			$( this ).textResize( 4.110097222222222, {'minFontSize' : '10.7' } );
+			$this = $( this );
+			if ( !$this.hasClass( resizersClass ) ) {
+				$this.textResize( 4.110097222222222, {'minFontSize' : '16' } );
+			}
 		} );
 	}
 	
@@ -188,13 +206,13 @@
 					if ( $binder.hasClass( 'max-1188' ) ) {
 						maxWidthCss = '1188';
 					} else if ( $binder.hasClass( 'max-1386' ) ) {
-						maxWidthCss = '1386';						
+						maxWidthCss = '1386';
 					} else if ( $binder.hasClass( 'max-1584' ) ) {
-						maxWidthCss = '1584';						
+						maxWidthCss = '1584';
 					} else if ( $binder.hasClass( 'max-1782' ) ) {
-						maxWidthCss = '1782';						
+						maxWidthCss = '1782';
 					} else if ( $binder.hasClass( 'max-1980' ) ) {
-						maxWidthCss = '1980';						
+						maxWidthCss = '1980';
 					}
 				}
 
@@ -222,4 +240,8 @@
 			}
 		}
 	}
-} )( jQuery );
+} catch ( errMsg ) {
+	console.log( 'Error in ' + fileName + ':' + errMsg );
+}
+
+} )( jQuery, 990, 198, 'auto-fits-text', 'jQuery.textResize.js' );

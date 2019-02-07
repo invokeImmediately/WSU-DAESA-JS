@@ -11,7 +11,7 @@
  *
  * LICENSE: Released under GNU GPLv2
  */
-( function( $ ) {
+( function( $, fileName ) {
 	// TODO: Modify with enhancement by adding an option to specify the selector for the basis of
 	// the resizing, such as a parent column.
 	$.fn.textResize = function( scalingFactor, options ) {
@@ -20,7 +20,8 @@
 			settings = $.extend( {
 				'minFontSize' : Number.NEGATIVE_INFINITY,
 				'maxFontSize' : Number.POSITIVE_INFINITY,
-				'againstSelf' : true
+				'againstSelf' : true,
+				'basisSelector' : '.column'
 			}, options );
 
 		return this.each( function () {
@@ -28,7 +29,14 @@
 			var $parent = undefined;
 
 			if ( !settings.againstSelf ) {
-				$parent = $this.parents( '.column' ).first();
+				$parent = $this.parents( settings.basisSelector ).first();
+				if ( !$parent.lengh ) {
+					settings.againstSelf = true;
+					console.log( 'Error in ' + fileName + ':' + 'I was unable to select the basis f\
+or text resizing from the DOM. Defaulting to resizing the font of the element represented by the fo\
+llowing jQuery object against its own width.' );
+					console.log( $this );
+				}
 			}
 
 			// Resizer() keeps font-size proportional to object width as constrainted by the user
@@ -57,7 +65,7 @@
 			$( window ).on( 'resize.textresize orientationchange.textresize' , resizer );
 		} );
 	};
-} )( jQuery );
+} )( jQuery, 'jQuery.textResize.js' );
 
 // Now use the plugin on the WSU Undergraduate education website (i.e. delete or modify the
 // following statement if you are going to utilize this plugin on your own site).
@@ -118,7 +126,7 @@ eed.';
 	
 	// TODO: Refactor class design for improved efficiency, lower overhead
 	function TextAutoResizers( cssClass, spineWidth ) {	
-		var $resizers = $(cssClass);
+		var $resizers = $( cssClass );
 		
 		this.initTextAutoResizing = function () {
 			$resizers.each( function() {
@@ -128,25 +136,32 @@ eed.';
 		
 		function TextAutoResizingElem( $jqObj, spineWidth ) {
 			var $this = $jqObj;
+
 			initTextAutoResizing();
 			
 			function initTextAutoResizing() {
 				if ( $.isJQueryObj( $this ) ) {
-					var fontSz = parseFloat( $this.css( 'font-size' ) );
-					var scalingAmt = calculateScalingAmount( fontSz );
+					var cssData;
+					var fontSz;
+					var minFontSz;
+					var minFontSzNeedle = /^[0-9]+(?:pt[0-9])?$/;
+					var resizeOptions;
+					var scalingAmt;
 
+					resizeOptions = {
+						againstSelf: 0
+					};
+					fontSz = parseFloat( $this.css( 'font-size' ) );
+					scalingAmt = calculateScalingAmount( fontSz );
 					if ( $this.hasClass( 'has-max-size' ) )  {
-						$this.textResize( scalingAmt, {
-							'minFontSize' : '10.7px',
-							'maxFontSize' : fontSz,
-							'againstSelf' : 0
-						} );
-					} else {
-						$this.textResize( scalingAmt, {
-							'minFontSize' : '10.7px',
-							'againstSelf' : 0
-						} );
-					}					
+						resizeOptions.maxFontSize = fontSz;
+					}
+					cssData = new CssData( $this );
+					minFontSz = cssData.getData('min-fs');
+					if ( minFontSzNeedle.test( minFontSz ) ) {
+						resizeOptions.minFontSize = minFontSz.replace( 'pt', '.' );
+					}
+					$this.textResize( scalingAmt, resizeOptions );
 				}
 			}
 			

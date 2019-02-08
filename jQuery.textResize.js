@@ -11,7 +11,7 @@
  *
  * LICENSE: Released under GNU GPLv2
  */
-( function( $, fileName ) {
+( function( $, dfltBasisSlctr, fileName ) {
 	// TODO: Modify with enhancement by adding an option to specify the selector for the basis of
 	// the resizing, such as a parent column.
 	$.fn.textResize = function( scalingFactor, options ) {
@@ -21,7 +21,7 @@
 				'minFontSize' : Number.NEGATIVE_INFINITY,
 				'maxFontSize' : Number.POSITIVE_INFINITY,
 				'againstSelf' : true,
-				'basisSelector' : '.column'
+				'basisSelector' : dfltBasisSlctr
 			}, options );
 
 		return this.each( function () {
@@ -30,11 +30,12 @@
 
 			if ( !settings.againstSelf ) {
 				$parent = $this.parents( settings.basisSelector ).first();
-				if ( !$parent.lengh ) {
+				if ( !$parent.length ) {
 					settings.againstSelf = true;
-					console.log( 'Error in ' + fileName + ':' + 'I was unable to select the basis f\
-or text resizing from the DOM. Defaulting to resizing the font of the element represented by the fo\
-llowing jQuery object against its own width.' );
+					console.log( 'Error in ' + fileName + ': I was unable to select the basis for t\
+ext resizing from the DOM. Defaulting to resizing the font of the element represented by the follow\
+ing jQuery object against its own width.' );
+					console.log( 'Basis selector: ' + settings.basisSelector );
 					console.log( $this );
 				}
 			}
@@ -65,12 +66,12 @@ llowing jQuery object against its own width.' );
 			$( window ).on( 'resize.textresize orientationchange.textresize' , resizer );
 		} );
 	};
-} )( jQuery, 'jQuery.textResize.js' );
+} )( jQuery, '.column', 'jQuery.textResize.js' );
 
 // Now use the plugin on the WSU Undergraduate education website (i.e. delete or modify the
 // following statement if you are going to utilize this plugin on your own site).
 // TODO: Pass in default maximum column, spine widths
-( function( $, themeMinColumnWidth, themeSpineWidth, resizersClass, filename ) {
+( function( $, themeMinColumnWidth, themeSpineWidth, resizersClass, dfltBasisSlctr, filename ) {
 
 try {
 	var clmnWidth; 
@@ -141,6 +142,7 @@ eed.';
 			
 			function initTextAutoResizing() {
 				if ( $.isJQueryObj( $this ) ) {
+					var basisSlctr;
 					var cssData;
 					var fontSz;
 					var minFontSz;
@@ -153,7 +155,6 @@ eed.';
 						againstSelf: false
 					};
 					fontSz = parseFloat( $this.css( 'font-size' ) );
-					scalingAmt = calculateScalingAmount( fontSz );
 					if ( $this.hasClass( 'has-max-size' ) )  {
 						resizeOptions.maxFontSize = fontSz;
 					}
@@ -166,21 +167,33 @@ eed.';
 						if ( minFontSzNeedle.test( minFontSz ) ) {
 							resizeOptions.minFontSize = minFontSz.replace( 'pt', '.' );
 						}
+						basisSlctr = cssData.getData('resize-against')
+						if ( basisSlctr !== '' ) {
+							basisSlctr = '.' + basisSlctr;
+							resizeOptions.basisSelector = basisSlctr;
+						} else {
+							basisSlctr = dfltBasisSlctr;
+						}
 					} catch( e ) {
 						console.log( e );
+						basisSlctr = dfltBasisSlctr;
 					}
+					scalingAmt = calculateScalingAmount( fontSz, basisSlctr );
 					$this.textResize( scalingAmt, resizeOptions );
 				}
 			}
 			
-			function calculateScalingAmount( fontSz ) {
-				var maxColumnWidth = findMaxColumnWidth();
+			function calculateScalingAmount( fontSz, basisSlctr ) {
+				var maxColumnWidth = findMaxColumnWidth( basisSlctr );
 
 				return maxColumnWidth / ( fontSz * 10 );
 			}
 			
-			function findMaxColumnWidth() {
-				var $parentCol = $this.parents( '.column' ).first();
+			function findMaxColumnWidth( basisSlctr ) {
+				var $parentCol = $this.parents( basisSlctr ).first();
+				if ( $parentCol.length === 0 ) {
+					$parentCol = $this.parents( dfltBasisSlctr ).first();
+				}
 				var maxColWidth = findMaxColWidth( $parentCol );
 
 				return maxColWidth;
@@ -267,4 +280,4 @@ eed.';
 	console.log( 'Error in ' + fileName + ':' + errMsg );
 }
 
-} )( jQuery, 990, 198, 'auto-fits-text', 'jQuery.textResize.js' );
+} )( jQuery, 990, 198, 'auto-fits-text', '.column', 'jQuery.textResize.js' );

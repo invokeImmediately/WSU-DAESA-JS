@@ -149,6 +149,7 @@ eed.';
 					var scalingAmt;
 
 					resizeOptions = {
+						minFontSize: '14',
 						againstSelf: 0
 					};
 					fontSz = parseFloat( $this.css( 'font-size' ) );
@@ -156,10 +157,14 @@ eed.';
 					if ( $this.hasClass( 'has-max-size' ) )  {
 						resizeOptions.maxFontSize = fontSz;
 					}
-					cssData = new CssData( $this );
-					minFontSz = cssData.getData('min-fs');
-					if ( minFontSzNeedle.test( minFontSz ) ) {
-						resizeOptions.minFontSize = minFontSz.replace( 'pt', '.' );
+					try {
+						cssData = new CssData( $this );
+						minFontSz = cssData.getData('min-fs');
+						if ( minFontSzNeedle.test( minFontSz ) ) {
+							resizeOptions.minFontSize = minFontSz.replace( 'pt', '.' );
+						}
+					} catch( e ) {
+						console.log( e );
 					}
 					$this.textResize( scalingAmt, resizeOptions );
 				}

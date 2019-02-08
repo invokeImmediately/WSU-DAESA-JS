@@ -150,12 +150,15 @@ eed.';
 
 					resizeOptions = {
 						minFontSize: '14',
-						againstSelf: 0
+						againstSelf: false
 					};
 					fontSz = parseFloat( $this.css( 'font-size' ) );
 					scalingAmt = calculateScalingAmount( fontSz );
 					if ( $this.hasClass( 'has-max-size' ) )  {
 						resizeOptions.maxFontSize = fontSz;
+					}
+					if ( $this.hasClass( 'resize-against-self' ) ) {
+						resizeOptions.againstSelf = true;
 					}
 					try {
 						cssData = new CssData( $this );

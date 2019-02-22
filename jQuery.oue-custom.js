@@ -613,18 +613,14 @@ $( function () {
 
 	argsList.initDefinitionLists = {
 		slctrDefList: "dl.toggled",
-		slctrLrgFrmtSection: ".large-format-friendly",
-		slctrColOne: ".column.one",
-		slctrColTwo: ".column.two",
 		dtActivatingClass: "activated",
 		ddRevealingClass: "revealed",
 		animSldDrtn: 400,
 		animHghtDrtn: 100
 	};
 	args = argsList.initDefinitionLists;
-	initDefinitionLists( args.slctrDefList, args.slctrLrgFrmtSection, args.slctrColOne, 
-		args.slctrColTwo, args.dtActivatingClass, args.ddRevealingClass, args.animSldDrtn, 
-		args.animHghtDrtn );
+	initDefinitionLists( args.slctrDefList, args.dtActivatingClass, args.ddRevealingClass,
+		args.animSldDrtn, args.animHghtDrtn );
 
 	argsList.addDefinitionListButtons = {
 		slctrDefList: argsList.initDefinitionLists.slctrDefList,
@@ -913,9 +909,7 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 // §6.8: initDefinitionLists
 
 // TODO: Add inline documentation in JSDoc3 format.
-// TODO: Remove slctrLrgFrmtSection, slctrColOne, and slctrColTwo and related code.
-function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, slctrColTwo,
- dtActivatingClass, ddRevealingClass, animHghtDrtn ) {
+function initDefinitionLists( slctrDefList, dtActivatingClass, ddRevealingClass, animHghtDrtn ) {
 	var $listDts = $( slctrDefList + " dt" );
 	$listDts.attr( "tabindex", 0 );
 	$listDts.click( function() {
@@ -932,9 +926,6 @@ function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, sl
 				maxHeight: 0
 			} );
 		}
-		var $parent = $this.parents( slctrLrgFrmtSection + ">" + slctrColOne );
-		var $prntNxt = $parent.next( slctrColTwo );
-		$prntNxt.delay( 400 ).animate( {height: $parent.css( 'height' )}, animHghtDrtn );
 	} );
 	$listDts.on( "keydown", function( e ) {
 		var regExMask = /Enter| /g; // TODO: Divide and conquer
@@ -953,9 +944,6 @@ function initDefinitionLists( slctrDefList, slctrLrgFrmtSection, slctrColOne, sl
 					maxHeight: 0
 				} );
 			}
-			var $parent = $this.parents( slctrLrgFrmtSection + ">" + slctrColOne );
-			var $prntNxt = $parent.next( slctrColTwo );
-			$prntNxt.delay( 400 ).animate( {height: $parent.css( 'height' )}, animHghtDrtn );
 		}
 	} );
 	$( slctrDefList + " dd" ).removeClass( ddRevealingClass );

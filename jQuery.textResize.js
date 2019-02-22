@@ -71,7 +71,7 @@ ing jQuery object against its own width.' );
 // Now use the plugin on the WSU Undergraduate education website (i.e. delete or modify the
 // following statement if you are going to utilize this plugin on your own site).
 // TODO: Pass in default maximum column, spine widths
-( function( $, themeMinColumnWidth, themeSpineWidth, resizersClass, dfltBasisSlctr, filename ) {
+( function( $, themeMinColumnWidth, themeSpineWidth, resizersClass, dfltBasisSlctr, fileName ) {
 
 try {
 	var clmnWidth; 
@@ -89,7 +89,7 @@ eed.';
 	// Set the default width of the Spine in pixels (passed in based on the theme)
 	dfltSpineWidth = themeSpineWidth;
 
-	$( document ).ready( function () {
+	$( function () {
 		initArticleHeaderText( resizersClass );
 		initTextAutoResizers( '.' + resizersClass );
 	} );
@@ -97,7 +97,7 @@ eed.';
 	function initArticleHeaderText( resizersClass ) {
 		//TODO: Refactor to prefer relying on functionality mediated by auto-fits-text class
 		var $columns = $( '.column' );
-		var $this = $( this );
+		var $this;
 
 		$columns.find( '.article-header .header-content h1' ).each( function () {
 			$this = $( this );
@@ -130,9 +130,11 @@ eed.';
 		var $resizers = $( cssClass );
 		
 		this.initTextAutoResizing = function () {
-			$resizers.each( function() {
-				var textAutoResizer = new TextAutoResizingElem( $( this ), spineWidth );
-			} );
+			if ( $.isJQueryObj( $resizers ) && $resizers.length > 0 ) {
+				$resizers.each( function() {
+					var textAutoResizer = new TextAutoResizingElem( $( this ), spineWidth );
+				} );				
+			}
 		}		
 		
 		function TextAutoResizingElem( $jqObj, spineWidth ) {
@@ -146,7 +148,7 @@ eed.';
 					var cssData;
 					var fontSz;
 					var minFontSz;
-					var minFontSzNeedle = /^[0-9]+(?:pt[0-9])?$/;
+					var minFontSzNeedle = new RegExp( '^[0-9]+|[0-9]+pt[0-9]$' );
 					var resizeOptions;
 					var scalingAmt;
 
@@ -161,21 +163,17 @@ eed.';
 					if ( $this.hasClass( 'resize-against-self' ) ) {
 						resizeOptions.againstSelf = true;
 					}
-					try {
-						cssData = new CssData( $this );
-						minFontSz = cssData.getData('min-fs');
-						if ( minFontSzNeedle.test( minFontSz ) ) {
-							resizeOptions.minFontSize = minFontSz.replace( 'pt', '.' );
-						}
-						basisSlctr = cssData.getData('resize-against')
-						if ( basisSlctr !== '' ) {
-							basisSlctr = '.' + basisSlctr;
-							resizeOptions.basisSelector = basisSlctr;
-						} else {
-							basisSlctr = dfltBasisSlctr;
-						}
-					} catch( e ) {
-						console.log( e );
+					cssData = new CssData( $this );
+					minFontSz = cssData.getData('min-fs');
+					if ( typeof minFontSz === 'string' && minFontSz !== '' &&
+							minFontSzNeedle.exec( minFontSz ) ) {
+					 	resizeOptions.minFontSize = minFontSz.replace( 'pt', '.' );
+					}
+					basisSlctr = cssData.getData('resize-against')
+					if ( typeof basisSlctr === 'string' && basisSlctr !== '' ) {
+						basisSlctr = '.' + basisSlctr;
+						resizeOptions.basisSelector = basisSlctr;
+					} else {
 						basisSlctr = dfltBasisSlctr;
 					}
 					scalingAmt = calculateScalingAmount( fontSz, basisSlctr );
@@ -277,7 +275,8 @@ eed.';
 		}
 	}
 } catch ( errMsg ) {
-	console.log( 'Error in ' + fileName + ':' + errMsg );
+	console.log( 'Error in ' + fileName + ':' );
+	console.log( errMsg );
 }
 
 } )( jQuery, 990, 198, 'auto-fits-text', '.column', 'jQuery.textResize.js' );

@@ -24,39 +24,44 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-//   §1: Addition of functions to jQuery......................................................67
-//     §1.1: jQuery.isCssClass................................................................70
-//     §1.2: jQuery.isJQueryObj...............................................................88
-//     §1.3: jQuery.logError.................................................................100
-//   §2: OUE website initilization modules...................................................171
-//     §2.1: OueDropDownToggle class.........................................................174
-//     §2.2: OueEventCalendarFixer class.....................................................420
-//       §2.2.1: Constructor.................................................................431
-//       §2.2.2: Public members..............................................................449
-//       §2.2.3: Lexically scoped supporting functions.......................................499
-//   §3: DOM-Ready execution sequence........................................................520
-//   §4: Window-loaded event binding.........................................................670
-//   §5: Window-resized event binding........................................................705
-//   §6: Function declarations...............................................................712
-//     §6.1: addA11yTabPressListener.........................................................715
-//     §6.2: addDefinitionListButtons........................................................729
-//     §6.3: fixDogears......................................................................843
-//     §6.4: fixEventCalendars...............................................................868
-//     §6.5: handleMouseClickForA11y.........................................................877
-//     §6.6: handleTabPressForA11y...........................................................886
-//     §6.7: initContentFlippers.............................................................897
-//     §6.8: initDefinitionLists.............................................................913
-//     §6.9: initDropDownToggles.............................................................965
-//     §6.10: initFancyHrH2Motif.............................................................988
-//     §6.11: initFancyHrH3Motif.............................................................997
-//     §6.12: initHrH2Motif.................................................................1006
-//     §6.13: initHrH3Motif.................................................................1021
-//     §6.14: initQuickTabs.................................................................1030
-//     §6.15: initReadMoreToggles...........................................................1094
-//     §6.16: initTocFloating...............................................................1114
-//     §6.17: initTriggeredByHover..........................................................1191
-//     §6.18: initWelcomeMessage............................................................1210
-//     §6.19: showDefinitionListButtons.....................................................1220
+//   §1: Addition of functions to jQuery......................................................72
+//     §1.1: jQuery.isCssClass................................................................75
+//     §1.2: jQuery.isJQueryObj...............................................................93
+//     §1.3: jQuery.logError.................................................................105
+//   §2: OUE website initilization modules...................................................176
+//     §2.1: OueDropDownToggle class.........................................................179
+//     §2.2: OueEventCalendarFixer class.....................................................425
+//       §2.2.1: Constructor.................................................................436
+//       §2.2.2: Public members..............................................................454
+//       §2.2.3: Lexically scoped supporting functions.......................................504
+//     §2.3: OuePrintThisPage class..........................................................525
+//       §2.3.1: Constructor.................................................................536
+//       §2.3.2: Public members..............................................................552
+//       §2.3.3: Lexically scoped supporting functions.......................................598
+//   §3: DOM-Ready execution sequence........................................................612
+//   §4: Window-loaded event binding.........................................................767
+//   §5: Window-resized event binding........................................................802
+//   §6: Function declarations...............................................................809
+//     §6.1: addA11yTabPressListener.........................................................812
+//     §6.2: addDefinitionListButtons........................................................826
+//     §6.3: fixDogears......................................................................940
+//     §6.4: fixEventCalendars...............................................................965
+//     §6.5: handleMouseClickForA11y.........................................................974
+//     §6.6: handleTabPressForA11y...........................................................983
+//     §6.7: initContentFlippers.............................................................994
+//     §6.8: initDefinitionLists............................................................1010
+//     §6.9: initDropDownToggles............................................................1054
+//     §6.10: initFancyHrH2Motif............................................................1077
+//     §6.11: initFancyHrH3Motif............................................................1086
+//     §6.12: initHrH2Motif.................................................................1095
+//     §6.13: initHrH3Motif.................................................................1110
+//     §6.14: initPrintThisPageLinks........................................................1119
+//     §6.15: initQuickTabs.................................................................1128
+//     §6.16: initReadMoreToggles...........................................................1192
+//     §6.17: initTocFloating...............................................................1212
+//     §6.18: initTriggeredByHover..........................................................1289
+//     §6.19: initWelcomeMessage............................................................1308
+//     §6.20: showDefinitionListButtons.....................................................1318
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -516,6 +521,93 @@ var OueEventCalendarFixer = ( function( $, thisFileName ) {
 	return OueEventCalendarFixer;
 } )( jQuery, 'jQuery.oue-custom.js' );
 
+////////
+// §2.3: OuePrintThisPage class
+
+/**
+ * Module for fixing event calendar pages on OUE websites.
+ *
+ * @class
+ */
+var OuePrintThisPage = ( function( $, thisFileName ) {
+	'use strict';
+
+	////////
+	// §2.3.1: Constructor
+
+	/**
+	 * Constructor for OueEventCalendarFixer.
+	 *
+	 * @param {object} sels - Collection of selectors to event calendar pages and their elements.
+	 * @param {string} sels.container - Selector for isolating a tribe events single event
+	 *     viewing page.
+	 * @param {string} sels.identifier - Selector by which 'print this page' shortcuts are
+	 *     identified.
+	 */
+	function OuePrintThisPage( sels ) {
+		this.sels = sels;
+	}
+
+	////////
+	// §2.3.2: Public members
+
+	/**
+	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
+	 * appropriately constructed.
+	 *
+	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
+	 *     typed and appropriately set arguments.
+	 */
+	OueEventCalendarFixer.prototype.initOnThisPageLinks = function () {
+		var $containers;
+
+		if ( this.isValid() && pageHasLinks( this.sels.identifier ) ) {
+			$containers = $( this.sels.container );
+			$containers.on( 'click', this.sels.identifier, function() {
+				window.print();
+			} );
+		}
+	}
+
+	/**
+	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
+	 * appropriately constructed.
+	 *
+	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
+	 *     typed and appropriately set arguments.
+	 */
+	OueEventCalendarFixer.prototype.isValid = function () {
+		var stillValid;
+		var props;
+
+		// Check the integrity of the sels member.
+		stillValid = typeof this.sels === 'object';
+		if ( stillValid ) {
+			props = Object.getOwnPropertyNames( this.sels );
+			stillValid = props.length === 2 && props.find ( function( elem ) {
+				return elem === 'container';
+			} ) && props.find ( function( elem ) {
+				return elem === 'identifier';
+			} );
+		}
+
+		return stillValid;
+	}
+
+	////////
+	// §2.3.3: Lexically scoped supporting functions
+
+	function pageHasLinks( selector ) {
+		var $links;
+
+		$links = $( selector );
+
+		return $links.length > 0;
+	}
+
+	return OuePrintThisPage;
+} )( jQuery, 'jQuery.oue-custom.js' );
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // §3: DOM-Ready execution sequence
 
@@ -635,6 +727,15 @@ $( function () {
 	addDefinitionListButtons( args.slctrDefList, args.expandAllClass, args.collapseAllClass, 
 		args.btnDeactivatingClass, args.dtActivatingClass, args.ddRevealingClass, 
 		args.animSldDrtn );
+
+	argsList.initPrintThisPageLinks = {
+		sels: {
+			container: '.column',
+			identifier: '.link__print-this-page'
+		}
+	};
+	args = argsList.initPrintThisPageLinks;
+	initPrintThisPageLinks( args.sels );
 
 	argsList.initQuickTabs = {
 		slctrQtSctn: "section.row.single.quick-tabs"
@@ -1015,7 +1116,16 @@ function initHrH3Motif( slctrStandardH3, slctrPrevHr, hrClassesAdded, animAddDrt
 }
 
 ////////
-// §6.14: initQuickTabs
+// §6.14: initPrintThisPageLinks
+
+function initPrintThisPageLinks( sels ) {
+	var printThisPageLinks = new OuePrintThisPage( sels );
+
+	printThisPageLinks.initOnThisPageLinks();
+}
+
+////////
+// §6.15: initQuickTabs
 
 // TODO: Convert to a class-based initialization module
 function initQuickTabs( slctrQtSctn ) {
@@ -1079,7 +1189,7 @@ function initQuickTabs( slctrQtSctn ) {
 }
 
 ////////
-// §6.15: initReadMoreToggles
+// §6.16: initReadMoreToggles
 
 function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDuration ) {
 	$( slctrToggleIn ).click( function () {
@@ -1099,7 +1209,7 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 }
 
 ////////
-// §6.16: initTocFloating
+// §6.17: initTocFloating
 
 function initTocFloating( slctrToc, slctrBackToToc ) {
 	var thisFuncName = "initTocFloating";
@@ -1176,7 +1286,7 @@ contents elements; this function only works with one table of contents.' }" );
 }
 
 ////////
-// §6.17: initTriggeredByHover
+// §6.18: initTriggeredByHover
 
 function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration ) {
 	$( slctrTrggrdOnHvr ).mouseenter( function () {
@@ -1195,7 +1305,7 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 }
 
 ////////
-// §6.18: initWelcomeMessage
+// §6.19: initWelcomeMessage
 
 function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDuration, 
 		fadeInDuration ) {
@@ -1205,7 +1315,7 @@ function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDu
 }
 
 ////////
-// §6.19: showDefinitionListButtons
+// §6.20: showDefinitionListButtons
 
 /**
  * Display expand/collapse all buttons, which were initially hidden

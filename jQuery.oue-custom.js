@@ -558,7 +558,7 @@ var OuePrintThisPage = ( function( $, thisFileName ) {
 	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
 	 *     typed and appropriately set arguments.
 	 */
-	OueEventCalendarFixer.prototype.initOnThisPageLinks = function () {
+	OuePrintThisPage.prototype.initOnThisPageLinks = function () {
 		var $containers;
 
 		if ( this.isValid() && pageHasLinks( this.sels.identifier ) ) {
@@ -576,7 +576,7 @@ var OuePrintThisPage = ( function( $, thisFileName ) {
 	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
 	 *     typed and appropriately set arguments.
 	 */
-	OueEventCalendarFixer.prototype.isValid = function () {
+	OuePrintThisPage.prototype.isValid = function () {
 		var stillValid;
 		var props;
 

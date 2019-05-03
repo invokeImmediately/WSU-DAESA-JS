@@ -559,7 +559,7 @@ var OuePrintThisPage = ( function( $, thisFileName ) {
 	OuePrintThisPage.prototype.initOnThisPageLinks = function () {
 		var $containers;
 
-		if ( this.isValid() && pageHasLinks( this.sels.identifier ) ) {
+		if ( this.isValid() ) {
 			$containers = $( this.sels.container );
 			$containers.on( 'click', this.sels.identifier, function() {
 				window.print();
@@ -706,15 +706,6 @@ $( function () {
 		args.btnDeactivatingClass, args.dtActivatingClass, args.ddRevealingClass, 
 		args.animSldDrtn );
 
-	argsList.initPrintThisPageLinks = {
-		sels: {
-			container: '.column',
-			identifier: '.link__print-this-page'
-		}
-	};
-	args = argsList.initPrintThisPageLinks;
-	initPrintThisPageLinks( args.sels );
-
 	argsList.initQuickTabs = {
 		slctrQtSctn: "section.row.single.quick-tabs"
 	};
@@ -757,6 +748,15 @@ $( window ).on( "load", function () {
 	args = argsList.showDefinitionListButtons;
 	showDefinitionListButtons( args.slctrDefList, args.expandAllClass, args.collapseAllClass,
 		args.animFadeInDrtn );
+
+	argsList.initPrintThisPageLinks = {
+		sels: {
+			container: '.column',
+			identifier: '.link__print-this-page'
+		}
+	};
+	args = argsList.initPrintThisPageLinks;
+	initPrintThisPageLinks( args.sels );
 
 	argsList.initWelcomeMessage = {
 		slctrWlcmMsg: "#welcome-message",

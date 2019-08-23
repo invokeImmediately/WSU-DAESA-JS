@@ -45,7 +45,7 @@ var pump = require( 'pump' );
  */
 module.exports.CssBuildSettings = function (commentRemovalNeedle, dependenciesPath, destFolder,
 		fontImportStr, insertingMediaQuerySectionHeader, minCssFileExtension, minCssFileHeaderStr,
-		sourceFile) {
+		sourceFile, staffAddinsFile) {
 	this.commentRemovalNeedle = commentRemovalNeedle;
 	this.dependenciesPath = dependenciesPath;
 	this.destFolder = destFolder;
@@ -54,6 +54,7 @@ module.exports.CssBuildSettings = function (commentRemovalNeedle, dependenciesPa
 	this.minCssFileExtension = minCssFileExtension;
 	this.minCssFileHeaderStr = minCssFileHeaderStr;
 	this.sourceFile = sourceFile;
+	this.staffAddinsFile = staffAddinsFile;
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -93,23 +94,48 @@ module.exports.fixFileHeaderComments = function ( match, p1, offset, string ) {
  */
 module.exports.setUpCssBuildTask = function ( settings ) {
 	gulp.task( 'buildMinCss', function ( callBack ) {
-		pump( [
-				gulp.src( settings.sourceFile ),
-				lessc( {
-					paths: [settings.dependenciesPath]
-				} ),
-				replace( settings.commentRemovalNeedle, '' ),
-				insert.prepend( settings.fontImportStr ),
-				insert.prepend( settings.minCssFileHeaderStr ),
-				gulp.dest( settings.destFolder ),
-				gcmq(),
-				insertLines( settings.insertingMediaQuerySectionHeader ),
-				cleanCss(),
-				extName( settings.minCssFileExtension ),
-				gulp.dest( settings.destFolder )
-			],
-			callBack
-		);
+		if ( settings.staffAddinsFile === undefined ) {
+			pump( [
+					gulp.src( settings.sourceFile ),
+					lessc( {
+						paths: [settings.dependenciesPath]
+					} ),
+					replace( settings.commentRemovalNeedle, '' ),
+					insert.prepend( settings.fontImportStr ),
+					insert.prepend( settings.minCssFileHeaderStr ),
+					gulp.dest( settings.destFolder ),
+					gcmq(),
+					insertLines( settings.insertingMediaQuerySectionHeader ),
+					cleanCss(),
+					extName( settings.minCssFileExtension ),
+					gulp.dest( settings.destFolder )
+				],
+				callBack
+			);
+		} else {
+			let needle = new RegExp( "\/([^\/]+?)\.[^\.]+$" );
+			let searchRes = needle.exec( settings.sourceFile );
+			let cssFileName = searchRes[ 1 ] + '.css';
+			pump( [
+					gulp.src( settings.sourceFile ),
+					lessc( {
+						paths: [settings.dependenciesPath]
+					} ),
+					replace( settings.commentRemovalNeedle, '' ),
+					insert.prepend( settings.fontImportStr ),
+					insert.prepend( settings.minCssFileHeaderStr ),
+					gcmq(),
+					insertLines( settings.insertingMediaQuerySectionHeader ),
+					gulp.src( settings.staffAddinsFile ),
+					concat( cssFileName ),
+					gulp.dest( settings.destFolder ),
+					cleanCss(),
+					extName( settings.minCssFileExtension ),
+					gulp.dest( settings.destFolder )
+				],
+				callBack
+			);			
+		}
 	} );
 }
 

@@ -36,20 +36,20 @@
 //         §1.2.3: Privileged methods..........................................................159
 //         §1.2.4: Constructor's main execution section........................................175
 //         §1.2.5: Public methods..............................................................181
-//     §1.3: OueGFs class......................................................................309
-//         §1.3.1: Public properties...........................................................326
-//         §1.3.2: Public methods..............................................................355
-//         §1.3.3: Lexically scoped supporting functions.......................................382
-//     §1.4: WsuIdInputs class.................................................................409
-//         §1.4.1: Public properties...........................................................429
-//         §1.4.2: Public methods..............................................................444
-//         §1.4.3: Lexically scoped supporting functions.......................................541
-// §2: Application of OUE-wide Gravity Forms enhancements......................................566
-//     §2.1: Application of OueGFs module......................................................572
-//     §2.2: Document ready bindings...........................................................580
-//     §2.3: Binding of Handlers to Window Load................................................601
-//     §2.4: Window Load Event Bindings........................................................613
-//     §2.5: Function declarations.............................................................620
+//     §1.3: OueGFs class......................................................................376
+//         §1.3.1: Public properties...........................................................393
+//         §1.3.2: Public methods..............................................................422
+//         §1.3.3: Lexically scoped supporting functions.......................................449
+//     §1.4: WsuIdInputs class.................................................................476
+//         §1.4.1: Public properties...........................................................496
+//         §1.4.2: Public methods..............................................................511
+//         §1.4.3: Lexically scoped supporting functions.......................................608
+// §2: Application of OUE-wide Gravity Forms enhancements......................................633
+//     §2.1: Application of OueGFs module......................................................639
+//     §2.2: Document ready bindings...........................................................647
+//     §2.3: Binding of Handlers to Window Load................................................668
+//     §2.4: Window Load Event Bindings........................................................680
+//     §2.5: Function declarations.............................................................687
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,6 +180,7 @@ var GfCheckboxValidators = ( function( $ ) {
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// §1.2.5: Public methods
 
+
 	/**
 	 * Finish the process of hiding validator fields from the user.
 	 *
@@ -301,6 +302,72 @@ var GfCheckboxValidators = ( function( $ ) {
 
 		return stillValid;
 	};
+
+	/**
+	 * Perform a validation of validated checkbox fields by their subsequent validator fields.
+	 *
+	 * The validator's input element will be set to "validated" if all checkboxes are checked,
+	 * otherwise it will be set to an empty string.
+	 *
+	 * @access public
+	 *
+	 * @memberof GfCheckboxValidators
+	 *
+	 * @throws {Error} Member function IsObjValid will automatically be called and must return true.
+	 * @throws {Error} The specified validated and validator fields must be found within the form,
+	 *     and each validated field must be followed by a validator field as a sibling.
+	 * @throws {Error} Validated fields must contain checkbox input elements, and validator fields
+	 *     must contain a single input element.
+	 */
+	GfCheckboxValidators.prototype.validate = function() {
+		var $form;
+		var sels = this.sels;
+		var stillValid;
+
+		stillValid = this.IsObjValid();
+		if ( !stillValid ) {
+			throw Error( "Object properties did not pass validity check." );
+		} else {
+			// Find the form appropriate fields within the form.
+			$form = this.get$form();
+			$form.each( function () {
+				var $checkBoxes;
+				var $parentField;
+				var $this;
+				var $validator_input;
+				var allChecked = true;
+				var stillValid = true;
+
+				$this = $( this );
+				$parentField = $this.find( sels.validatedField );
+				$checkBoxes = $parentField.find( " :checkbox" );
+				$validator_input = $parentField.next( sels.validator ).find( "input" );
+				stillValid = $validator_input.length === 1;
+				try {
+					if ( !stillValid ) {
+						throw Error( "Found a validated field in the DOM that was not followed by a\
+ matching, properly formed validator sibling; checkbox state cannot be properly validated." );
+					} else {
+						// Check the state of all the checkbox inputs within the validated field.
+						$checkBoxes.each( function () {
+							if ( allChecked && !this.checked) {
+								allChecked = false;
+							}
+						} );
+
+						// Appropriately set the state of the validator's input element.
+						if ( allChecked && $validator_input.val() != "validated" ) {
+							$validator_input.val( "validated" );
+						} else if ( $validator_input.val() != "" ) {
+							$validator_input.val( "" );
+						}
+					}
+				} catch ( err ) {
+					console.log(err.name + ": " + err.message);
+				}
+			} );
+		}
+	}
 
 	return GfCheckboxValidators;
 } )( jQuery );

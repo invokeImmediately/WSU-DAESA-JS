@@ -1,11 +1,10 @@
 /*!*************************************************************************************************
- * jQuery.oue-custom.js
+ * https://github.com/invokeImmediately/WSU-UE---JS/jQuery.oue-custom.js ↓↓↓
  * -------------------------------------------------------------------------------------------------
- * SUMMARY: Custom JS code common to all WSU Undergraduate Education websites.
+ * SUMMARY: Custom JS code common to all websites of the WSU Division of Academic Engagement and
+ *   Student Achievement (DAESA) in the Provost's Office.
  *
  * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
- *
- * REPOSITORY: https://github.com/invokeImmediately/WSU-UE---JS
  *
  * LICENSE: ISC - Copyright (c) 2019 Daniel C. Rieck.
  *
@@ -1255,3 +1254,8 @@ function showDefinitionListButtons( slctrDefList, expandAllClass, collapseAllCla
 }
 	
 } )( jQuery, 'jQuery.oue-custom.js' );
+
+/*!
+ * ↑↑↑ jQuery.oue-custom.js
+ * -------------------------------------------------------------------------------------------------
+ */

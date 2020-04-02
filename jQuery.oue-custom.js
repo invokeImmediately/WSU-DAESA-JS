@@ -43,20 +43,20 @@
 //   §5: Window-resized event binding........................................................771
 //   §6: Function declarations...............................................................778
 //     §6.1: addDefinitionListButtons........................................................781
-//     §6.2: fixDogears......................................................................895
-//     §6.3: fixEventCalendars...............................................................920
-//     §6.4: initContentFlippers.............................................................929
-//     §6.5: initDefinitionLists.............................................................945
-//     §6.6: initDropDownToggles.............................................................989
-//     §6.7: initFancyHrH2Motif.............................................................1012
-//     §6.8: initFancyHrH3Motif.............................................................1021
-//     §6.9: initPrintThisPageLinks.........................................................1030
-//     §6.10: initQuickTabs.................................................................1039
-//     §6.11: initReadMoreToggles...........................................................1103
-//     §6.12: initTocFloating...............................................................1123
-//     §6.13: initTriggeredByHover..........................................................1200
-//     §6.14: initWelcomeMessage............................................................1219
-//     §6.15: showDefinitionListButtons.....................................................1229
+//     §6.2: fixDogears......................................................................897
+//     §6.3: fixEventCalendars...............................................................922
+//     §6.4: initContentFlippers.............................................................931
+//     §6.5: initDefinitionLists.............................................................947
+//     §6.6: initDropDownToggles.............................................................991
+//     §6.7: initFancyHrH2Motif.............................................................1014
+//     §6.8: initFancyHrH3Motif.............................................................1023
+//     §6.9: initPrintThisPageLinks.........................................................1032
+//     §6.10: initQuickTabs.................................................................1041
+//     §6.11: initReadMoreToggles...........................................................1105
+//     §6.12: initTocFloating...............................................................1125
+//     §6.13: initTriggeredByHover..........................................................1202
+//     §6.14: initWelcomeMessage............................................................1221
+//     §6.15: showDefinitionListButtons.....................................................1231
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -797,8 +797,8 @@ $( window ).resize( function () {
 function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClass, 
 		btnDisablingClass, dtActivatingClass, ddRevealingClass, animSldDrtn ) {
 	var thisFuncName = "addDefinitionListButtons";
-	var thisFuncDesc = "Automatically creates and binds events to expand/collapse all buttons \
-designed for improving UX of OUE site definition lists";
+	var thisFuncDesc = "Automatically creates and binds events to expand/collapse all buttons "
+		+ "designed for improving UX of OUE site definition lists";
 	
 	// Find and remove any pre-existing expand/collapse all buttons
 	var $lists = $( slctrDefList );
@@ -808,22 +808,24 @@ designed for improving UX of OUE site definition lists";
 		$existingExpandAlls.remove();
 		$.logError( 
 			thisFileName, thisFuncName, thisFuncDesc,
-			"Expand all buttons were already discovered in the DOM upon document initialization; \
-please remove all buttons from the HTML source code to avoid wasting computational resources."
+			"Expand all buttons were already discovered in the DOM upon document initialization; "
+				+ "please remove all buttons from the HTML source code to avoid wasting "
+				+ "computational resources."
 		);
 	}
 	if ( $existingCollapseAlls.length > 0 ) {
 		$existingCollapseAlls.remove();
 		$.logError( 
 			thisFileName, thisFuncName, thisFuncDesc,
-			"Collapse all buttons were already discovered in the DOM upon document initialization; \
-please remove all buttons from the HTML source code to avoid wasting computational resources."
+			"Collapse all buttons were already discovered in the DOM upon document initialization; "
+				+ "please remove all buttons from the HTML source code to avoid wasting "
+				+ "computational resources."
 		);
 	}
 	
 	// Add initially hidden ( via CSS ) expand/collapse all buttons to definition lists
-	$lists.prepend( '<div class="collapse-all-button">[-] Collapse All</div>' );
-	$lists.prepend( '<div class="expand-all-button">[+] Expand All</div>' );
+	$lists.prepend( '<button type="button" class="collapse-all-button">[-] Collapse All</button>' );
+	$lists.prepend( '<button type="button" class="expand-all-button">[+] Expand All</button>' );
 	var slctrExpandAll = slctrDefList + " > ." + expandAllClass;
 	var $expandAlls = $( slctrExpandAll );
 	var slctrCollapseAll = slctrDefList + " > ." + collapseAllClass;

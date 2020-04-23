@@ -9,7 +9,7 @@
  *
  * REPOSITORY: https://github.com/invokeImmediately/WSU-UE---JS
  *
- * LICENSE: ISC - Copyright (c) 2019 Daniel C. Rieck.
+ * LICENSE: ISC - Copyright (c) 2020 Daniel C. Rieck.
  *
  *   Permission to use, copy, modify, and/or distribute this software for any purpose with or
  *   without fee is hereby granted, provided that the above copyright notice and this permission
@@ -26,24 +26,24 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: Gravity Forms enhancement modules........................................................56
-//     §1.1: EmailConfirmations class...........................................................59
-//         §1.1.1: Public properties............................................................83
-//         §1.1.2: Public methods...............................................................99
-//     §1.2: OueGFs class......................................................................376
-//         §1.2.1: Public properties...........................................................393
-//         §1.2.2: Public methods..............................................................422
-//         §1.2.3: Lexically scoped supporting functions.......................................449
-//     §1.2: WsuIdInputs class.................................................................476
-//         §1.3.1: Public properties...........................................................496
-//         §1.3.2: Public methods..............................................................511
-//         §1.3.3: Lexically scoped supporting functions.......................................608
-// §2: Application of OUE-wide Gravity Forms enhancements......................................633
-//     §2.1: Application of OueGFs module......................................................639
-//     §2.2: Document ready bindings...........................................................647
-//     §2.3: Binding of Handlers to Window Load................................................668
-//     §2.4: Window Load Event Bindings........................................................680
-//     §2.5: Function declarations.............................................................687
+// §1: Gravity Forms enhancement modules........................................................50
+//     §1.1: EmailConfirmations class...........................................................53
+//         §1.1.1: Public properties............................................................77
+//         §1.1.2: Public methods...............................................................93
+//     §1.2: OueGFs class......................................................................125
+//         §1.2.1: Public properties...........................................................142
+//         §1.2.2: Public methods..............................................................171
+//         §1.2.3: Lexically scoped supporting functions.......................................198
+//     §1.2: WsuIdInputs class.................................................................225
+//         §1.3.1: Public properties...........................................................245
+//         §1.3.2: Public methods..............................................................260
+//         §1.3.3: Lexically scoped supporting functions.......................................357
+// §2: Application of OUE-wide Gravity Forms enhancements......................................382
+//     §2.1: Application of OueGFs module......................................................388
+//     §2.2: Document ready bindings...........................................................396
+//     §2.3: Binding of Handlers to Window Load................................................417
+//     §2.4: Window Load Event Bindings........................................................429
+//     §2.5: Function declarations.............................................................436
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -405,9 +405,9 @@ ill automatically be corrected. Please check the result to see if further correc
 			// TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine
 			//   how to handle object by finding div children with gfield_container_class. Best to
 			//   implement as a class.
-			$requiredFields =  $( 'li.gfield_contains_required' );
+			$requiredFields =  $( '.gfield_contains_required' );
 			hghlghtRqrdInpts( $requiredFields.find( 'input' ) );
-			hghlghtRqrdChckbxs( $requiredFields.find( 'ul.gfield_checkbox, ul.gfield_radio' ) );
+			hghlghtRqrdChckbxs( $requiredFields.find( '.gfield_checkbox, .gfield_radio' ) );
 			hghlghtRqrdTxtAreas( $requiredFields.find( 'textarea' ) );
 			hghlghtRqrdSelects( $requiredFields.find( 'select' ) );
 		}
@@ -417,10 +417,10 @@ ill automatically be corrected. Please check the result to see if further correc
 	// §2.3: Binding of Handlers to Window Load
 
 	$( document ).on( 'gform_post_render', function () {
-		var $requiredFields =  $( 'li.gfield_contains_required' );
+		var $requiredFields = $( '.gfield_contains_required' );
 
 		checkRqrdInpts( $requiredFields.find( 'input' ) );
-		checkRqrdChckbxs( $requiredFields.find( 'ul.gfield_checkbox, ul.gfield_radio' ) );
+		checkRqrdChckbxs( $requiredFields.find( '.gfield_checkbox, .gfield_radio' ) );
 		checkRqrdTxtAreas( $requiredFields.find( 'textarea' ) );
 	} );
 
@@ -579,10 +579,10 @@ ill automatically be corrected. Please check the result to see if further correc
 				var $editorForm = $( this ).find( 'iframe' );
 				$editorForm.each( function () {
 					var $editorBody = $( this ).contents().find( '#tinymce' );
-					$editorBody.css( {
-						 backgroundColor: 'rgba(255,0,0,0.1)',
-						 fontFamily: '"Open sans", sans-serif'
-					} );
+					$editorBody.css( 'fontFamily', '"Open sans", sans-serif' );
+					if ( $editorBody.text().replace( /\n|\uFEFF/g, '' ) == ''  ) {
+						$editorBody.css( 'backgroundColor', 'rgba(255,0,0,0.1)' );
+					}
 					$editorBody.focus( function () {
 						$( this ).css( 'background-color', 'rgba(255,255,255,1)' );
 					} );

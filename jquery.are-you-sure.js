@@ -39,14 +39,14 @@ $( function() {
 $( document ).on( 'gform_post_render', function ( event, form_id, current_page ) {
 	var thisFuncName = 'Gravity Forms post-render event handler';
 	var thisFuncDesc = 'Code executed after a Gravity Forms form has rendered';
-	const gFormSel = '#gform_' + form_id.toString();
+	var gFormSel = '#gform_' + form_id.toString();
 
 	try {
 		assertAreYouSureLoaded();
-		let $gForm = $( gFormSel );
-		let pg1FilledFields = 0;
+		var $gForm = $( gFormSel );
+		var pg1FilledFields = 0;
 		if ( current_page == 1 ) {
-			let $filledFields = $gForm.find( '.gfield_contains_required .gf-value-entered' );
+			var $filledFields = $gForm.find( '.gfield_contains_required .gf-value-entered' );
 			pg1FilledFields = $filledFields.length;
 		}
 		if ( current_page > 1 || pg1FilledFields > 0 ) {

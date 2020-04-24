@@ -23,39 +23,39 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-//   §1: Addition of functions to jQuery......................................................67
-//     §1.1: jQuery.isCssClass................................................................70
-//     §1.2: jQuery.isJQueryObj...............................................................88
-//     §1.3: jQuery.logError.................................................................100
-//   §2: OUE website initilization modules...................................................171
-//     §2.1: OueDropDownToggle class.........................................................174
-//     §2.2: OueEventCalendarFixer class.....................................................420
-//       §2.2.1: Constructor.................................................................431
-//       §2.2.2: Public members..............................................................449
-//       §2.2.3: Lexically scoped supporting functions.......................................499
-//     §2.3: OuePrintThisPage class..........................................................520
-//       §2.3.1: Constructor.................................................................531
-//       §2.3.2: Public members..............................................................547
-//       §2.3.3: Lexically scoped supporting functions.......................................593
-//   §3: DOM-Ready execution sequence........................................................607
-//   §4: Window-loaded event binding.........................................................733
-//   §5: Window-resized event binding........................................................771
-//   §6: Function declarations...............................................................778
-//     §6.1: addDefinitionListButtons........................................................781
-//     §6.2: fixDogears......................................................................897
-//     §6.3: fixEventCalendars...............................................................922
-//     §6.4: initContentFlippers.............................................................931
-//     §6.5: initDefinitionLists.............................................................947
-//     §6.6: initDropDownToggles.............................................................991
-//     §6.7: initFancyHrH2Motif.............................................................1014
-//     §6.8: initFancyHrH3Motif.............................................................1023
-//     §6.9: initPrintThisPageLinks.........................................................1032
-//     §6.10: initQuickTabs.................................................................1041
-//     §6.11: initReadMoreToggles...........................................................1105
-//     §6.12: initTocFloating...............................................................1125
-//     §6.13: initTriggeredByHover..........................................................1202
-//     §6.14: initWelcomeMessage............................................................1221
-//     §6.15: showDefinitionListButtons.....................................................1231
+//   §1: Addition of functions to jQuery......................................................66
+//     §1.1: jQuery.isCssClass................................................................69
+//     §1.2: jQuery.isJQueryObj...............................................................87
+//     §1.3: jQuery.logError..................................................................99
+//   §2: OUE website initilization modules...................................................174
+//     §2.1: OueDropDownToggle class.........................................................177
+//     §2.2: OueEventCalendarFixer class.....................................................423
+//       §2.2.1: Constructor.................................................................434
+//       §2.2.2: Public members..............................................................452
+//       §2.2.3: Lexically scoped supporting functions.......................................502
+//     §2.3: OuePrintThisPage class..........................................................523
+//       §2.3.1: Constructor.................................................................534
+//       §2.3.2: Public members..............................................................550
+//       §2.3.3: Lexically scoped supporting functions.......................................596
+//   §3: DOM-Ready execution sequence........................................................610
+//   §4: Window-loaded event binding.........................................................736
+//   §5: Window-resized event binding........................................................774
+//   §6: Function declarations...............................................................781
+//     §6.1: addDefinitionListButtons........................................................784
+//     §6.2: fixDogears......................................................................900
+//     §6.3: fixEventCalendars...............................................................925
+//     §6.4: initContentFlippers.............................................................934
+//     §6.5: initDefinitionLists.............................................................950
+//     §6.6: initDropDownToggles.............................................................994
+//     §6.7: initFancyHrH2Motif.............................................................1017
+//     §6.8: initFancyHrH3Motif.............................................................1026
+//     §6.9: initPrintThisPageLinks.........................................................1035
+//     §6.10: initQuickTabs.................................................................1044
+//     §6.11: initReadMoreToggles...........................................................1108
+//     §6.12: initTocFloating...............................................................1128
+//     §6.13: initTriggeredByHover..........................................................1205
+//     §6.14: initWelcomeMessage............................................................1224
+//     §6.15: showDefinitionListButtons.....................................................1234
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -109,59 +109,63 @@ $.isJQueryObj = function ( $obj ) {
 $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 	var thisFuncName = "jQuery.logError";
 	var thisFuncDesc = "Log an error using the browser console in JSON notation.";
-	var bitMask;
-	
-	bitMask = typeof fileName === "string";
+	var bitMask = typeof fileName === "string";
 	bitMask = ( typeof fnctnName === "string" ) | ( bitMask << 1 );
 	bitMask = ( typeof fnctnDesc === "string" ) | ( bitMask << 1 );
 	bitMask = ( typeof errorMsg === "string" || typeof errorMsg === "object" ) | ( bitMask << 1 );
-	if ( bitMask === 15 ) {
+
+	// Output a properly formed error message.
+	if ( bitMask === 15 && typeof errorMsg === "string" ) {
 		console.log( "error = {\n\tfile: '" + fileName + "',\n\tfunctionName: '" + fnctnName +
 			"'\n\tfunctionDesc: '" + fnctnDesc + "'\n\terrorMessage: '" + errorMsg + "'\n\t};" );
-		if (typeof errorMsg === "object") {
-			console.log( errorMsg );
-		}
-	} else {
-		var incorrectTypings;
-		var bitMaskCopy;
-		var newErrorMsg;
-		
-		// Determine how many incorrectly typed arguments were encountered
-		for ( var i=0, incorrectTypings = 0, bitMaskCopy = bitMask; i < 4; i++ ) {
-			incorrectTypings += bitMaskCopy & 1;
-			bitMaskCopy = bitMaskCopy >> 1;
-		}
-		
-		// Construct a new error message
-		if ( incorrectTypings == 1 ) {
-			newErrorMsg = "Unfortunately, a call to jQuery.error was made with an incorrectly typed\
- argument.\n"
-		} else {
-			newErrorMsg = "Unfortunately, a call to jQuery.error was made with incorrectly typed ar\
-guments.\n"
-		}
-		newErrorMsg += "Here are the arguments that were passed to jQuery.logError:\n";
-		newErrorMsg += "\t\tfileName = " + fileName + "\n";
-		if ( !( ( bitMask & 8 ) >> 3 ) ) {
-			newErrorMsg += "\t\ttypeof filename = " + ( typeof fileName ) + "\n";
-			fileName = thisFileName;
-		}
-		newErrorMsg += "\t\tfnctnName = " + fnctnName + "\n";
-		if( !( ( bitMask & 4 ) >> 2 ) ) {
-			newErrorMsg += "\t\ttypeof fnctnName = " + ( typeof fnctnName ) + "\n";
-			fnctnName = thisFuncName;
-		}
-		newErrorMsg += "\t\tfnctnDesc = " + fnctnDesc + "\n";
-		if( !( ( bitMask & 2 ) >> 1 ) ) {
-			newErrorMsg += "\t\ttypeof fnctnDesc = " + ( typeof fnctnDesc ) + "\n";
-			fnctnDesc = thisFuncDesc;
-		}
-		newErrorMsg += "\t\terrorMsg = " + errorMsg + "\n";
-		if( !( bitMask & 1 ) ) {
-			newErrorMsg += "\t\ttypeof errorMsg = " + ( typeof errorMsg ) + "\n";
-		}
-		console.log(newErrorMsg);
+		return;
+	} else if ( bitMask === 15 ) {
+		console.log( "error = {\n\tfile: '" + fileName + "',\n\tfunctionName: '" + fnctnName +
+			"'\n\tfunctionDesc: '" + fnctnDesc + "'\n\terror object: See following.'\n\t};" );
+		console.log( errorMsg );
+		return;
 	}
+
+	// Handle the case where
+	var incorrectTypings;
+	var bitMaskCopy;
+	var newErrorMsg;
+		
+	// Determine how many incorrectly typed arguments were encountered
+	for ( var i=0, incorrectTypings = 0, bitMaskCopy = bitMask; i < 4; i++ ) {
+		incorrectTypings += bitMaskCopy & 1;
+		bitMaskCopy = bitMaskCopy >> 1;
+	}
+		
+	// Construct a new error message
+	if ( incorrectTypings == 1 ) {
+		newErrorMsg = "Unfortunately, a call to jQuery.error was made with an incorrectly typed" +
+			" argument.\n"
+	} else {
+		newErrorMsg = "Unfortunately, a call to jQuery.error was made with incorrectly typed" +
+			" arguments.\n"
+	}
+	newErrorMsg += "Here are the arguments that were passed to jQuery.logError:\n" +
+		"\t\tfileName = " + fileName + "\n";
+	if ( !( ( bitMask & 8 ) >> 3 ) ) {
+		newErrorMsg += "\t\ttypeof filename = " + ( typeof fileName ) + "\n";
+		fileName = thisFileName;
+	}
+	newErrorMsg += "\t\tfnctnName = " + fnctnName + "\n";
+	if( !( ( bitMask & 4 ) >> 2 ) ) {
+		newErrorMsg += "\t\ttypeof fnctnName = " + ( typeof fnctnName ) + "\n";
+		fnctnName = thisFuncName;
+	}
+	newErrorMsg += "\t\tfnctnDesc = " + fnctnDesc + "\n";
+	if( !( ( bitMask & 2 ) >> 1 ) ) {
+		newErrorMsg += "\t\ttypeof fnctnDesc = " + ( typeof fnctnDesc ) + "\n";
+		fnctnDesc = thisFuncDesc;
+	}
+	newErrorMsg += "\t\terrorMsg = " + errorMsg + "\n";
+	if( !( bitMask & 1 ) ) {
+		newErrorMsg += "\t\ttypeof errorMsg = " + ( typeof errorMsg ) + "\n";
+	}
+	console.log(newErrorMsg);
 }
 
 } )( jQuery, 'jQuery.oue-custom.js' );

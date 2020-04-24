@@ -419,7 +419,7 @@ ill automatically be corrected. Please check the result to see if further correc
 	$( document ).on( 'gform_post_render', function () {
 		var $requiredFields = $( '.gfield_contains_required' );
 
-		checkRqrdInpts( $requiredFields.find( 'input' ) );
+		checkRqrdInpts( $requiredFields.find( 'input[type="text"]' ) );
 		checkRqrdChckbxs( $requiredFields.find( '.gfield_checkbox, .gfield_radio' ) );
 		checkRqrdTxtAreas( $requiredFields.find( 'textarea' ) );
 	} );
@@ -443,16 +443,17 @@ ill automatically be corrected. Please check the result to see if further correc
 	 *     fields.
 	 */
 	function checkRqrdInpts ( $inputs ) {
-		if ( $.isJQueryObj( $inputs ) ) {
-			$inputs.each( function () {
-				var $thisInput = $( this );
-				if ( $thisInput.val() == '' ) {
-					$thisInput.removeClass( 'gf-value-entered' );
-				} else {
-					$thisInput.addClass( 'gf-value-entered' );
-				}
-			} );
+		if ( !$.isJQueryObj( $inputs ) ) {
+			return;
 		}
+		$inputs.each( function () {
+			var $thisInput = $( this );
+			if ( $thisInput.val() == '' ) {
+				$thisInput.removeClass( 'gf-value-entered' );
+			} else {
+				$thisInput.addClass( 'gf-value-entered' );
+			}
+		} );
 	}
 	
 	/**
@@ -463,18 +464,19 @@ ill automatically be corrected. Please check the result to see if further correc
 	 *     fields.
 	 */
 	function hghlghtRqrdInpts ( $inputs ) {
-		if ( $.isJQueryObj( $inputs ) ) {
-			$inputs.each( function () {
-				var $thisInput = $( this );
-				$thisInput.blur( function () {
-					if ( $thisInput.val() == '' ) {
-						$thisInput.removeClass( 'gf-value-entered' );
-					} else {
-						$thisInput.addClass( 'gf-value-entered' );
-					}
-				} );
-			} );
+		if ( !$.isJQueryObj( $inputs ) ) {
+			return;
 		}
+		$inputs.each( function () {
+			var $thisInput = $( this );
+			$thisInput.blur( function () {
+				if ( $thisInput.val() == '' ) {
+					$thisInput.removeClass( 'gf-value-entered' );
+				} else {
+					$thisInput.addClass( 'gf-value-entered' );
+				}
+			} );
+		} );
 	}
 
 	/**
@@ -485,23 +487,24 @@ ill automatically be corrected. Please check the result to see if further correc
 	 *     required gravity form fields.
 	 */
 	function checkRqrdChckbxs ( $lists ) {
-		if ( $.isJQueryObj( $lists ) ) {
-			$lists.each(function () {
-				var $this = $( this );
-				var $inputs = $this.find( 'input' );
-				var inputReady = false;
-				$inputs.each( function () {
-					if ( $( this ).prop( 'checked' ) == true && !inputReady ) {
-						inputReady = true;
-					}
-				} );
-				if ( inputReady ) {
-					$this.addClass( 'gf-value-entered' );
-				} else {
-					$this.removeClass( 'gf-value-entered' );
+		if ( !$.isJQueryObj( $lists ) ) {
+			return;
+		}
+		$lists.each(function () {
+			var $this = $( this );
+			var $inputs = $this.find( 'input' );
+			var inputReady = false;
+			$inputs.each( function () {
+				if ( $( this ).prop( 'checked' ) == true && !inputReady ) {
+					inputReady = true;
 				}
 			} );
-		}
+			if ( inputReady ) {
+				$this.addClass( 'gf-value-entered' );
+			} else {
+				$this.removeClass( 'gf-value-entered' );
+			}
+		} );
 	}
 
 	/**
@@ -512,36 +515,37 @@ ill automatically be corrected. Please check the result to see if further correc
 	 *     required gravity form fields.
 	 */
 	function hghlghtRqrdChckbxs ( $lists ) {
-		if ( $.isJQueryObj( $lists ) ) {
-			$lists.each( function () {
-				var $inputs;
-				var $this;
+		if ( !$.isJQueryObj( $lists ) ) {
+			return;
+		}
+		$lists.each( function () {
+			var $inputs;
+			var $this;
 
-				$this = $( this );
-				$inputs = $this.find( 'input' );
-				$inputs.each( function () {
-					var $thisChild = $( this );
-					$thisChild.change( function () {
-						var $parentsInputs;
-						var $thisParent;
-						var inputReady = false;
+			$this = $( this );
+			$inputs = $this.find( 'input' );
+			$inputs.each( function () {
+				var $thisChild = $( this );
+				$thisChild.change( function () {
+					var $parentsInputs;
+					var $thisParent;
+					var inputReady = false;
 
-						$thisParent = $thisChild.parents( 'ul.gfield_checkbox, ul.gfield_radio' );
-						$parentsInputs = $thisParent.find( 'input' );
-						$parentsInputs.each(function () {
-							if ( $( this ).prop( 'checked' ) == true && !inputReady ) {
-								inputReady = true;
-							}
-						} );
-						if ( inputReady ) {
-							$thisParent.addClass( 'gf-value-entered' );
-						} else {
-							$thisParent.removeClass( 'gf-value-entered' );
+					$thisParent = $thisChild.parents( 'ul.gfield_checkbox, ul.gfield_radio' );
+					$parentsInputs = $thisParent.find( 'input' );
+					$parentsInputs.each(function () {
+						if ( $( this ).prop( 'checked' ) == true && !inputReady ) {
+							inputReady = true;
 						}
 					} );
+					if ( inputReady ) {
+						$thisParent.addClass( 'gf-value-entered' );
+					} else {
+						$thisParent.removeClass( 'gf-value-entered' );
+					}
 				} );
 			} );
-		}
+		} );
 	}
 
 	/**
@@ -711,7 +715,9 @@ ill automatically be corrected. Please check the result to see if further correc
 									$thisSblng.find( "input[type='file']" ).first();
 								if ( $thisSblngInput.prop( 'files' ) != null &&
 										$thisSblngInput.prop( 'files' ).length > 0 ) {
-									var thisFileName = $thisSblngInput.prop( 'files' ).item( 0 ).name;
+									var thisFileName = $thisSblngInput.prop(
+											'files'
+										).item( 0 ).name;
 									valuePassed = originalFileName != thisFileName;
 								}
 							}
@@ -719,7 +725,9 @@ ill automatically be corrected. Please check the result to see if further correc
 						$parentNextSblngs.each( function () {
 							if ( valuePassed ) {
 								var $thisSblng = $( this );
-								var $thisSblngInput = $thisSblng.find( "input[type='file']" ).first();
+								var $thisSblngInput = $thisSblng.find(
+										"input[type='file']"
+									).first();
 								if ( $thisSblngInput.prop( 'files' ) != null &&
 										$thisSblngInput.prop( 'files' ).length > 0) {
 									var thisFileName = $thisSblngInput.prop( 'files' ).item(0).name;
@@ -732,8 +740,8 @@ ill automatically be corrected. Please check the result to see if further correc
 						$thisInput.addClass( 'gf-value-entered' );
 						$parentNextSblngs.first().removeClass( 'gf-hidden' );
 					} else {
-						alert('A file with the same name has already been uploaded; please choose a\
- different file.');
+						alert( 'A file with the same name has already been uploaded; please' +
+							' choose a different file.' );
 						$thisInput.get(0).value = '';
 					}
 				} else {

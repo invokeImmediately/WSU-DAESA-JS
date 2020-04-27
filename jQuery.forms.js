@@ -585,16 +585,16 @@ ill automatically be corrected. Please check the result to see if further correc
 					var $editorBody = $( this ).contents().find( '#tinymce' );
 					$editorBody.css( 'fontFamily', '"Open sans", sans-serif' );
 					if ( $editorBody.text().replace( /\n|\uFEFF/g, '' ) == ''  ) {
-						$editorBody.css( 'background-color', 'linear-gradient(to bottom,' +
+						$editorBody.css( 'background', 'linear-gradient(to bottom,' +
 							' rgba(255,0,0,0.1), rgba(255,0,0,0))' );
 					}
 					$editorBody.focus( function () {
-						$( this ).css( 'background-color', 'rgba(255,255,255,1)' );
+						$( this ).css( 'background', 'rgba(255,255,255,1)' );
 					} );
 					$editorBody.blur( function () {
 						var $this = $( this );
 						if ( $this.text().replace( /\n|\uFEFF/g, '' ) == '' ) {
-							$this.css( 'background-color', 'linear-gradient(to bottom,' +
+							$this.css( 'background', 'linear-gradient(to bottom,' +
 								' rgba(255,0,0,0.1), rgba(255,0,0,0))' );
 						}
 					} );

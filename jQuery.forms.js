@@ -26,24 +26,22 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: Gravity Forms enhancement modules........................................................50
-//     §1.1: EmailConfirmations class...........................................................53
-//         §1.1.1: Public properties............................................................77
-//         §1.1.2: Public methods...............................................................93
-//     §1.2: OueGFs class......................................................................125
-//         §1.2.1: Public properties...........................................................142
-//         §1.2.2: Public methods..............................................................171
-//         §1.2.3: Lexically scoped supporting functions.......................................198
-//     §1.2: WsuIdInputs class.................................................................225
-//         §1.3.1: Public properties...........................................................245
-//         §1.3.2: Public methods..............................................................260
-//         §1.3.3: Lexically scoped supporting functions.......................................357
-// §2: Application of OUE-wide Gravity Forms enhancements......................................382
-//     §2.1: Application of OueGFs module......................................................388
-//     §2.2: Document ready bindings...........................................................396
-//     §2.3: Binding of Handlers to Window Load................................................417
-//     §2.4: Window Load Event Bindings........................................................429
-//     §2.5: Function declarations.............................................................436
+// §1: Gravity Forms enhancement modules........................................................48
+//     §1.1: EmailConfirmations class...........................................................51
+//         §1.1.1: Public properties............................................................75
+//         §1.1.2: Public methods...............................................................91
+//     §1.2: OueGFs class......................................................................123
+//         §1.2.1: Public properties...........................................................140
+//         §1.2.2: Public methods..............................................................169
+//         §1.2.3: Lexically scoped supporting functions.......................................196
+//     §1.2: WsuIdInputs class.................................................................223
+//         §1.3.1: Public properties...........................................................243
+//         §1.3.2: Public methods..............................................................258
+//         §1.3.3: Lexically scoped supporting functions.......................................355
+// §2: Application of OUE-wide Gravity Forms enhancements......................................380
+//     §2.1: Application of OueGFs module......................................................386
+//     §2.2: Binding of handlers to Gravity Forms post-render event............................394
+//     §2.3: Function declarations.............................................................413
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -289,9 +287,9 @@ var WsuIdInputs = ( function ( $ ) {
 		if ( inputText != '' ) {
 			if ( frep.exec( inputText ) == null ) {
 				$this.val( '' );
-				alert( 'The WSU ID you entered did not follow the correct pattern; please try again\
-. When the leading zero is included, WSU ID numbers are 9 digits long. You can also drop the leadin\
-g zero and enter in 8 digits.' );
+				alert( 'The WSU ID you entered did not follow the correct pattern; please try' +
+					' again. When the leading zero is included, WSU ID numbers are 9 digits long.' +
+					' You can also drop the leading zero and enter in 8 digits.' );
 			}
 		}
 	};
@@ -340,16 +338,16 @@ g zero and enter in 8 digits.' );
 				$this.val( inputText.slice( 0, 9 ) );
 				errorMsg += ' Also, they must be no greater than nine (9) digits in length.';
 			}
-			errorMsg += ' What you pasted will automatically be corrected; please check the result \
-to see if further corrections are needed.';
+			errorMsg += ' What you pasted will automatically be corrected; please check the' +
+				' result to see if further corrections are needed.';
 			alert( errorMsg );
 		} else if ( inputText.length > 9 ) {
 			e.stopPropagation();
 			e.preventDefault();
 			$this.val( inputText.slice( 0,9 ) );
-			alert( 'WSU ID numbers are no greater than nine (9) digits in length. What you pasted w\
-ill automatically be corrected. Please check the result to see if further corrections are needed.'
-				);
+			alert( 'WSU ID numbers are no greater than nine (9) digits in length. What you pasted' +
+				' will automatically be corrected. Please check the result to see if further' +
+				' corrections are needed.' );
 		}
 	};
 
@@ -393,47 +391,26 @@ ill automatically be corrected. Please check the result to see if further correc
 	oueGfs.init();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.2: Document ready bindings
-
-	$( function () {
-		var $requiredFields;
-		if ( $( '.gform_body' ).length > 0 ) {
-			setupActvtrChckbxs( '.oue-gf-actvtr-checkbox' );
-			setupActvtrChain( '.oue-gf-actvtr-chain' );
-			setupUploadChain( '.oue-gf-upload-chain' );
-			
-			// TODO: streamline functions by querying all ul.gform_fields li.gfield, then determine
-			//   how to handle object by finding div children with gfield_container_class. Best to
-			//   implement as a class.
-			$requiredFields =  $( '.gfield_contains_required' );
-			hghlghtRqrdInpts( $requiredFields.find( 'input' ) );
-			hghlghtRqrdChckbxs( $requiredFields.find( '.gfield_checkbox, .gfield_radio' ) );
-			hghlghtRqrdTxtAreas( $requiredFields.find( 'textarea' ) );
-			hghlghtRqrdSelects( $requiredFields.find( 'select' ) );
-		}
-	} );
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.3: Binding of Handlers to Window Load
+	// §2.2: Binding of handlers to Gravity Forms post-render event
 
 	$( document ).on( 'gform_post_render', function () {
+		setupActvtrChckbxs( '.oue-gf-actvtr-checkbox' );
+		setupActvtrChain( '.oue-gf-actvtr-chain' );
+		setupUploadChain( '.oue-gf-upload-chain' );
 		var $requiredFields = $( '.gfield_contains_required' );
-
 		checkRqrdInpts( $requiredFields.find( 'input[type="text"]' ) );
 		checkRqrdChckbxs( $requiredFields.find( '.gfield_checkbox, .gfield_radio' ) );
 		checkRqrdTxtAreas( $requiredFields.find( 'textarea' ) );
-	} );
-
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.4: Window Load Event Bindings
-
-	$( window ).load( function () {
+		hghlghtRqrdInpts( $requiredFields.find( 'input' ) );
+		hghlghtRqrdChckbxs( $requiredFields.find( '.gfield_checkbox, .gfield_radio' ) );
+		hghlghtRqrdTxtAreas( $requiredFields.find( 'textarea' ) );
+		hghlghtRqrdSelects( $requiredFields.find( 'select' ) );
 		hghlghtRqrdRchTxtEdtrs( $( '.gfield_contains_required.uses-rich-editor' ) );
 	} );
 
+
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	// §2.5: Function declarations
+	// §2.3: Function declarations
 
 	/**
 	 * Check each input element within a required gravity form field to determine if an entry has

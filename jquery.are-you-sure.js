@@ -27,6 +27,20 @@
 var thisFileName = 'jquery.are-you-sure.js';
 var dirtyFormIndicator = 'dirty';
 
+function checkLoadedForm( $gForm, current_page ) {
+	if ( !$.isJQueryObj( $gForm ) || $gForm.hasClass( dirtyFormIndicator ) ) {
+		return;
+	}
+	var pg1FilledFields = 0;
+	if ( current_page == 1 ) {
+		var $filledFields = $gForm.find( '.gfield_contains_required .gf-value-entered' );
+		pg1FilledFields = $filledFields.length;
+	}
+	if ( current_page > 1 || pg1FilledFields > 0 ) {
+		$gForm.addClass( dirtyFormIndicator );
+	}
+}
+
 // Use Gravity Forms' post-rendering event as a hook for setting up form invalidation
 $( document ).on( 'gform_post_render', function ( event, form_id, current_page ) {
 	var thisFuncName = 'Gravity Forms post-render event handler';
@@ -40,7 +54,7 @@ $( document ).on( 'gform_post_render', function ( event, form_id, current_page )
 				' it was included as a JS development dependency.';
 		}
 
-		// Analyze the interaction state of form
+		// Set up automatic form invalidation on the form
 		var gFormSel = '#gform_' + form_id.toString();
 		var $gForm = $( gFormSel );
 		$gForm.areYouSure( {
@@ -48,14 +62,8 @@ $( document ).on( 'gform_post_render', function ( event, form_id, current_page )
 		} );
 
 		// Based on the form's state, ensure invalidation is properly handled
-		var pg1FilledFields = 0;
-		if ( current_page == 1 ) {
-			var $filledFields = $gForm.find( '.gfield_contains_required .gf-value-entered' );
-			pg1FilledFields = $filledFields.length;
-		}
-		if ( current_page > 1 || pg1FilledFields > 0 ) {
-			$gForm.addClass( dirtyFormIndicator );
-		}
+		checkLoadedForm( $gForm, current_page );
+		setTimeout( checkLoadedForm, 5000, $gForm, current_page );
 	} catch ( errorMsg ) {
 		$.logError( thisFileName, thisFuncName, thisFuncDesc, errorMsg );
 	}

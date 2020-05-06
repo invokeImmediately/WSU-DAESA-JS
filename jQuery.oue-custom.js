@@ -29,33 +29,33 @@
 //     §1.3: jQuery.logError..................................................................99
 //   §2: OUE website initilization modules...................................................174
 //     §2.1: OueDropDownToggle class.........................................................177
-//     §2.2: OueEventCalendarFixer class.....................................................423
-//       §2.2.1: Constructor.................................................................434
-//       §2.2.2: Public members..............................................................452
-//       §2.2.3: Lexically scoped supporting functions.......................................502
-//     §2.3: OuePrintThisPage class..........................................................523
-//       §2.3.1: Constructor.................................................................534
-//       §2.3.2: Public members..............................................................550
-//       §2.3.3: Lexically scoped supporting functions.......................................596
-//   §3: DOM-Ready execution sequence........................................................610
-//   §4: Window-loaded event binding.........................................................736
-//   §5: Window-resized event binding........................................................774
-//   §6: Function declarations...............................................................781
-//     §6.1: addDefinitionListButtons........................................................784
-//     §6.2: fixDogears......................................................................900
-//     §6.3: fixEventCalendars...............................................................925
-//     §6.4: initContentFlippers.............................................................934
-//     §6.5: initDefinitionLists.............................................................950
-//     §6.6: initDropDownToggles.............................................................994
-//     §6.7: initFancyHrH2Motif.............................................................1017
-//     §6.8: initFancyHrH3Motif.............................................................1026
-//     §6.9: initPrintThisPageLinks.........................................................1035
-//     §6.10: initQuickTabs.................................................................1044
-//     §6.11: initReadMoreToggles...........................................................1108
-//     §6.12: initTocFloating...............................................................1128
-//     §6.13: initTriggeredByHover..........................................................1205
-//     §6.14: initWelcomeMessage............................................................1224
-//     §6.15: showDefinitionListButtons.....................................................1234
+//     §2.2: OueEventCalendarFixer class.....................................................443
+//       §2.2.1: Constructor.................................................................454
+//       §2.2.2: Public members..............................................................472
+//       §2.2.3: Lexically scoped supporting functions.......................................522
+//     §2.3: OuePrintThisPage class..........................................................543
+//       §2.3.1: Constructor.................................................................554
+//       §2.3.2: Public members..............................................................570
+//       §2.3.3: Lexically scoped supporting functions.......................................616
+//   §3: DOM-Ready execution sequence........................................................630
+//   §4: Window-loaded event binding.........................................................756
+//   §5: Window-resized event binding........................................................794
+//   §6: Function declarations...............................................................801
+//     §6.1: addDefinitionListButtons........................................................804
+//     §6.2: fixDogears......................................................................920
+//     §6.3: fixEventCalendars...............................................................945
+//     §6.4: initContentFlippers.............................................................954
+//     §6.5: initDefinitionLists.............................................................970
+//     §6.6: initDropDownToggles............................................................1014
+//     §6.7: initFancyHrH2Motif.............................................................1037
+//     §6.8: initFancyHrH3Motif.............................................................1046
+//     §6.9: initPrintThisPageLinks.........................................................1055
+//     §6.10: initQuickTabs.................................................................1064
+//     §6.11: initReadMoreToggles...........................................................1128
+//     §6.12: initTocFloating...............................................................1148
+//     §6.13: initTriggeredByHover..........................................................1225
+//     §6.14: initWelcomeMessage............................................................1244
+//     §6.15: showDefinitionListButtons.....................................................1254
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -77,7 +77,7 @@
 $.isCssClass = function ( possibleClass ) {
 	var cssClassNeedle = /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/;
 	var isClass;
-	
+
 	isClass = typeof possibleClass === 'string' && cssClassNeedle.test( possibleClass );
 
 	return isClass;
@@ -100,7 +100,7 @@ $.isJQueryObj = function ( $obj ) {
 
 /**
  * Log an error using the browser console in JSON notation.
- * 
+ *
  * @param {string} fileName - Name of the JS source file wherein the error was encountered.
  * @param {string} fnctnName - Name of the function that called $.logError.
  * @param {string} fnctnDesc - Description of what the calling function is supposed to do.
@@ -130,13 +130,13 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 	var incorrectTypings;
 	var bitMaskCopy;
 	var newErrorMsg;
-		
+
 	// Determine how many incorrectly typed arguments were encountered
 	for ( var i=0, incorrectTypings = 0, bitMaskCopy = bitMask; i < 4; i++ ) {
 		incorrectTypings += bitMaskCopy & 1;
 		bitMaskCopy = bitMaskCopy >> 1;
 	}
-		
+
 	// Construct a new error message
 	if ( incorrectTypings == 1 ) {
 		newErrorMsg = "Unfortunately, a call to jQuery.error was made with an incorrectly typed" +
@@ -251,14 +251,17 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 			setTabIndices( $toggles );
 			preventAnchorHighlighting( $toggles );
 			effectToggleStatePermanence( $toggles, this.activatingClass );
-			bindClickHandlers( $containers, this.sels.toggles, this.activatingClass );
-			bindKeydownHandlers( $containers, this.sels.toggles, this.activatingClass );
+			bindClickHandlers( $containers, this.sels.toggles, this.activatingClass,
+				this.sels.targets );
+			bindKeydownHandlers( $containers, this.sels.toggles, this.activatingClass,
+				this.sels.targets );
 			bindChildFocusHandlers( $targets, this.sels.targets, this.sels.toggles,
 				this.activatingClass );
 		} else {
-			$.logError( thisFileName, funcName, funcDesc, 'I was not constructed with valid argumen\
-ts. Here\'s what I was passed:\nthis.sels.toString() = ' +  this.sels.toString() + '\nthis.activati\
-ngClass.toString() = ' + this.activatingClass.toString() );
+			$.logError( thisFileName, funcName, funcDesc, 'I was not constructed with valid' +
+				'arguments. Here\'s what I was passed:\nthis.sels.toString() = ' +
+				this.sels.toString() + '\nthis.activatingClass.toString() = ' +
+				this.activatingClass.toString() );
 		}
 	}
 
@@ -283,9 +286,9 @@ ngClass.toString() = ' + this.activatingClass.toString() );
 			$parentTargets.each( function() {
 				var $thisTarget = $( this );
 				var $toggle = $thisTarget.prev( selToggles );
-
 				$toggle.addClass( activatingClass );
 				setUpToggleStatePermanence( $toggle, activatingClass );
+				handleCascadingChildren( $thisTarget );
 			} );
 		} );
 	}
@@ -301,7 +304,7 @@ ngClass.toString() = ' + this.activatingClass.toString() );
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
 	 *     causes it to enter an activated state.
 	 */
-	function bindClickHandlers( $containers, selToggles, activatingClass ) {
+	function bindClickHandlers( $containers, selToggles, activatingClass, selTargets ) {
 		var $this;
 
 		$containers.on( 'click', selToggles, function () {
@@ -309,6 +312,7 @@ ngClass.toString() = ' + this.activatingClass.toString() );
 			$this.blur();
 			$this.toggleClass( activatingClass );
 			setUpToggleStatePermanence( $this, activatingClass );
+			handleCascadingChildren( $this.next( selTargets ) );
 		} );
 	}
 
@@ -323,7 +327,7 @@ ngClass.toString() = ' + this.activatingClass.toString() );
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
 	 *     causes it to enter an activated state.
 	 */
-	function bindKeydownHandlers( $containers, selToggles, activatingClass ) {
+	function bindKeydownHandlers( $containers, selToggles, activatingClass, selTargets ) {
 		$containers.on( 'keydown', selToggles, function ( e ) {
 			var $this;
 			var reActivatingKeys = /Enter| /g;
@@ -333,6 +337,7 @@ ngClass.toString() = ' + this.activatingClass.toString() );
 				$this = $ ( this );
 				$this.toggleClass( activatingClass );
 				setUpToggleStatePermanence( $this, activatingClass );
+				handleCascadingChildren( $this.next( selTargets ) );
 			}
 		} );
 	}
@@ -349,8 +354,8 @@ ngClass.toString() = ' + this.activatingClass.toString() );
 		var $this;
 		var state;
 		var thisFuncName = "effectDropDownTogglePermanence";
-		var thisFuncDesc = "Upon page load, sets the expansion state of a drop down toggle element \
-based on previous user interactions during the session.";
+		var thisFuncDesc = "Upon page load, sets the expansion state of a drop down toggle" +
+			" element based on previous user interactions during the session.";
 
 		$toggles.each( function() {
 			$this = $( this );
@@ -365,10 +370,25 @@ based on previous user interactions during the session.";
 				}
 			} else {
 				$.logError( thisFileName, thisFuncName, thisFuncDesc,
-					"No ID was set for this drop down toggle element; thus, expansion state permane\
-nce cannot be effected." );
+					"No ID was set for this drop down toggle element; thus, expansion state" +
+					" permanence cannot be effected." );
 			}
 		} );
+	}
+
+	/**
+	 * Handle the process of updating the layout of cascading children of a toggled container.
+	 *
+	 * @param {jquery} $container - The container that has been toggled.
+	 */
+	function handleCascadingChildren( $container ) {
+		var $cascaded = $container.find( '.cascaded-layout' );
+		if ( $cascaded.length < 1 ) {
+			return;
+		}
+		setTimeout( function() {
+			$cascaded.masonry( 'layout' );
+		}, 1000 );
 	}
 
 	/**
@@ -400,8 +420,8 @@ nce cannot be effected." );
 	function setUpToggleStatePermanence( $toggle, activatingClass ) {
 		var state;
 		var thisFuncName = 'setUpToggleStatePermanence';
-		var thisFuncDesc = 'Records the expansion state of a drop down toggle element in local stor\
-age to later effect permanence.';
+		var thisFuncDesc = 'Records the expansion state of a drop down toggle element in local' +
+			' storage to later effect permanence.';
 
 		if ( $toggle[0].id ) {
 			try {
@@ -411,8 +431,8 @@ age to later effect permanence.';
 				$.logError( thisFileName, thisFuncName, thisFuncDesc, e.message );
 			}
 		} else {
-			$.logError( thisFileName, thisFuncName, thisFuncDesc, 'No ID was set for this drop down\
- toggle element; thus, expansion state permanence cannot be effected.' );
+			$.logError( thisFileName, thisFuncName, thisFuncDesc, 'No ID was set for this drop' +
+				' down toggle element; thus, expansion state permanence cannot be effected.' );
 		}
 	}
 
@@ -616,7 +636,7 @@ var OuePrintThisPage = ( function( $, thisFileName ) {
 $( function () {
 	var argsList = new Object(); // List of arguments that will be passed to functions
 	var args; // List of arguments currently being utilized
-	
+
 	argsList.fixDogears = {
 		slctrSiteNav: "#spine-sitenav",
 		slctrDogeared: "li.current.active.dogeared",
@@ -638,7 +658,7 @@ $( function () {
 		animAddDrtn: 250
 	};
 	args = argsList.initFancyHrH2Motif;
-	initFancyHrH2Motif( args.slctrFancyH2, args.slctrPrevHr, args.hrClassesAdded, 
+	initFancyHrH2Motif( args.slctrFancyH2, args.slctrPrevHr, args.hrClassesAdded,
 		args.animAddDrtn );
 
 	argsList.initFancyHrH3Motif = {
@@ -648,7 +668,7 @@ $( function () {
 		animAddDrtn: 250
 	};
 	args = argsList.initFancyHrH3Motif;
-	initFancyHrH3Motif( args.slctrFancyH3, args.slctrPrevHr, args.hrClassesAdded, 
+	initFancyHrH3Motif( args.slctrFancyH3, args.slctrPrevHr, args.hrClassesAdded,
 		args.animAddDrtn );
 
 	argsList.initDropDownToggles = {
@@ -668,7 +688,7 @@ $( function () {
 		animDuration: 500
 	};
 	args = argsList.initReadMoreToggles;
-	initReadMoreToggles( args.slctrToggleIn, args.slctrToggleOut, args.slctrPanel, 
+	initReadMoreToggles( args.slctrToggleIn, args.slctrToggleOut, args.slctrPanel,
 		args.animDuration );
 
 	argsList.initContentFlippers = {
@@ -678,7 +698,7 @@ $( function () {
 		animDuration: 500
 	};
 	args = argsList.initContentFlippers;
-	initContentFlippers( args.slctrCntntFlppr, args.slctrFlppdFront, args.slctrFlppdBack, 
+	initContentFlippers( args.slctrCntntFlppr, args.slctrFlppdFront, args.slctrFlppdBack,
 		args.animDuration );
 
 	argsList.initDefinitionLists = {
@@ -702,8 +722,8 @@ $( function () {
 		animSldDrtn: argsList.initDefinitionLists.animSldDrtn
 	};
 	args = argsList.addDefinitionListButtons;
-	addDefinitionListButtons( args.slctrDefList, args.expandAllClass, args.collapseAllClass, 
-		args.btnDeactivatingClass, args.dtActivatingClass, args.ddRevealingClass, 
+	addDefinitionListButtons( args.slctrDefList, args.expandAllClass, args.collapseAllClass,
+		args.btnDeactivatingClass, args.dtActivatingClass, args.ddRevealingClass,
 		args.animSldDrtn );
 
 	argsList.initQuickTabs = {
@@ -726,9 +746,9 @@ $( function () {
 		animDuration: 200
 	};
 	args = argsList.initTriggeredByHover;
-	initTriggeredByHover( args.slctrTrggrdOnHvr, args.slctrCntntRvld, args.slctrCntntHddn, 
+	initTriggeredByHover( args.slctrTrggrdOnHvr, args.slctrCntntRvld, args.slctrCntntHddn,
 		args.animDuration );
-	
+
 	// TODO: initScrollingSidebars("...");
 } );
 
@@ -766,7 +786,7 @@ $( window ).on( "load", function () {
 		fadeInDuration: 500
 	};
 	args = argsList.initWelcomeMessage;
-	initWelcomeMessage( args.slctrWlcmMsg, args.slctrPostWlcmMsg, args.msgDelay, 
+	initWelcomeMessage( args.slctrWlcmMsg, args.slctrPostWlcmMsg, args.msgDelay,
 		args.fadeOutDuration, args.fadeInDuration );
 } );
 
@@ -797,19 +817,19 @@ $( window ).resize( function () {
  * @param {string} ddRevealingClass - CSS class used to realize a revealed, visible state on
  *     definitions.
  */
-function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClass, 
+function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClass,
 		btnDisablingClass, dtActivatingClass, ddRevealingClass, animSldDrtn ) {
 	var thisFuncName = "addDefinitionListButtons";
 	var thisFuncDesc = "Automatically creates and binds events to expand/collapse all buttons "
 		+ "designed for improving UX of OUE site definition lists";
-	
+
 	// Find and remove any pre-existing expand/collapse all buttons
 	var $lists = $( slctrDefList );
 	var $existingExpandAlls = $lists.children( "." + expandAllClass );
 	var $existingCollapseAlls = $lists.children( "." + collapseAllClass );
 	if ( $existingExpandAlls.length > 0 ) {
 		$existingExpandAlls.remove();
-		$.logError( 
+		$.logError(
 			thisFileName, thisFuncName, thisFuncDesc,
 			"Expand all buttons were already discovered in the DOM upon document initialization; "
 				+ "please remove all buttons from the HTML source code to avoid wasting "
@@ -818,14 +838,14 @@ function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClas
 	}
 	if ( $existingCollapseAlls.length > 0 ) {
 		$existingCollapseAlls.remove();
-		$.logError( 
+		$.logError(
 			thisFileName, thisFuncName, thisFuncDesc,
 			"Collapse all buttons were already discovered in the DOM upon document initialization; "
 				+ "please remove all buttons from the HTML source code to avoid wasting "
 				+ "computational resources."
 		);
 	}
-	
+
 	// Add initially hidden ( via CSS ) expand/collapse all buttons to definition lists
 	$lists.prepend( '<button type="button" class="collapse-all-button">Collapse All -</button>' );
 	$lists.prepend( '<button type="button" class="expand-all-button">Expand All +</button>' );
@@ -833,7 +853,7 @@ function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClas
 	var $expandAlls = $( slctrExpandAll );
 	var slctrCollapseAll = slctrDefList + " > ." + collapseAllClass;
 	var $collapseAlls = $( slctrCollapseAll );
-	
+
 	// Bind handling functions to button click events
 	$expandAlls.click( function() {
 		var $thisExpand = $( this );
@@ -856,7 +876,7 @@ function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClas
 				} );
 				// TODO: Enable buttons
 			} else {
-				$.logError( 
+				$.logError(
 					thisFileName, thisFuncName, thisFunDesc,
 					"When trying to bind a click event on an expand all button to a handling \
 function, could not locate the parental definition list within DOM."
@@ -885,9 +905,9 @@ function, could not locate the parental definition list within DOM."
 				} );
 				// TODO: Enable buttons
 			} else {
-				$.logError( 
+				$.logError(
 					thisFileName, thisFuncName, thisFunDesc,
-					"When trying to bind a click event on collapse all button #" + 
+					"When trying to bind a click event on collapse all button #" +
 						$thisCollapse.index() + "to a handling function, could not locate the \
 parental definition list within the DOM."
 				);
@@ -1071,7 +1091,7 @@ function initQuickTabs( slctrQtSctn ) {
 							}
 							$( "html, body" ).animate( {
 								scrollTop: $thisTab.offset().top
-							}, 500 );								
+							}, 500 );
 						}
 					} else {
 						if ( !$thisTab.hasClass( "activated" ) ) {
@@ -1095,7 +1115,7 @@ function initQuickTabs( slctrQtSctn ) {
 							}
 							$( "html, body" ).animate( {
 								scrollTop: $thisTab.offset().top
-							}, 500 );								
+							}, 500 );
 						}
 					}
 				} );
@@ -1129,8 +1149,8 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 
 function initTocFloating( slctrToc, slctrBackToToc ) {
 	var thisFuncName = "initTocFloating";
-	var thisFuncDesc = "Cause the table of contents element to float after scrolling past a \
-certain point";
+	var thisFuncDesc = "Cause the table of contents element to float after scrolling past a" +
+		" certain point";
 	var $toc = $( slctrToc );
 	var $backToToc = $( slctrBackToToc );
 	var $linkToTop = $backToToc.first().children( "a" );
@@ -1160,12 +1180,12 @@ certain point";
 				$linkToTopClone.prependTo( $tocClone );
 				$backToToc.remove();
 			} else {
-				$.logError( thisFileName, thisFuncName, thisFuncDesc, "Did not find the correct \
-textual pattern within the link back to the top of the page." );
+				$.logError( thisFileName, thisFuncName, thisFuncDesc, "Did not find the correct " +
+					"textual pattern within the link back to the top of the page." );
 			}
 		} else {
-			console.log( thisFileName, thisFuncName, thisFuncDesc,  "Did not find a single \
-hyperlink within the first link back to the top of the page." );
+			console.log( thisFileName, thisFuncName, thisFuncDesc,  "Did not find a single" +
+				" hyperlink within the first link back to the top of the page." );
 		}
 		$window.scroll( function( e ) {
 			var windowScrollPos = $window.scrollTop();
@@ -1188,15 +1208,15 @@ hyperlink within the first link back to the top of the page." );
 		} );
 	} else {
 		if ( $toc.length > 1 ) {
-			console.log( thisFileName, thisFuncName, thisFuncDesc, "Found more than one table of \
-contents elements; this function only works with one table of contents." );
+			console.log( thisFileName, thisFuncName, thisFuncDesc, "Found more than one table of" +
+				" contents elements; this function only works with one table of contents." );
 		}
 		if ( $mainHeader.length === 0 ) {
-			console.log( thisFileName, thisFuncName, thisFuncDesc, "Could not find the main header \
-element within the DOM." );
+			console.log( thisFileName, thisFuncName, thisFuncDesc, "Could not find the main" +
+				" header element within the DOM." );
 		} else if ( $mainHeader.length > 1 ) {
-			console.log( thisFileName, thisFuncName, thisFuncDesc, "Found more than one table of \
-contents elements; this function only works with one table of contents.' }" );
+			console.log( thisFileName, thisFuncName, thisFuncDesc, "Found more than one table" +
+				" of contents elements; this function only works with one table of contents.' }" );
 		}
 	}
 }
@@ -1223,7 +1243,7 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 ////////
 // §6.14: initWelcomeMessage
 
-function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDuration, 
+function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDuration,
 		fadeInDuration ) {
 	$( slctrWlcmMsg ).delay( msgDelay ).fadeOut( fadeOutDuration, function () {
 		$( slctrPostWlcmMsg ).fadeIn( fadeInDuration );
@@ -1235,7 +1255,7 @@ function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDu
 
 /**
  * Display expand/collapse all buttons, which were initially hidden
- * 
+ *
  * @param {string} slctrDefList - Selector string for locating definition list elements within the
  *     DOM that contain collapsible definitions.
  * @param {string} expandAllClass - CSS class for controlling the layout of expand all buttons.
@@ -1246,7 +1266,7 @@ function showDefinitionListButtons( slctrDefList, expandAllClass, collapseAllCla
 		animFadeInDrtn ) {
 	var thisFuncName = "addDefinitionListButtons";
 	var thisFuncDesc = "Display expand/collapse all buttons, which were initially hidden";
-	
+
 	// Display expand/collapse all buttons
 	var $lists = $( slctrDefList );
 	var $expandAlls = $lists.children( "." + expandAllClass );
@@ -1258,7 +1278,7 @@ function showDefinitionListButtons( slctrDefList, expandAllClass, collapseAllCla
 		$collapseAlls.fadeIn( animFadeInDrtn );
 	} );
 }
-	
+
 } )( jQuery, 'jQuery.oue-custom.js' );
 
 /*!

@@ -1,16 +1,18 @@
 # WSU-UE---JS
-This project contains JS for enhancing the interactivity of all WordPress websites of the [WSU Office of Undergraduate Education (OUE)](https://vpue.wsu.edu/oue). It is designed to be included as a git submodule in projects dedicated to the development of a specific OUE website. Moreover, the JS utilized from this project is meant to be applied via the Custom JavaScript editor in [WSU WordPress](https://github.com/washingtonstateuniversity/WSUWP-Platform).
+## Summary
+This project contains JavaScript development dependencies for building a JS file containing code designed to be entered into the *Custom JavaScript Editor* page in the themes section of the dashboard of the [WSU WordPress platform (WSUWP)](https://github.com/washingtonstateuniversity/WSUWP-spine-parent-theme). These dependencies are organized into separate, modular files that each focus on implementing a specific form of interactivity or dynamism to a website built using WSUWP. Hence, the frontend developer or website coordinator utilizing this project can generally include or exclude each of these files in the final JS build as desired. However, some files will require another JS project to function if they are included in the build.
 ## WSU OUE Websites Utilizing this Project
-* [Academic Success and Career Center](https://ascc.wsu.edu)
-* [Common Reading program](https://commonreading.wsu.edu)
-* [Distinguished Scholarships program](https://distinguishedscholarships.wsu.edu)
-* [First-Year Experience program](https://firstyear.wsu.edu)
-* [First-Year Focus program](https://learningcommunities.wsu.edu)
-* [National Student Exchange @ WSU](https://nse.wsu.edu)
-* [Office of Undergraduate Research](https://undergraduateresearch.wsu.edu)
-* [Phi Beta Kappa, Gamma of Washington Chapter](https://phibetakappa.wsu.edu/)
-* [Summer Research program](https://summerresearch.wsu.edu)
-* [Showcase for Undergraduate Research and Creative Activities (SURCA)](https://surca.wsu.edu)
-* [Transfer Clearinghouse](https://transfercredit.wsu.edu)
-* [University Common Requirements (UCORE) website](https://ucore.wsu.edu)
-* [UCORE assessment website](https://ucore.wsu.edu/assessment)
+This project was originally designed to be included as a git submodule in projects dedicated to the development of a website built on the WSUWP platform. For examples, one can consult the following GitHub projects for development of websites belonging to the units and programs  WSU DAESA.
+* **[Academic Success and Career Center (ASCC)](https://ascc.wsu.edu):** [invokeImmediately/ascc.wsu.edu](https://github.com/invokeImmediately/ascc.wsu.edu)
+* **[Common Reading program](https://commonreading.wsu.edu):** [invokeImmediately/commonreading.wsu.edu](https://github.com/invokeImmediately/commonreading.wsu.edu)
+* **[Distinguished Scholarships program](https://distinguishedscholarships.wsu.edu):** [invokeImmediately/distinguishedscholarships.wsu.edu](https://github.com/invokeImmediately/distinguishedscholarships.wsu.edu)
+* **[First-Year Programs](https://firstyear.wsu.edu):** [invokeImmediately/firstyear.wsu.edu](https://github.com/invokeImmediately/firstyear.wsu.edu)
+* **[First-Year Focus program](https://learningcommunities.wsu.edu):** [invokeImmediately/learningcommunities.wsu.edu](https://github.com/invokeImmediately/learningcommunities.wsu.edu)
+* **[National Student Exchange @ WSU](https://nse.wsu.edu):** [invokeImmediately/nse.wsu.edu](https://github.com/invokeImmediately/nse.wsu.edu)
+* **[Office of Undergraduate Research](https://undergraduateresearch.wsu.edu):** [invokeImmediately/undergraduateresearch.wsu.edu](https://github.com/invokeImmediately/undergraduateresearch.wsu.edu)
+* **[Phi Beta Kappa, Gamma of Washington Chapter](https://phibetakappa.wsu.edu/):** [invokeImmediately/phibetakappa.wsu.edu](https://github.com/invokeImmediately/phibetakappa.wsu.edu)
+* **[Summer Research program](https://summerresearch.wsu.edu):** [invokeImmediately/summerresearch.wsu.edu](https://github.com/invokeImmediately/summerresearch.wsu.edu)
+* **[Showcase for Undergraduate Research and Creative Activities (SURCA)](https://surca.wsu.edu):** [invokeImmediately/surca.wsu.edu](https://github.com/invokeImmediately/surca.wsu.edu)
+* **[Transfer Clearinghouse](https://transfercredit.wsu.edu):** [invokeImmediately/transfercredit.wsu.edu](https://github.com/invokeImmediately/transfercredit.wsu.edu)
+* **[University Common Requirements (UCORE) website](https://ucore.wsu.edu):** [invokeImmediately/ucore.wsu.edu](https://github.com/invokeImmediately/ucore.wsu.edu)
+* **[UCORE assessment website](https://ucore.wsu.edu/assessment):** [invokeImmediately/ucore.wsu.edu-assessment](https://github.com/invokeImmediately/ucore.wsu.edu-assessment)

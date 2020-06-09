@@ -6,7 +6,11 @@ The code contained in this project was originally written to address the interac
 ## JavaScript Modules Comprising This Project
 * **gulpBuilder.js:** Node module created to support the setting up of gulp automation tasks that enable the developer to build CSS and JS files for deployment on websites built using WSUWP.
 * **jQuery.animatedCalendar.js:** Script for driving interactive aspects of an academic calendar interface that was designed to display the programmatic events being hosted by an academic unit over the course of a year.
+* **jQuery.autoScrollingImages.js:** Used to cause an image to automatically scroll unless the user hovers over or interacts with it, whereupon its motion smoothly comes to a stop. 
 * **jQuery.cookieObjs.js:** Script that combines the [jQuery Cookie Plugin v1.4.1](https://github.com/carhartl/jquery-cookie) with code to apply it in implementing page covering notices.
+* **jQuery.countdown-custom.js:** Applies the external [The Final Countdown plugin for jQuery](https://github.com/hilios/jQuery.countdown) to create a countdown timer on a website built using WSUWP.
+* **jQuery.css-data.js:** Provides a scheme for coupling CSS class names with JavaScript driven behavior.
+* **jQuery.cycle2.js:** Repackaged [Cycle2 plugin for jQuery](https://github.com/malsup/cycle2), which has been used on WSUWP to implement carousels, with more options included such as carousel pausing upon user interaction and thumbnail pagers.
 ## WSU DAESA Websites and Associated Development Projects Utilizing This Project
 This project was originally designed to be included as a git submodule in projects dedicated to the development of a website built on the WSUWP platform. For examples of how it is being deployed, one can consult the following GitHub projects for development of websites belonging to the units and programs WSU DAESA.
 * **[Academic Success and Career Center (ASCC)](https://ascc.wsu.edu):** [invokeImmediately/ascc.wsu.edu](https://github.com/invokeImmediately/ascc.wsu.edu)

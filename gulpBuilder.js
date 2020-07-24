@@ -109,16 +109,17 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 						console.log( 'Removed comments not marked as persistent.' );
 					} ),
 					insert.prepend( settings.minCssFileHeaderStr ).on( 'end', () => {
-						console.log( 'If present, optional file header comment prepended to file.' );
-					} ),
-					insert.prepend( settings.fontImportStr ).on( 'end', () => {
-						console.log( 'Prepended font import string (if any) to build.' );
+						console.log( 'If present, optional file header comment prepended to' +
+							' file.' );
 					} ),
 					gcmq().on( 'end', () => {
 						console.log( 'Finished grouping media queries.' );
 					} ),
 					insertLines( settings.insertingMediaQuerySectionHeader ).on( 'end', () => {
 						console.log( 'Media query section documentation comment inserted.' );
+					} ),
+					insert.prepend( settings.fontImportStr ).on( 'end', () => {
+						console.log( 'Prepended font import string (if any) to build.' );
 					} ),
 					gulp.dest( settings.destFolder ).on( 'end', () => {
 						console.log( 'Unminified CSS file has been built and written.' );
@@ -128,7 +129,7 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 					} ),
 					extName( settings.minCssFileExtension ),
 					gulp.dest( settings.destFolder ).on( 'end', () => {
-						console.log( 'Minified CSS file has been built and written.' ;
+						console.log( 'Minified CSS file has been built and written.' );
 					} ),
 				],
 				callBack

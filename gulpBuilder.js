@@ -20,7 +20,6 @@ var gulp = require( 'gulp' );
 var insert = require( 'gulp-insert' );
 var insertLines = require( 'gulp-insert-lines' );
 var lessc = require( 'gulp-less' );
-var gmsg = require( 'gulp-message' );
 var replace = require( 'gulp-replace' );
 var uglifyJs = require( 'gulp-uglify' );
 var pump = require( 'pump' );

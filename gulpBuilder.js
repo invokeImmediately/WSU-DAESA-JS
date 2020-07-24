@@ -20,6 +20,7 @@ var gulp = require( 'gulp' );
 var insert = require( 'gulp-insert' );
 var insertLines = require( 'gulp-insert-lines' );
 var lessc = require( 'gulp-less' );
+var gmsg = require( 'gulp-message' );
 var replace = require( 'gulp-replace' );
 var uglifyJs = require( 'gulp-uglify' );
 var pump = require( 'pump' );
@@ -97,18 +98,28 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 		if ( settings.staffAddinsFile === undefined ) {
 			pump( [
 					gulp.src( settings.sourceFile ),
+					gmsg.info( 'Beginnin CSS build process.' ),
 					lessc( {
 						paths: [settings.dependenciesPath]
 					} ),
+					gmsg.info( 'Lessc compilation processed finished.' ),
 					replace( settings.commentRemovalNeedle, '' ),
+					gmsg.info( 'Impermanent comments removed.' ),
 					insert.prepend( settings.fontImportStr ),
+					gmsg.info( 'If present, font import string prepended to file.' ),
 					insert.prepend( settings.minCssFileHeaderStr ),
+					gmsg.info( 'If present, optional file header comment prepended to file.' ),
 					gulp.dest( settings.destFolder ),
+					gmsg.info( 'Unminified CSS file has been built and written.' ),
 					gcmq(),
+					gmsg.info( 'Finished grouping media queries.' ),
 					insertLines( settings.insertingMediaQuerySectionHeader ),
+					gmsg.info( 'Media query section documentation comment inserted.' ),
 					cleanCss(),
+					gmsg.info( 'Finished minifying CSS.' ),
 					extName( settings.minCssFileExtension ),
-					gulp.dest( settings.destFolder )
+					gulp.dest( settings.destFolder ),
+					gmsg.info( 'Minified CSS file has been built and written.' )
 				],
 				callBack
 			);

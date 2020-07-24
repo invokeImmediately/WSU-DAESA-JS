@@ -96,29 +96,40 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 	gulp.task( 'buildMinCss', function ( callBack ) {
 		if ( settings.staffAddinsFile === undefined ) {
 			pump( [
-					gulp.src( settings.sourceFile ),
-					gmsg.info( 'Beginnin CSS build process.' ),
+					gulp.src( settings.sourceFile ).on( 'end', () => {
+						console.log( 'Beginning CSS build process.' );
+					} ),
 					lessc( {
 						paths: [settings.dependenciesPath]
+					} ).on( 'end', () => {
+						console.log( 'Finished compiling precompiled CSS written in the Less' +
+							' language extension of CSS.' );
 					} ),
-					gmsg.info( 'Lessc compilation processed finished.' ),
-					replace( settings.commentRemovalNeedle, '' ),
-					gmsg.info( 'Impermanent comments removed.' ),
-					insert.prepend( settings.fontImportStr ),
-					gmsg.info( 'If present, font import string prepended to file.' ),
-					insert.prepend( settings.minCssFileHeaderStr ),
-					gmsg.info( 'If present, optional file header comment prepended to file.' ),
-					gulp.dest( settings.destFolder ),
-					gmsg.info( 'Unminified CSS file has been built and written.' ),
-					gcmq(),
-					gmsg.info( 'Finished grouping media queries.' ),
-					insertLines( settings.insertingMediaQuerySectionHeader ),
-					gmsg.info( 'Media query section documentation comment inserted.' ),
-					cleanCss(),
-					gmsg.info( 'Finished minifying CSS.' ),
+					replace( settings.commentRemovalNeedle, '' ).on( 'end', () => {
+						console.log( 'Removed comments not marked as persistent.' );
+					} ),
+					insert.prepend( settings.minCssFileHeaderStr ).on( 'end', () => {
+						console.log( 'If present, optional file header comment prepended to file.' );
+					} ),
+					insert.prepend( settings.fontImportStr ).on( 'end', () => {
+						console.log( 'Prepended font import string (if any) to build.' );
+					} ),
+					gcmq().on( 'end', () => {
+						console.log( 'Finished grouping media queries.' );
+					} ),
+					insertLines( settings.insertingMediaQuerySectionHeader ).on( 'end', () => {
+						console.log( 'Media query section documentation comment inserted.' );
+					} ),
+					gulp.dest( settings.destFolder ).on( 'end', () => {
+						console.log( 'Unminified CSS file has been built and written.' );
+					} ),
+					cleanCss().on( 'end', () => {
+						console.log( 'Finished minifying CSS.' );
+					} ),
 					extName( settings.minCssFileExtension ),
-					gulp.dest( settings.destFolder ),
-					gmsg.info( 'Minified CSS file has been built and written.' )
+					gulp.dest( settings.destFolder ).on( 'end', () => {
+						console.log( 'Minified CSS file has been built and written.' ;
+					} ),
 				],
 				callBack
 			);

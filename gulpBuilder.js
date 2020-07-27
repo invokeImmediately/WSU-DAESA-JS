@@ -199,17 +199,28 @@ module.exports.setUpJsBuildTask = function ( settings ) {
 	gulp.task( 'buildMinJs', function ( callBack ) {
 		pump( [
 				gulp.src( settings.buildDependenciesList ),
-				replace( settings.commentNeedle, settings.replaceCallback ),
-				concat( settings.compiledJsFileName ),
-				gulp.dest( settings.destFolder ),
+				replace( settings.commentNeedle, settings.replaceCallback ).on( 'end', () => {
+					console.log( 'Removed comments not marked as persistent.' );
+				} ),
+				concat( settings.compiledJsFileName ).on( 'end', () => {
+					console.log( 'Finished combining separate script modules into a single file.');
+				} ),
+				gulp.dest( settings.destFolder ).on( 'end', () => {
+					console.log( 'Unminified JS file has been built and written.' );
+				} ),
 				uglifyJs( {
 					output: {
 						comments: /^!/
 					},
 					toplevel: true,
+				} ).on( 'end', () => {
+					console.log( 'Finished minifying JS.' );
 				} ),
 				extName( settings.minJsFileExtension ),
-				gulp.dest( settings.destFolder )
+				gulp.dest( settings.destFolder ).on( 'end', () => {
+					console.log( 'Minified JS file has been built and written.' );
+				} ),
+				notify( 'The gulp-automated JS build process has completed.' )
 			],
 			callBack
 		);

@@ -8,21 +8,22 @@
 'use strict';
 
 /* -------------------------------------------------------------------------------------------------
-** §1: Variable Declarations
+** §1: Imprting of Node modules
 */
 
 // Import node modules that are dependencies in our gulp tasks.
-var cleanCss = require( 'gulp-clean-css' );
-var concat = require( 'gulp-concat' );
-var extName = require( 'gulp-extname' );
-var gcmq = require( 'gulp-group-css-media-queries' );
-var gulp = require( 'gulp' );
-var insert = require( 'gulp-insert' );
-var insertLines = require( 'gulp-insert-lines' );
-var lessc = require( 'gulp-less' );
-var replace = require( 'gulp-replace' );
-var uglifyJs = require( 'gulp-uglify' );
-var pump = require( 'pump' );
+const cleanCss = require( 'gulp-clean-css' );
+const concat = require( 'gulp-concat' );
+const extName = require( 'gulp-extname' );
+const gcmq = require( 'gulp-group-css-media-queries' );
+const gulp = require( 'gulp' );
+const insert = require( 'gulp-insert' );
+const insertLines = require( 'gulp-insert-lines' );
+const lessc = require( 'gulp-less' );
+const notify = require( 'gulp-notify' );
+const replace = require( 'gulp-replace' );
+const uglifyJs = require( 'gulp-uglify' );
+const pump = require( 'pump' );
 
 /* -------------------------------------------------------------------------------------------------
 ** §2: Exported Class Declarations
@@ -131,6 +132,7 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 					gulp.dest( settings.destFolder ).on( 'end', () => {
 						console.log( 'Minified CSS file has been built and written.' );
 					} ),
+					notify( 'The gulp-automated CSS build process has completed.' )
 				],
 				callBack
 			);
@@ -153,7 +155,8 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 					gulp.dest( settings.destFolder ),
 					cleanCss(),
 					extName( settings.minCssFileExtension ),
-					gulp.dest( settings.destFolder )
+					gulp.dest( settings.destFolder ),
+					notify( 'The gulp-automated CSS build process has completed.' )
 				],
 				callBack
 			);			

@@ -141,21 +141,45 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 			let searchRes = needle.exec( settings.sourceFile );
 			let cssFileName = searchRes[ 1 ] + '.css';
 			pump( [
-					gulp.src( settings.sourceFile ),
+					gulp.src( settings.sourceFile ).on( 'end', () => {
+						console.log( 'Beginning CSS build process.' );
+					} ),
 					lessc( {
 						paths: [settings.dependenciesPath]
+					} ).on( 'end', () => {
+						console.log( 'Finished compiling precompiled CSS written in the Less' +
+							' language extension of CSS.' );
 					} ),
-					replace( settings.commentRemovalNeedle, '' ),
-					insert.prepend( settings.fontImportStr ),
-					insert.prepend( settings.minCssFileHeaderStr ),
-					gcmq(),
-					insertLines( settings.insertingMediaQuerySectionHeader ),
+					replace( settings.commentRemovalNeedle, '' ).on( 'end', () => {
+						console.log( 'Removed comments not marked as persistent.' );
+					} ),
+					insert.prepend( settings.minCssFileHeaderStr ).on( 'end', () => {
+						console.log( 'If present, optional file header comment prepended to' +
+							' file.' );
+					} ),
+					gcmq().on( 'end', () => {
+						console.log( 'Finished grouping media queries.' );
+					} ),
+					insertLines( settings.insertingMediaQuerySectionHeader ).on( 'end', () => {
+						console.log( 'Media query section documentation comment inserted.' );
+					} ),
+					insert.prepend( settings.fontImportStr ).on( 'end', () => {
+						console.log( 'Prepended font import string (if any) to build.' );
+					} ),
 					gulp.src( settings.staffAddinsFile ),
-					concat( cssFileName ),
-					gulp.dest( settings.destFolder ),
-					cleanCss(),
+					concat( cssFileName ).on( 'end', () => {
+						console.log( 'Appended staff CSS add-ins to the build.' );
+					} ),
+					gulp.dest( settings.destFolder ).on( 'end', () => {
+						console.log( 'Unminified CSS file has been built and written.' );
+					} ),
+					cleanCss().on( 'end', () => {
+						console.log( 'Finished minifying CSS.' );
+					} ),
 					extName( settings.minCssFileExtension ),
-					gulp.dest( settings.destFolder ),
+					gulp.dest( settings.destFolder ).on( 'end', () => {
+						console.log( 'Minified CSS file has been built and written.' );
+					} ),
 					notify( 'The gulp-automated CSS build process has completed.' )
 				],
 				callBack

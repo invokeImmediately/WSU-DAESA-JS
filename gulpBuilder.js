@@ -98,39 +98,39 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 		if ( settings.staffAddinsFile === undefined ) {
 			pump( [
 					gulp.src( settings.sourceFile ).on( 'end', () => {
-						console.log( 'Beginning CSS build process.' );
+						logUpdate( 'Beginning CSS build process.' );
 					} ),
 					lessc( {
 						paths: [settings.dependenciesPath]
 					} ).on( 'end', () => {
-						console.log( 'Finished compiling precompiled CSS written in the Less' +
+						logUpdate( 'Finished compiling precompiled CSS written in the Less' +
 							' language extension of CSS.' );
 					} ),
 					replace( settings.commentRemovalNeedle, '' ).on( 'end', () => {
-						console.log( 'Removed comments not marked as persistent.' );
+						logUpdate( 'Removed comments not marked as persistent.' );
 					} ),
 					insert.prepend( settings.minCssFileHeaderStr ).on( 'end', () => {
-						console.log( 'If present, optional file header comment prepended to' +
+						logUpdate( 'If present, optional file header comment prepended to' +
 							' file.' );
 					} ),
 					gcmq().on( 'end', () => {
-						console.log( 'Finished grouping media queries.' );
+						logUpdate( 'Finished grouping media queries.' );
 					} ),
 					insertLines( settings.insertingMediaQuerySectionHeader ).on( 'end', () => {
-						console.log( 'Media query section documentation comment inserted.' );
+						logUpdate( 'Media query section documentation comment inserted.' );
 					} ),
 					insert.prepend( settings.fontImportStr ).on( 'end', () => {
-						console.log( 'Prepended font import string (if any) to build.' );
+						logUpdate( 'Prepended font import string (if any) to build.' );
 					} ),
 					gulp.dest( settings.destFolder ).on( 'end', () => {
-						console.log( 'Unminified CSS file has been built and written.' );
+						logUpdate( 'Unminified CSS file has been built and written.' );
 					} ),
 					cleanCss().on( 'end', () => {
-						console.log( 'Finished minifying CSS.' );
+						logUpdate( 'Finished minifying CSS.' );
 					} ),
 					extName( settings.minCssFileExtension ),
 					gulp.dest( settings.destFolder ).on( 'end', () => {
-						console.log( 'Minified CSS file has been built and written.' );
+						logUpdate( 'Minified CSS file has been built and written.' );
 					} ),
 					notify( 'The gulp-automated CSS build process has completed.' )
 				],
@@ -142,43 +142,43 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 			let cssFileName = searchRes[ 1 ] + '.css';
 			pump( [
 					gulp.src( settings.sourceFile ).on( 'end', () => {
-						console.log( 'Beginning CSS build process.' );
+						logUpdate( 'Beginning CSS build process.' );
 					} ),
 					lessc( {
 						paths: [settings.dependenciesPath]
 					} ).on( 'end', () => {
-						console.log( 'Finished compiling precompiled CSS written in the Less' +
+						logUpdate( 'Finished compiling precompiled CSS written in the Less' +
 							' language extension of CSS.' );
 					} ),
 					replace( settings.commentRemovalNeedle, '' ).on( 'end', () => {
-						console.log( 'Removed comments not marked as persistent.' );
+						logUpdate( 'Removed comments not marked as persistent.' );
 					} ),
 					insert.prepend( settings.minCssFileHeaderStr ).on( 'end', () => {
-						console.log( 'If present, optional file header comment prepended to' +
+						logUpdate( 'If present, optional file header comment prepended to' +
 							' file.' );
 					} ),
 					gcmq().on( 'end', () => {
-						console.log( 'Finished grouping media queries.' );
+						logUpdate( 'Finished grouping media queries.' );
 					} ),
 					insertLines( settings.insertingMediaQuerySectionHeader ).on( 'end', () => {
-						console.log( 'Media query section documentation comment inserted.' );
+						logUpdate( 'Media query section documentation comment inserted.' );
 					} ),
 					insert.prepend( settings.fontImportStr ).on( 'end', () => {
-						console.log( 'Prepended font import string (if any) to build.' );
+						logUpdate( 'Prepended font import string (if any) to build.' );
 					} ),
 					gulp.src( settings.staffAddinsFile ),
 					concat( cssFileName ).on( 'end', () => {
-						console.log( 'Appended staff CSS add-ins to the build.' );
+						logUpdate( 'Appended staff CSS add-ins to the build.' );
 					} ),
 					gulp.dest( settings.destFolder ).on( 'end', () => {
-						console.log( 'Unminified CSS file has been built and written.' );
+						logUpdate( 'Unminified CSS file has been built and written.' );
 					} ),
 					cleanCss().on( 'end', () => {
-						console.log( 'Finished minifying CSS.' );
+						logUpdate( 'Finished minifying CSS.' );
 					} ),
 					extName( settings.minCssFileExtension ),
 					gulp.dest( settings.destFolder ).on( 'end', () => {
-						console.log( 'Minified CSS file has been built and written.' );
+						logUpdate( 'Minified CSS file has been built and written.' );
 					} ),
 					notify( 'The gulp-automated CSS build process has completed.' )
 				],
@@ -200,13 +200,13 @@ module.exports.setUpJsBuildTask = function ( settings ) {
 		pump( [
 				gulp.src( settings.buildDependenciesList ),
 				replace( settings.commentNeedle, settings.replaceCallback ).on( 'end', () => {
-					console.log( 'Removed comments not marked as persistent.' );
+					logUpdate( 'Removed comments not marked as persistent.' );
 				} ),
 				concat( settings.compiledJsFileName ).on( 'end', () => {
-					console.log( 'Finished combining separate script modules into a single file.');
+					logUpdate( 'Finished combining separate script modules into a single file.');
 				} ),
 				gulp.dest( settings.destFolder ).on( 'end', () => {
-					console.log( 'Unminified JS file has been built and written.' );
+					logUpdate( 'Unminified JS file has been built and written.' );
 				} ),
 				uglifyJs( {
 					output: {
@@ -214,15 +214,23 @@ module.exports.setUpJsBuildTask = function ( settings ) {
 					},
 					toplevel: true,
 				} ).on( 'end', () => {
-					console.log( 'Finished minifying JS.' );
+					logUpdate( 'Finished minifying JS.' );
 				} ),
 				extName( settings.minJsFileExtension ),
 				gulp.dest( settings.destFolder ).on( 'end', () => {
-					console.log( 'Minified JS file has been built and written.' );
+					logUpdate( 'Minified JS file has been built and written.' );
 				} ),
 				notify( 'The gulp-automated JS build process has completed.' )
 			],
 			callBack
 		);
 	} );
+}
+
+function logUpdate( msg ) {
+	let now = new Date();
+	console.log( '[\x1b[1;30m%s\x1b[0m] ' + msg,
+		now.getHours().toString().padStart( 2, '0' ) + ':' +
+		now.getMinutes().toString().padStart(2, '0') + ':' +
+		now.getSeconds().toString().padStart( 2, '0' ) );
 }

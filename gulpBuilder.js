@@ -211,10 +211,7 @@ module.exports.setUpJsBuildTask = function ( settings ) {
 					logUpdate( 'Unminified JS file has been built and written.' );
 				} ),
 				uglifyJs( {
-					output: {
-						comments: /^!/
-					},
-					toplevel: true,
+					comments: /^!/
 				} ).on( 'end', () => {
 					logUpdate( 'Finished minifying JS.' );
 				} ),

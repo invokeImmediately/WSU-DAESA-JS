@@ -22,8 +22,10 @@ const insertLines = require( 'gulp-insert-lines' );
 const lessc = require( 'gulp-less' );
 const notify = require( 'gulp-notify' );
 const replace = require( 'gulp-replace' );
-const uglifyJs = require( 'gulp-uglify' );
+const uglificationComposer = require( 'gulp-uglify/composer' );
+const terser = require( 'terser' );
 const pump = require( 'pump' );
+const uglifyJs = uglificationComposer( terser, console );
 
 /* -------------------------------------------------------------------------------------------------
 ** §2: Exported Class Declarations

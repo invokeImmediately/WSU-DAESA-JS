@@ -1,61 +1,65 @@
 /*!*************************************************************************************************
- * https://github.com/invokeImmediately/WSU-UE---JS/jQuery.oue-custom.js ↓↓↓
+ * github.com/invokeImmediately/WSU-UE---JS/jQuery.oue-custom.js ↓↓↓
  * -------------------------------------------------------------------------------------------------
  * SUMMARY: Custom JS code common to all websites of the WSU Division of Academic Engagement and
  *   Student Achievement (DAESA) in the Provost's Office.
  *
  * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  *
- * LICENSE: ISC - Copyright (c) 2020 Daniel C. Rieck.
+ * LICENSE: MIT - Copyright (c) 2020 Washington State University
  *
- *   Permission to use, copy, modify, and/or distribute this software for any purpose with or
- *   without fee is hereby granted, provided that the above copyright notice and this permission
- *   notice appear in all copies.
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ *   and associated documentation files (the “Software”), to deal in the Software without
+ *   restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ *   distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ *   Software is furnished to do so, subject to the following conditions:
  *
- *   THE SOFTWARE IS PROVIDED "AS IS" AND DANIEL C. RIECK DISCLAIMS ALL WARRANTIES WITH REGARD TO
- *   THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT
- *   SHALL DANIEL C. RIECK BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR
- *   ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
- *   CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
- *   PERFORMANCE OF THIS SOFTWARE.
+ *   The above copyright notice and this permission notice shall be included in all copies or
+ *   substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *   BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ *   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **************************************************************************************************/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-//   §1: Addition of functions to jQuery......................................................66
-//     §1.1: jQuery.isCssClass................................................................69
-//     §1.2: jQuery.isJQueryObj...............................................................87
-//     §1.3: jQuery.logError..................................................................99
-//   §2: OUE website initilization modules...................................................174
-//     §2.1: OueDropDownToggle class.........................................................177
-//     §2.2: OueEventCalendarFixer class.....................................................443
-//       §2.2.1: Constructor.................................................................454
-//       §2.2.2: Public members..............................................................472
-//       §2.2.3: Lexically scoped supporting functions.......................................522
-//     §2.3: OuePrintThisPage class..........................................................543
-//       §2.3.1: Constructor.................................................................554
-//       §2.3.2: Public members..............................................................570
-//       §2.3.3: Lexically scoped supporting functions.......................................616
-//   §3: DOM-Ready execution sequence........................................................630
-//   §4: Window-loaded event binding.........................................................756
-//   §5: Window-resized event binding........................................................794
-//   §6: Function declarations...............................................................801
-//     §6.1: addDefinitionListButtons........................................................804
-//     §6.2: fixDogears......................................................................920
-//     §6.3: fixEventCalendars...............................................................945
-//     §6.4: initContentFlippers.............................................................954
-//     §6.5: initDefinitionLists.............................................................970
-//     §6.6: initDropDownToggles............................................................1014
-//     §6.7: initFancyHrH2Motif.............................................................1037
-//     §6.8: initFancyHrH3Motif.............................................................1046
-//     §6.9: initPrintThisPageLinks.........................................................1055
-//     §6.10: initQuickTabs.................................................................1064
-//     §6.11: initReadMoreToggles...........................................................1128
-//     §6.12: initTocFloating...............................................................1148
-//     §6.13: initTriggeredByHover..........................................................1225
-//     §6.14: initWelcomeMessage............................................................1244
-//     §6.15: showDefinitionListButtons.....................................................1254
+//   §1: Addition of functions to jQuery......................................................70
+//     §1.1: jQuery.isCssClass................................................................73
+//     §1.2: jQuery.isJQueryObj...............................................................91
+//     §1.3: jQuery.logError.................................................................103
+//   §2: OUE website initilization modules...................................................178
+//     §2.1: OueDropDownToggle class.........................................................181
+//     §2.2: OueEventCalendarFixer class.....................................................447
+//       §2.2.1: Constructor.................................................................458
+//       §2.2.2: Public members..............................................................476
+//       §2.2.3: Lexically scoped supporting functions.......................................526
+//     §2.3: OuePrintThisPage class..........................................................547
+//       §2.3.1: Constructor.................................................................558
+//       §2.3.2: Public members..............................................................574
+//       §2.3.3: Lexically scoped supporting functions.......................................620
+//   §3: DOM-Ready execution sequence........................................................634
+//   §4: Window-loaded event binding.........................................................760
+//   §5: Window-resized event binding........................................................798
+//   §6: Function declarations...............................................................805
+//     §6.1: addDefinitionListButtons........................................................808
+//     §6.2: fixDogears......................................................................924
+//     §6.3: fixEventCalendars...............................................................949
+//     §6.4: initContentFlippers.............................................................958
+//     §6.5: initDefinitionLists.............................................................974
+//     §6.6: initDropDownToggles............................................................1018
+//     §6.7: initFancyHrH2Motif.............................................................1041
+//     §6.8: initFancyHrH3Motif.............................................................1050
+//     §6.9: initPrintThisPageLinks.........................................................1059
+//     §6.10: initQuickTabs.................................................................1068
+//     §6.11: initReadMoreToggles...........................................................1132
+//     §6.12: initTocFloating...............................................................1152
+//     §6.13: initTriggeredByHover..........................................................1229
+//     §6.14: initWelcomeMessage............................................................1248
+//     §6.15: showDefinitionListButtons.....................................................1258
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {

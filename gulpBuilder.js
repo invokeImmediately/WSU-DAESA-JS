@@ -22,10 +22,8 @@ const insertLines = require( 'gulp-insert-lines' );
 const lessc = require( 'gulp-less' );
 const notify = require( 'gulp-notify' );
 const replace = require( 'gulp-replace' );
-const uglificationComposer = require( 'gulp-uglify/composer' );
-const terser = require( 'terser' );
+const terser = require( 'gulp-terser' );
 const pump = require( 'pump' );
-const uglifyJs = uglificationComposer( terser, console );
 
 /* -------------------------------------------------------------------------------------------------
 ** §2: Exported Class Declarations
@@ -210,8 +208,10 @@ module.exports.setUpJsBuildTask = function ( settings ) {
 				gulp.dest( settings.destFolder ).on( 'end', () => {
 					logUpdate( 'Unminified JS file has been built and written.' );
 				} ),
-				uglifyJs( {
-					comments: /^!/
+				terser( {
+					output: {
+						comments: /^!/
+					}
 				} ).on( 'end', () => {
 					logUpdate( 'Finished minifying JS.' );
 				} ),

@@ -1,15 +1,46 @@
-/**
- * Node module used to build CSS and JS modules via gulp.
+/*!*************************************************************************************************
+ * github.com/invokeImmediately/WSU-UE---JS/gulpBuider.js
+ ***************************************************************************************************
+ * SUMMARY: Node module used to build CSS and JS modules via gulp.
  *
- * @link	https://github.com/invokeImmediately/WSU-UE---JS/gulpBuilder.js
- * @author	invokeImmediately (Daniel C. Rieck)
- */
+ * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
+ *
+ * LICENSE: MIT - Copyright (c) 2020 Washington State University
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ *   and associated documentation files (the “Software”), to deal in the Software without
+ *   restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ *   distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ *   Software is furnished to do so, subject to the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be included in all copies or
+ *   substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *   BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ *   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **************************************************************************************************/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// TABLE OF CONTENTS
+// -----------------
+// §1: Importing of Node modules...............................................................43
+// §2: Exported Class Declarations.............................................................60
+//   §2.1: module.exports.CssBuildSettings.....................................................63
+// §3: Exported Function Declarations..........................................................95
+//   §3.1: module.exports.fixFileHeaderComments................................................98
+//   §3.2: module.exports.setUpCssBuildTask...................................................124
+//   §3.3: module.exports.setUpJsBuildTask....................................................230
+// §4: Support functions......................................................................271
+//   §4.1: logUpdate..........................................................................274
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 'use strict';
 
-/* -------------------------------------------------------------------------------------------------
-** §1: Imprting of Node modules
-*/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §1: Importing of Node modules
 
 // Import node modules that are dependencies in our gulp tasks.
 const cleanCss = require( 'gulp-clean-css' );
@@ -25,9 +56,11 @@ const replace = require( 'gulp-replace' );
 const terser = require( 'gulp-terser' );
 const pump = require( 'pump' );
 
-/* -------------------------------------------------------------------------------------------------
-** §2: Exported Class Declarations
-*/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §2: Exported Class Declarations
+
+////////
+// §2.1: module.exports.CssBuildSettings
 
 /**
  * Collection of settings needed to build CSS files for OUE websites using gulp.
@@ -58,9 +91,11 @@ module.exports.CssBuildSettings = function (commentRemovalNeedle, dependenciesPa
 	this.staffAddinsFile = staffAddinsFile;
 }
 
-/* -------------------------------------------------------------------------------------------------
-** §3: Exported Function Declarations
-*/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §3: Exported Function Declarations
+
+////////
+// §3.1: module.exports.fixFileHeaderComments
 
 /**
  * Returns a replacement string that will render impermanent file header comments persistent through
@@ -84,6 +119,9 @@ module.exports.fixFileHeaderComments = function ( match, p1, offset, string ) {
 	}
 	return replacementStr;
 }
+
+////////
+// §3.2: module.exports.setUpCssBuildTask
 
 /**
  * Uses gulp task automation to build a CSS stylesheet, and its minified version, from Less source
@@ -188,6 +226,9 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 	} );
 }
 
+////////
+// §3.3: module.exports.setUpJsBuildTask
+
 /**
  * Uses gulp task automation to build a custom JS file, and its minified version, from dependencies.
  *
@@ -225,6 +266,12 @@ module.exports.setUpJsBuildTask = function ( settings ) {
 		);
 	} );
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §4: Support functions
+
+////////
+// §4.1: logUpdate
 
 function logUpdate( msg ) {
 	let now = new Date();

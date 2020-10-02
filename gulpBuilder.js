@@ -90,7 +90,7 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 			'a properly formed ';
 		if ( !settings.hasOwnProperty( 'commentRemovalNeedle' ) &&
 			typeof settings.commentRemovalNeedle !== 'object' &&
-			instanceof settings.commentRemovalNeedle RegExp !== true )
+			settings.commentRemovalNeedle instanceof RegExp !== true )
 		{
 			throw new TypeError( typeErrPref + 'regular expression for identifying comments for ' +
 				'removal during minification.' );
@@ -120,7 +120,7 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 			typeof settings.insertingMediaQuerySectionHeader !== 'object' &&
 			!settings.insertingMediaQuerySectionHeader.hasOwnProperty( 'before' ) &&
 			typeof settings.insertingMediaQuerySectionHeader.before !== 'object' &&
-			instanceof settings.insertingMediaQuerySectionHeader.before RegExp !== true &&
+			settings.insertingMediaQuerySectionHeader.before instanceof RegExp !== true &&
 			!settings.insertingMediaQuerySectionHeader.hasOwnProperty( 'lineBefore' ) &&
 			typeof settings.insertingMediaQuerySectionHeader.lineBefore !== 'string' )
 		{

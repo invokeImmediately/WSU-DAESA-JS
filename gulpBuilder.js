@@ -26,15 +26,16 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: Importing of Node modules...............................................................43
-// §2: Exported Class Declarations.............................................................60
-//   §2.1: module.exports.CssBuildSettings.....................................................63
-// §3: Exported Function Declarations..........................................................95
-//   §3.1: module.exports.fixFileHeaderComments................................................98
-//   §3.2: module.exports.setUpCssBuildTask...................................................124
-//   §3.3: module.exports.setUpJsBuildTask....................................................230
-// §4: Support functions......................................................................271
-//   §4.1: logUpdate..........................................................................274
+// §1: Importing of Node modules...............................................................44
+// §2: Exported Class Declarations.............................................................61
+//   §2.1: module.exports.CssBuildSettings.....................................................64
+//   §2.2: module.exports.JsBuildSettings.....................................................165
+// §3: Exported Function Declarations.........................................................174
+//   §3.1: module.exports.fixFileHeaderComments...............................................177
+//   §3.2: module.exports.setUpCssBuildTask...................................................203
+//   §3.3: module.exports.setUpJsBuildTask....................................................309
+// §4: Support functions......................................................................350
+//   §4.1: logUpdate..........................................................................353
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 'use strict';
@@ -65,31 +66,109 @@ const pump = require( 'pump' );
 /**
  * Collection of settings needed to build CSS files for OUE websites using gulp.
  *
- * @param {RegExp} commentRemovalNeedle - Used to find and remove impermanent comments in the
- *     unminified source file.
+ * @todo Switch to an ES6-based class implementation.
+ *
+ * @param {RegExp} settings.commentRemovalNeedle - Used to find and remove impermanent comments the
+ *   in unminified source file.
  * @param {String} dependenciesPath - Location of Less build dependencies common to all OUE
- *     websites.
+ *   websites.
  * @param {String} fontImportStr - CSS @import rule for importing additional functions that will be
- *     prepended to the built stylesheet.
+ *   prepended to the built stylesheet.
  * @param {String} insertingMediaQuerySectionHeader - Comment block for inline documentation to be
- *     inserted before the section of the built CSS file that will contain media queries.
+ *   inserted before the section of the built CSS file that will contain media queries.
  * @param {String} minCssFileExtension - Extension to be utilized on the minified built CSS file.
  * @param {String} minCssFileHeaderStr - File header comment for inline documentation to be
- *     prepended to the built CSS file. (Should be structured as a permanent comment.)
+ *   prepended to the built CSS file. (Should be structured as a permanent comment.)
  */
-module.exports.CssBuildSettings = function (commentRemovalNeedle, dependenciesPath, destFolder,
-		fontImportStr, insertingMediaQuerySectionHeader, minCssFileExtension, minCssFileHeaderStr,
-		sourceFile, staffAddinsFile) {
-	this.commentRemovalNeedle = commentRemovalNeedle;
-	this.dependenciesPath = dependenciesPath;
-	this.destFolder = destFolder;
-	this.fontImportStr = fontImportStr;
-	this.insertingMediaQuerySectionHeader = insertingMediaQuerySectionHeader;
-	this.minCssFileExtension = minCssFileExtension;
-	this.minCssFileHeaderStr = minCssFileHeaderStr;
-	this.sourceFile = sourceFile;
-	this.staffAddinsFile = staffAddinsFile;
+module.exports.CssBuildSettings = class CssBuildSettings {
+	constructor( settings ) {
+		if ( typeof settings !== "object" ) {
+			throw new TypeError( 'Attempted to construct a CSS Build Settings object using an ' +
+				'improperly formed settings argument.' );
+		}
+		const typeErrPref = 'Attempted to construct a CSS Build Settings object without supplying ' +
+			'a properly formed ';
+		if ( !settings.hasOwnProperty( 'commentRemovalNeedle' ) &&
+			typeof settings.commentRemovalNeedle !== 'object' &&
+			instanceof settings.commentRemovalNeedle RegExp !== true )
+		{
+			throw new TypeError( typeErrPref + 'regular expression for identifying comments for ' +
+				'removal during minification.' );
+		}
+		this.commentRemovalNeedle = settings.commentRemovalNeedle;
+		if ( !settings.hasOwnProperty( 'dependenciesPath' ) &&
+			typeof settings.dependenciesPath !== 'string' )
+		{
+			throw new TypeError( typeErrPref + 'string containing the path to dev dependencies.' );
+		}
+		this.dependenciesPath = settings.dependenciesPath;
+		if ( !settings.hasOwnProperty( 'destFolder' ) &&
+			typeof settings.destFolder !== 'string' )
+		{
+			throw new TypeError( typeErrPref + 'string containing the path to the destination ' +
+				'folder for storing CSS builds.' );
+		}
+		this.destFolder = settings.destFolder;
+		if ( !settings.hasOwnProperty( 'fontImportStr' ) &&
+			typeof settings.fontImportStr !== 'string' )
+		{
+			throw new TypeError( typeErrPref + 'string containing the path to the destination folder ' +
+				'for storing CSS builds.' );
+		}
+		this.fontImportStr = settings.fontImportStr;
+		if ( !settings.hasOwnProperty( 'insertingMediaQuerySectionHeader' ) &&
+			typeof settings.insertingMediaQuerySectionHeader !== 'object' &&
+			!settings.insertingMediaQuerySectionHeader.hasOwnProperty( 'before' ) &&
+			typeof settings.insertingMediaQuerySectionHeader.before !== 'object' &&
+			instanceof settings.insertingMediaQuerySectionHeader.before RegExp !== true &&
+			!settings.insertingMediaQuerySectionHeader.hasOwnProperty( 'lineBefore' ) &&
+			typeof settings.insertingMediaQuerySectionHeader.lineBefore !== 'string' )
+		{
+			throw new TypeError( typeErrPref + 'object with the right properties for inserting the ' +
+				'media query .' );
+		}
+		this.insertingMediaQuerySectionHeader = settings.insertingMediaQuerySectionHeader;
+		if ( !settings.hasOwnProperty( 'minCssFileExtension' ) &&
+			typeof settings.minCssFileExtension !== 'string' )
+		{
+			throw new TypeError( typeErrPref + 'string containing the file extension for the minified ' +
+				'CSS build.' );
+		}
+		this.minCssFileExtension = settings.minCssFileExtension;
+		if ( !settings.hasOwnProperty( 'minCssFileHeaderStr' ) &&
+			typeof settings.minCssFileHeaderStr !== 'string' )
+		{
+			throw new TypeError( typeErrPref + 'string containing the optional file header comment ' +
+				'to be prepended to the minified CSS build.' );
+		}
+		this.minCssFileHeaderStr = settings.minCssFileHeaderStr;
+		if ( !settings.hasOwnProperty( 'sourceFile' ) &&
+			typeof settings.sourceFile !== 'string' )
+		{
+			throw new TypeError( typeErrPref + 'string containing the optional file header comment ' +
+				'to be prepended to the minified CSS build.' );
+		}
+		this.sourceFile = settings.sourceFile;
+		if ( settings.hasOwnProperty( 'staffAddinsFile' ) &&
+			typeof settings.staffAddinsFile !== 'string' )
+		{
+			throw new TypeError( typeErrPref + 'string containing a path to the optional file ' +
+				'containing CSS written by additional DAESA staff.' );
+		} else if ( !settings.hasOwnProperty( 'staffAddinsFile' ) ) {
+			settings.staffAddInsFile = '';
+		}
+		this.staffAddinsFile = settings.staffAddinsFile;
+	}
 }
+
+////////
+// §2.2: module.exports.JsBuildSettings
+
+/**
+ * Collection of settings needed to build CSS files for OUE websites using gulp.
+ *
+ * @todo Finish writing class using ES6-based implementation.
+ */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // §3: Exported Function Declarations

@@ -29,13 +29,13 @@
 // §1: Importing of Node modules...............................................................44
 // §2: Exported Class Declarations.............................................................61
 //   §2.1: module.exports.CssBuildSettings.....................................................64
-//   §2.2: module.exports.JsBuildSettings.....................................................165
-// §3: Exported Function Declarations.........................................................174
-//   §3.1: module.exports.fixFileHeaderComments...............................................177
-//   §3.2: module.exports.setUpCssBuildTask...................................................203
-//   §3.3: module.exports.setUpJsBuildTask....................................................309
-// §4: Support functions......................................................................350
-//   §4.1: logUpdate..........................................................................353
+//   §2.2: module.exports.JsBuildSettings.....................................................198
+// §3: Exported Function Declarations.........................................................207
+//   §3.1: module.exports.fixFileHeaderComments...............................................210
+//   §3.2: module.exports.setUpCssBuildTask...................................................236
+//   §3.3: module.exports.setUpJsBuildTask....................................................342
+// §4: Support functions......................................................................383
+//   §4.1: logUpdate..........................................................................386
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 'use strict';
@@ -82,12 +82,18 @@ const pump = require( 'pump' );
  */
 module.exports.CssBuildSettings = class CssBuildSettings {
 	constructor( settings ) {
+		// Begin checking structure of settings argument, which should be an object.
 		if ( typeof settings !== "object" ) {
 			throw new TypeError( 'Attempted to construct a CSS Build Settings object using an ' +
 				'improperly formed settings argument.' );
 		}
+
+		// Set an error message prefix that is used to construct all type errors appearing below.
 		const typeErrPref = 'Attempted to construct a CSS Build Settings object without supplying ' +
 			'a properly formed ';
+
+		// Check the integrity of the setting that controls how comments are removed. If it checks
+		//  out, copy the setting to this instance.
 		if ( !settings.hasOwnProperty( 'commentRemovalNeedle' ) &&
 			typeof settings.commentRemovalNeedle !== 'object' &&
 			settings.commentRemovalNeedle instanceof RegExp !== true )
@@ -96,12 +102,18 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 				'removal during minification.' );
 		}
 		this.commentRemovalNeedle = settings.commentRemovalNeedle;
+
+		// Check the integrity of the setting that records the path to development dependencies. If it
+		//  checks out, copy the setting to this instance.
 		if ( !settings.hasOwnProperty( 'dependenciesPath' ) &&
 			typeof settings.dependenciesPath !== 'string' )
 		{
 			throw new TypeError( typeErrPref + 'string containing the path to dev dependencies.' );
 		}
 		this.dependenciesPath = settings.dependenciesPath;
+
+		// Check the integrity of the setting that stores the build destination path. If it checks out,
+		//  copy the setting to this instance.
 		if ( !settings.hasOwnProperty( 'destFolder' ) &&
 			typeof settings.destFolder !== 'string' )
 		{
@@ -109,6 +121,9 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 				'folder for storing CSS builds.' );
 		}
 		this.destFolder = settings.destFolder;
+
+		// Check the integrity of the setting containing the import directive that will be prepended to
+		//  the CSS build. If it checks out, copy the setting to this instance.
 		if ( !settings.hasOwnProperty( 'fontImportStr' ) &&
 			typeof settings.fontImportStr !== 'string' )
 		{
@@ -116,6 +131,9 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 				'for storing CSS builds.' );
 		}
 		this.fontImportStr = settings.fontImportStr;
+
+		// Check the integrity of the setting for inserting the inline documentation for marking the
+		//  media query section of the CSS build. If it checks out, copy the setting to this instance.
 		if ( !settings.hasOwnProperty( 'insertingMediaQuerySectionHeader' ) &&
 			typeof settings.insertingMediaQuerySectionHeader !== 'object' &&
 			!settings.insertingMediaQuerySectionHeader.hasOwnProperty( 'before' ) &&
@@ -128,6 +146,9 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 				'media query .' );
 		}
 		this.insertingMediaQuerySectionHeader = settings.insertingMediaQuerySectionHeader;
+
+		// Check the integrity of the setting containing inline documentation for marking the media
+		//  query section of the CSS build. If it checks out, copy the setting to this instance.
 		if ( !settings.hasOwnProperty( 'minCssFileExtension' ) &&
 			typeof settings.minCssFileExtension !== 'string' )
 		{
@@ -135,6 +156,9 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 				'CSS build.' );
 		}
 		this.minCssFileExtension = settings.minCssFileExtension;
+
+		// Check the integrity of the setting storing the optional file header comment for the CSS
+		//  build. If it checks out, copy the setting to this instance.
 		if ( !settings.hasOwnProperty( 'minCssFileHeaderStr' ) &&
 			typeof settings.minCssFileHeaderStr !== 'string' )
 		{
@@ -142,6 +166,9 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 				'to be prepended to the minified CSS build.' );
 		}
 		this.minCssFileHeaderStr = settings.minCssFileHeaderStr;
+
+		// Check the integrity of the setting that contains the path to the source file serving as the
+		//  build entry point. If it checks out, copy the setting to this instance.
 		if ( !settings.hasOwnProperty( 'sourceFile' ) &&
 			typeof settings.sourceFile !== 'string' )
 		{
@@ -149,6 +176,10 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 				'to be prepended to the minified CSS build.' );
 		}
 		this.sourceFile = settings.sourceFile;
+
+		// If present, check the integrity of the setting that records the path to the optional source
+		//  file containing CSS written by other DAESA staff. If it is present and checks out, copy the
+		//  setting to this instance.
 		if ( settings.hasOwnProperty( 'staffAddinsFile' ) &&
 			typeof settings.staffAddinsFile !== 'string' )
 		{
@@ -158,6 +189,8 @@ module.exports.CssBuildSettings = class CssBuildSettings {
 			settings.staffAddInsFile = '';
 		}
 		this.staffAddinsFile = settings.staffAddinsFile;
+
+		// @todo - Freeze instance?
 	}
 }
 

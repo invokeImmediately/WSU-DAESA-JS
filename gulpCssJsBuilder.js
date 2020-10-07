@@ -26,16 +26,18 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: Importing of Node modules...............................................................44
-// §2: Exported Class Declarations.............................................................61
-//   §2.1: module.exports.CssBuildSettings.....................................................64
-//   §2.2: module.exports.JsBuildSettings.....................................................198
-// §3: Exported Function Declarations.........................................................207
-//   §3.1: module.exports.fixFileHeaderComments...............................................210
-//   §3.2: module.exports.setUpCssBuildTask...................................................236
-//   §3.3: module.exports.setUpJsBuildTask....................................................342
-// §4: Support functions......................................................................383
-//   §4.1: logUpdate..........................................................................386
+// §1: Importing of Node modules...............................................................46
+// §2: Exported Class Declarations.............................................................63
+//   §2.1: module.exports.CssBuildSettings.....................................................66
+//   §2.2: module.exports.JsBuildSettings.....................................................200
+// §3: Exported Function Declarations.........................................................209
+//   §3.1: module.exports.fixFileHeaderComments...............................................212
+//   §3.2: module.exports.setUpCssBuildTask...................................................238
+//   §3.3: module.exports.setUpDefaultTask....................................................344
+//   §3.4: module.exports.setUpHelpTask.......................................................351
+//   §3.5: module.exports.setUpJsBuildTask....................................................378
+// §4: Support functions......................................................................419
+//   §4.1: logUpdate..........................................................................422
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 'use strict';
@@ -339,7 +341,41 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 }
 
 ////////
-// §3.3: module.exports.setUpJsBuildTask
+// §3.3: module.exports.setUpDefaultTask()
+
+module.exports.setUpDefaultTask = function() {
+	gulp.task( 'default', [ 'help' ] );
+}
+
+////////
+// §3.4: module.exports.setUpHelpTask
+
+module.exports.setUpHelpTask = function() {
+	gulp.task( 'help', function ( callBack ) {
+		pump( [
+				notify(
+					'Providing usage information on gulp tasks for automating builds of custom CSS ' +
+					'and JS code for application to WSUWP websites.'
+				).on( 'end', () => {
+					console.log(
+						`List of available tasks (x2): buildMinCss, buildMinJs
+
+(1) buildMinCss: Compiles and minifies code written in the Less language extension of CSS into a
+ stylesheet intended for application to a WSUWP website via the CSS Stylesheet Editor page of the
+ WordPress dashboard.
+
+(2) buildMinJs: Concatenantes and minifies JS into a single script file intended for application to
+ a WSUWP website via the Custom JavaScript Editor page of the WordPress dashboard.`
+					);
+				} )
+			],
+			callBack
+		);
+	} );
+}
+
+////////
+// §3.5: module.exports.setUpJsBuildTask
 
 /**
  * Uses gulp task automation to build a custom JS file, and its minified version, from dependencies.

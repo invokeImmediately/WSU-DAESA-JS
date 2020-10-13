@@ -35,9 +35,9 @@
 //   §3.2: module.exports.setUpCssBuildTask...................................................238
 //   §3.3: module.exports.setUpDefaultTask....................................................344
 //   §3.4: module.exports.setUpHelpTask.......................................................351
-//   §3.5: module.exports.setUpJsBuildTask....................................................378
-// §4: Support functions......................................................................419
-//   §4.1: logUpdate..........................................................................422
+//   §3.5: module.exports.setUpJsBuildTask....................................................372
+// §4: Support functions......................................................................413
+//   §4.1: logUpdate..........................................................................416
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 'use strict';
@@ -344,7 +344,7 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 // §3.3: module.exports.setUpDefaultTask()
 
 module.exports.setUpDefaultTask = function() {
-	gulp.task( 'default', [ 'help' ] );
+	gulp.task( 'default', gulp.series( 'help' ) );
 }
 
 ////////
@@ -352,25 +352,19 @@ module.exports.setUpDefaultTask = function() {
 
 module.exports.setUpHelpTask = function() {
 	gulp.task( 'help', function ( callBack ) {
-		pump( [
-				notify(
-					'Providing usage information on gulp tasks for automating builds of custom CSS ' +
-					'and JS code for application to WSUWP websites.'
-				).on( 'end', () => {
-					console.log(
-						`List of available tasks (x2): buildMinCss, buildMinJs
+		console.log(
+			'\r\nProviding usage information on gulp tasks for automating builds of custom CSS ' +
+				'and JS code for application to WSUWP websites.\r\n' );
+		console.log( `List of available tasks (x2): buildMinCss, buildMinJs
 
 (1) buildMinCss: Compiles and minifies code written in the Less language extension of CSS into a
  stylesheet intended for application to a WSUWP website via the CSS Stylesheet Editor page of the
  WordPress dashboard.
 
 (2) buildMinJs: Concatenantes and minifies JS into a single script file intended for application to
- a WSUWP website via the Custom JavaScript Editor page of the WordPress dashboard.`
-					);
-				} )
-			],
-			callBack
-		);
+ a WSUWP website via the Custom JavaScript Editor page of the WordPress dashboard.
+` );
+		callBack();
 	} );
 }
 

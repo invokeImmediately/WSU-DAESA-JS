@@ -7,7 +7,7 @@
  *
  * @author Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/gulpCssJsBuilder.js
- * LICENSE: MIT - Copyright (c) 2021 Washington State University
+ * @license MIT - Copyright (c) 2021 Washington State University
  *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *     and associated documentation files (the “Software”), to deal in the Software without
  *     restriction, including without limitation the rights to use, copy, modify, merge, publish,
@@ -25,18 +25,19 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: Importing of Node modules...............................................................45
-// §2: Exported Class Declarations.............................................................62
-//   §2.1: module.exports.CssBuildSettings.....................................................65
-//   §2.2: module.exports.JsBuildSettings.....................................................199
-// §3: Exported Function Declarations.........................................................208
-//   §3.1: module.exports.fixFileHeaderComments...............................................211
-//   §3.2: module.exports.setUpCssBuildTask...................................................237
-//   §3.3: module.exports.setUpDefaultTask....................................................343
-//   §3.4: module.exports.setUpHelpTask.......................................................350
-//   §3.5: module.exports.setUpJsBuildTask....................................................371
-// §4: Support functions......................................................................412
-//   §4.1: logUpdate..........................................................................415
+// §1: Importing of Node modules...............................................................46
+// §2: Exported Class Declarations.............................................................63
+//   §2.1: module.exports.CssBuildSettings.....................................................66
+//   §2.2: module.exports.JsBuildSettings.....................................................200
+// §3: Exported Function Declarations.........................................................209
+//   §3.1: module.exports.fixFileHeaderComments...............................................212
+//   §3.2: module.exports.getDaesaFontImportStr...............................................238
+//   §3.3: module.exports.setUpCssBuildTask...................................................257
+//   §3.4: module.exports.setUpDefaultTask....................................................363
+//   §3.5: module.exports.setUpHelpTask.......................................................370
+//   §3.6: module.exports.setUpJsBuildTask....................................................391
+// §4: Support functions......................................................................432
+//   §4.1: logUpdate..........................................................................435
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 'use strict';
@@ -234,7 +235,26 @@ module.exports.fixFileHeaderComments = function ( match, p1, offset, string ) {
 }
 
   ////////
-  // §3.2: module.exports.setUpCssBuildTask
+  // §3.2: module.exports.getDaesaFontImportStr
+
+/**
+ * Get a string containing a CSS import directive that is used to import fonts fonts onto DAESA
+ *   websites.
+ *
+ * This function is envisioned for use in setting up a CssBuildSettings object.
+ *
+ * @return {String} The default string containing a CSS import directive that is used to import
+ *   fonts onto DAESA websites.
+ */
+module.exports.getDaesaFontImportStr = function () {
+	return '@import url(\'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400' +
+		';0,600;0,700;1,300;1,400;1,600;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&famil' +
+		'y=Roboto+Condensed:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Mono:ital,wght@0,400;0,70' +
+		'0;1,400;1,700&display=swap\');\r\n'
+}
+
+  ////////
+  // §3.3: module.exports.setUpCssBuildTask
 
 /**
  * Uses gulp task automation to build a CSS stylesheet, and its minified version, from Less source
@@ -340,14 +360,14 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 }
 
   ////////
-  // §3.3: module.exports.setUpDefaultTask()
+  // §3.4: module.exports.setUpDefaultTask()
 
 module.exports.setUpDefaultTask = function() {
 	gulp.task( 'default', gulp.series( 'help' ) );
 }
 
   ////////
-  // §3.4: module.exports.setUpHelpTask
+  // §3.5: module.exports.setUpHelpTask
 
 module.exports.setUpHelpTask = function() {
 	gulp.task( 'help', function ( callBack ) {
@@ -368,7 +388,7 @@ module.exports.setUpHelpTask = function() {
 }
 
   ////////
-  // §3.5: module.exports.setUpJsBuildTask
+  // §3.6: module.exports.setUpJsBuildTask
 
 /**
  * Uses gulp task automation to build a custom JS file, and its minified version, from dependencies.

@@ -248,9 +248,9 @@ module.exports.fixFileHeaderComments = function ( match, p1, offset, string ) {
  */
 module.exports.getDaesaFontImportStr = function () {
 	return '@import url(\'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400' +
-		';0,600;0,700;1,300;1,400;1,600;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&famil' +
-		'y=Roboto+Condensed:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Mono:ital,wght@0,400;0,70' +
-		'0;1,400;1,700&display=swap\');\r\n'
+		';0,600;0,700;1,300;1,400;1,600;1,700&family=Open+Sans:ital,wght@0,300;0,700&family=PT+Serif:' +
+		'ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400;1,700&' +
+		'family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap\');\r\n'
 }
 
   ////////

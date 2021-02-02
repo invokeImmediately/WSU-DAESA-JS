@@ -30,39 +30,35 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-//   §1: Addition of functions to jQuery........................................................73
-//     §1.1: jQuery.isCssClass..................................................................76
-//     §1.2: jQuery.isJQueryObj.................................................................94
-//     §1.3: jQuery.logError...................................................................106
-//   §2: DAESA website initilization modules...................................................181
-//     §2.1: OueDropDownToggle class...........................................................184
-//     §2.2: OueEventCalendarFixer class.......................................................451
-//       §2.2.1: Constructor...................................................................463
-//       §2.2.2: Public members................................................................481
-//       §2.2.3: Lexically scoped supporting functions.........................................531
-//     §2.3: OuePrintThisPage class............................................................552
-//       §2.3.1: Constructor...................................................................564
-//       §2.3.2: Public members................................................................580
-//       §2.3.3: Lexically scoped supporting functions.........................................626
-//   §3: DOM-Ready execution sequence..........................................................640
-//   §4: Window-loaded event binding...........................................................766
-//   §5: Window-resized event binding..........................................................804
-//   §6: Function declarations.................................................................811
-//     §6.1: addDefinitionListButtons..........................................................814
-//     §6.2: fixDogears........................................................................930
-//     §6.3: fixEventCalendars.................................................................955
-//     §6.4: initContentFlippers...............................................................964
-//     §6.5: initDefinitionLists...............................................................980
-//     §6.6: initDropDownToggles..............................................................1024
-//     §6.7: initFancyHrH2Motif...............................................................1047
-//     §6.8: initFancyHrH3Motif...............................................................1056
-//     §6.9: initPrintThisPageLinks...........................................................1065
-//     §6.10: initQuickTabs...................................................................1074
-//     §6.11: initReadMoreToggles.............................................................1138
-//     §6.12: initTocFloating.................................................................1158
-//     §6.13: initTriggeredByHover............................................................1235
-//     §6.14: initWelcomeMessage..............................................................1254
-//     §6.15: showDefinitionListButtons.......................................................1264
+//   §1: Addition of functions to jQuery........................................................69
+//     §1.1: jQuery.isCssClass..................................................................72
+//     §1.2: jQuery.isJQueryObj.................................................................90
+//     §1.3: jQuery.logError...................................................................102
+//   §2: DAESA website initilization modules...................................................177
+//     §2.1: OueDropDownToggle class...........................................................180
+//     §2.2: OueEventCalendarFixer class.......................................................447
+//       §2.2.1: Constructor...................................................................459
+//       §2.2.2: Public members................................................................477
+//       §2.2.3: Lexically scoped supporting functions.........................................527
+//     §2.3: OuePrintThisPage class............................................................548
+//       §2.3.1: Constructor...................................................................560
+//       §2.3.2: Public members................................................................576
+//       §2.3.3: Lexically scoped supporting functions.........................................622
+//   §3: DOM-Ready execution sequence..........................................................636
+//   §4: Window-loaded event binding...........................................................733
+//   §5: Window-resized event binding..........................................................760
+//   §6: Function declarations.................................................................767
+//     §6.1: addDefinitionListButtons..........................................................770
+//     §6.2: fixDogears........................................................................886
+//     §6.3: fixEventCalendars.................................................................911
+//     §6.4: initContentFlippers...............................................................920
+//     §6.5: initDefinitionLists...............................................................936
+//     §6.6: initDropDownToggles...............................................................980
+//     §6.7: initPrintThisPageLinks...........................................................1003
+//     §6.8: initQuickTabs....................................................................1012
+//     §6.9: initReadMoreToggles..............................................................1076
+//     §6.10: initTriggeredByHover............................................................1096
+//     §6.11: showDefinitionListButtons.......................................................1115
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -661,26 +657,6 @@ $( function () {
 		sepEventSchedule: '.tribe-events-schedule h2'
 	} );
 
-	argsList.initFancyHrH2Motif = {
-		slctrFancyH2: ".column > h2.fancy, .column > section > h2.fancy",
-		slctrPrevHr: "hr:not(.subSection)",
-		hrClassesAdded: "no-bottom-margin dark-gray thicker encroach-horizontal",
-		animAddDrtn: 250
-	};
-	args = argsList.initFancyHrH2Motif;
-	initFancyHrH2Motif( args.slctrFancyH2, args.slctrPrevHr, args.hrClassesAdded,
-		args.animAddDrtn );
-
-	argsList.initFancyHrH3Motif = {
-		slctrFancyH3: ".column > h3.fancy, .column > section > h3.fancy",
-		slctrPrevHr: "hr:not(.subSection)",
-		hrClassesAdded: "no-bottom-margin crimson encroach-horizontal",
-		animAddDrtn: 250
-	};
-	args = argsList.initFancyHrH3Motif;
-	initFancyHrH3Motif( args.slctrFancyH3, args.slctrPrevHr, args.hrClassesAdded,
-		args.animAddDrtn );
-
 	argsList.initDropDownToggles = {
 		selToggles: ".drop-down-toggle",
 		selContainers: ".column",
@@ -742,13 +718,6 @@ $( function () {
 	args = argsList.initQuickTabs;
 	initQuickTabs( args.slctrQtSctn );
 
-	argsList.initTocFloating = {
-		slctrToc: "p.vpue-jump-bar",
-		slctrBackToToc: "p.vpue-jump-back"
-	};
-	args = argsList.initTocFloating;
-	initTocFloating( args.slctrToc, args.slctrBackToToc );
-
 	argsList.initTriggeredByHover = {
 		slctrTrggrdOnHvr: ".triggered-on-hover",
 		slctrCntntRvld: ".content-revealed",
@@ -758,8 +727,6 @@ $( function () {
 	args = argsList.initTriggeredByHover;
 	initTriggeredByHover( args.slctrTrggrdOnHvr, args.slctrCntntRvld, args.slctrCntntHddn,
 		args.animDuration );
-
-	// TODO: initScrollingSidebars("...");
 } );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -787,17 +754,6 @@ $( window ).on( "load", function () {
 	};
 	args = argsList.initPrintThisPageLinks;
 	initPrintThisPageLinks( args.sels );
-
-	argsList.initWelcomeMessage = {
-		slctrWlcmMsg: "#welcome-message",
-		slctrPostWlcmMsg: "#post-welcome-message",
-		msgDelay: 1000,
-		fadeOutDuration: 500,
-		fadeInDuration: 500
-	};
-	args = argsList.initWelcomeMessage;
-	initWelcomeMessage( args.slctrWlcmMsg, args.slctrPostWlcmMsg, args.msgDelay,
-		args.fadeOutDuration, args.fadeInDuration );
 } );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1044,25 +1000,7 @@ function initDropDownToggles( selToggles, selContainers, selTargets, activatingC
 }
 
   ////////
-  // §6.7: initFancyHrH2Motif
-
-function initFancyHrH2Motif( slctrFancyH2, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
-	$( slctrFancyH2 ).each( function () {
-			$( this ).prev( slctrPrevHr ).addClass( hrClassesAdded, animAddDrtn );
-	} );
-}
-
-  ////////
-  // §6.8: initFancyHrH3Motif
-
-function initFancyHrH3Motif( slctrFancyH3, slctrPrevHr, hrClassesAdded, animAddDrtn ) {
-	$( slctrFancyH3 ).each( function () {
-		$( this ).prev( slctrPrevHr ).addClass( hrClassesAdded, animAddDrtn );
-	} );
-}
-
-  ////////
-  // §6.9: initPrintThisPageLinks
+  // §6.7: initPrintThisPageLinks
 
 function initPrintThisPageLinks( sels ) {
 	var printThisPageLinks = new OuePrintThisPage( sels );
@@ -1071,7 +1009,7 @@ function initPrintThisPageLinks( sels ) {
 }
 
   ////////
-  // §6.10: initQuickTabs
+  // §6.8: initQuickTabs
 
 // TODO: Convert to a class-based initialization module
 function initQuickTabs( slctrQtSctn ) {
@@ -1135,7 +1073,7 @@ function initQuickTabs( slctrQtSctn ) {
 }
 
   ////////
-  // §6.11: initReadMoreToggles
+  // §6.9: initReadMoreToggles
 
 function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDuration ) {
 	$( slctrToggleIn ).click( function () {
@@ -1155,84 +1093,7 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 }
 
   ////////
-  // §6.12: initTocFloating
-
-function initTocFloating( slctrToc, slctrBackToToc ) {
-	var thisFuncName = "initTocFloating";
-	var thisFuncDesc = "Cause the table of contents element to float after scrolling past a" +
-		" certain point";
-	var $toc = $( slctrToc );
-	var $backToToc = $( slctrBackToToc );
-	var $linkToTop = $backToToc.first().children( "a" );
-	var $mainHeader = $( "header.main-header" );
-	if ( $toc.length === 1 && $mainHeader.length === 1 ) {
-		var $window = $( window );
-		var tocTrigger = $toc.offset().top + $toc.height() + 100;
-		var $tocClone = $toc.clone().addClass( "floating" ).removeAttr( "id" ).insertAfter( $toc );
-		$tocClone.find( "span.title + br").remove();
-		$tocClone.find( "span.title").remove();
-		var counter = 1;
-		$tocClone.find( "br").each( function () {
-			if ( counter % 2 != 0 ) {
-				$( this ).before( " //");
-			}
-			$( this ).remove();
-			counter++;
-		} );
-		if ( $linkToTop.length === 1 ) {
-			var linkText = $linkToTop.text();
-			var idxMatched = linkText.search( /\u2014Back to ([^\u2014]+)\u2014/ );
-			if ( idxMatched != -1 ) {
-				var $linkToTopClone = $linkToTop.clone();
-				$linkToTopClone.text( linkText.replace( /\u2014Back to ([^\u2014]+)\u2014/,
-					"$1" ) );
-				$tocClone.prepend( " //&nbsp;" );
-				$linkToTopClone.prependTo( $tocClone );
-				$backToToc.remove();
-			} else {
-				$.logError( thisFileName, thisFuncName, thisFuncDesc, "Did not find the correct " +
-					"textual pattern within the link back to the top of the page." );
-			}
-		} else {
-			console.log( thisFileName, thisFuncName, thisFuncDesc,  "Did not find a single" +
-				" hyperlink within the first link back to the top of the page." );
-		}
-		$window.scroll( function( e ) {
-			var windowScrollPos = $window.scrollTop();
-			if ( windowScrollPos > tocTrigger && !$tocClone.is( ":visible" ) ) {
-				$tocClone.width( $mainHeader.width() * .8 );
-				$tocClone.css( {
-					left: $mainHeader.offset().left + $mainHeader.width() / 2,
-				} );
-				$tocClone.fadeIn( 300 );
-			}
-			else if ( windowScrollPos <= tocTrigger && $tocClone.is( ":visible" ) ) {
-				$tocClone.hide();
-			}
-		} );
-		$window.resize( function () {
-			$tocClone.width( $mainHeader.width() * .8 );
-			$tocClone.css( {
-				left: $mainHeader.offset().left + $mainHeader.width() / 2,
-			} );
-		} );
-	} else {
-		if ( $toc.length > 1 ) {
-			console.log( thisFileName, thisFuncName, thisFuncDesc, "Found more than one table of" +
-				" contents elements; this function only works with one table of contents." );
-		}
-		if ( $mainHeader.length === 0 ) {
-			console.log( thisFileName, thisFuncName, thisFuncDesc, "Could not find the main" +
-				" header element within the DOM." );
-		} else if ( $mainHeader.length > 1 ) {
-			console.log( thisFileName, thisFuncName, thisFuncDesc, "Found more than one table" +
-				" of contents elements; this function only works with one table of contents.' }" );
-		}
-	}
-}
-
-  ////////
-  // §6.13: initTriggeredByHover
+  // §6.10: initTriggeredByHover
 
 function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration ) {
 	$( slctrTrggrdOnHvr ).mouseenter( function () {
@@ -1251,17 +1112,7 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 }
 
   ////////
-  // §6.14: initWelcomeMessage
-
-function initWelcomeMessage( slctrWlcmMsg, slctrPostWlcmMsg, msgDelay, fadeOutDuration,
-		fadeInDuration ) {
-	$( slctrWlcmMsg ).delay( msgDelay ).fadeOut( fadeOutDuration, function () {
-		$( slctrPostWlcmMsg ).fadeIn( fadeInDuration );
-	} );
-}
-
-  ////////
-  // §6.15: showDefinitionListButtons
+  // §6.11: showDefinitionListButtons
 
 /**
  * Display expand/collapse all buttons, which were initially hidden

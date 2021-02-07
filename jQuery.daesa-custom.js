@@ -1,14 +1,16 @@
 /*!*************************************************************************************************
- *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄      
- * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █  █ █▄▄█ █▀▀  ▀▀▀█ █▄▄█      
- * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀ ▀ ▀ ▀
+ *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄    ▄▀▀▀ █  █ ▄▀▀▀      
+ * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █  █ █▄▄█ █▀▀  ▀▀▀█ █▄▄█ ▀▀ █    █  █ ▀▀▀█      
+ * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀     ▀▀▀  ▀▀  ▀▀▀  ▀ ▀ ▀
  *
- *                ▄▀▀▀ █  █ ▄▀▀▀▐▀█▀▌▄▀▀▄ ▐▀▄▀▌      █ ▄▀▀▀
- *             ▀▀ █    █  █ ▀▀▀█  █  █  █ █ ▀ ▌   ▄  █ ▀▀▀█
- *       ▀ ▀ ▀     ▀▀▀  ▀▀  ▀▀▀   █   ▀▀  █   ▀ ▀ ▀▄▄█ ▀▀▀ 
- * -------------------------------------------------------------------------------------------------
- * Custom JS code common to all websites of the WSU Division of Academic Engagement and Student
- *   Achievement (DAESA) in the Provost's Office.
+ *             ▐▀█▀▌▄▀▀▄ ▐▀▄▀▌      █ ▄▀▀▀
+ *               █  █  █ █ ▀ ▌   ▄  █ ▀▀▀█
+ *       ▀ ▀ ▀   █   ▀▀  █   ▀ ▀ ▀▄▄█ ▀▀▀ 
+ *
+ * Custom JS code common to all websites of the Division of Academic Engagement and Student
+ *   Achievement (DAESA) in the Office of the Provost at Washington State University (WSU).
+ *
+ * @version 1.0.0
  *
  * @author Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.daesa-custom.js
@@ -43,7 +45,6 @@
 //     §2.3: OuePrintThisPage class............................................................548
 //       §2.3.1: Constructor...................................................................560
 //       §2.3.2: Public members................................................................576
-//       §2.3.3: Lexically scoped supporting functions.........................................622
 //   §3: DOM-Ready execution sequence..........................................................636
 //   §4: Window-loaded event binding...........................................................733
 //   §5: Window-resized event binding..........................................................760
@@ -74,8 +75,10 @@
 /**
  * Checking function to verify that the passed argument is a valid CSS class.
  *
+ * @since 1.0.0
+ *
  * @param {*} possibleClass - Possible string consisting of a valid CSS class; could, in fact, be
- *     anything.
+ *   anything.
  */
 $.isCssClass = function ( possibleClass ) {
 	var cssClassNeedle = /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/;
@@ -92,6 +95,8 @@ $.isCssClass = function ( possibleClass ) {
 /**
  * Checking function to verify that the passed argument is a valid jQuery object.
  *
+ * @since 1.0.0
+ *
  * @param {*} $obj - Possible jQuery object; could, in fact, be anything.
  */
 $.isJQueryObj = function ( $obj ) {
@@ -103,6 +108,8 @@ $.isJQueryObj = function ( $obj ) {
 
 /**
  * Log an error using the browser console in JSON notation.
+ *
+ * @since 1.0.0
  *
  * @param {string} fileName - Name of the JS source file wherein the error was encountered.
  * @param {string} fnctnName - Name of the function that called $.logError.
@@ -182,7 +189,9 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 /**
  * Module for initializing drop down toggles on OUE websites.
  *
+ * @since 1.0.0
  * @todo Refactor to rename class to replace references to OUE with references to DAESA.
+ *
  * @class
  */
 var OueDropDownToggles = ( function( $, thisFileName ) {
@@ -191,14 +200,16 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	/**
 	 * Constructor for OueDropDownToggles.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {object} sels - Collection of selectors to drop down toggles and their components.
 	 * @param {string} sels.toggles - Selector for isolating drop down toggle elements.
 	 * @param {string} sels.containers - Selector for isolating containers of drop down toggle
-	 *     elements.
+	 *   elements.
 	 * @param {string} sels.targets - Selector for isolating the expandable targets of drop down
-	 *     toggle elements.
+	 *   toggle elements.
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
-	 *     causes it to enter an activated state.
+	 *   causes it to enter an activated state.
 	 */
 	function OueDropDownToggles( sels, activatingClass ) {
 		this.sels = sels;
@@ -209,8 +220,10 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 * Check the state of the OueDropDownToggles object's paremeters to ensure it was appropriately
 	 * constructed.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
-	 *     typed and appropriately set arguments.
+	 *   typed and appropriately set arguments.
 	 */
 	OueDropDownToggles.prototype.isValid = function () {
 		var stillValid;
@@ -240,6 +253,8 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 
 	/**
 	 * Initialize drop down toggles to respond to user interaction.
+	 *
+	 * @since 1.0.0
 	 */
 	OueDropDownToggles.prototype.initialize = function () {
 		var $containers;
@@ -273,12 +288,14 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 * Bind a handler to ensure that a drop down toggle has been activated if one of its child
 	 * elements receives focus.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {jquery} $containers - Collection of the containers which may contain drop down
-	 *     toggles.
+	 *   toggles.
 	 * @param {string} selToggles - Selector string for isolating drop down toggle elements within
-	 *     the provided collection of containers.
+	 *   the provided collection of containers.
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
-	 *     causes it to enter an activated state.
+	 *   causes it to enter an activated state.
 	 */
 	function bindChildFocusHandlers( $targets, selTargets, selToggles, activatingClass ) {
 		$targets.on( 'focusin', '*', function () {
@@ -301,12 +318,14 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 * Bind a click handler to drop down toggles that enables the user to interact with them using
 	 * mouse input.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {jquery} $containers - Collection of the containers which may contain drop down
-	 *     toggles.
+	 *   toggles.
 	 * @param {string} selToggles - Selector string for isolating drop down toggle elements within
-	 *     the provided collection of containers.
+	 *   the provided collection of containers.
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
-	 *     causes it to enter an activated state.
+	 *   causes it to enter an activated state.
 	 */
 	function bindClickHandlers( $containers, selToggles, activatingClass, selTargets ) {
 		var $this;
@@ -324,12 +343,14 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 * Bind a keydown handler to drop down toggles that enables the user to interact with them using
 	 * keyboard input.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {jquery} $containers - Collection of the containers which may contain drop down
-	 *     toggles.
+	 *   toggles.
 	 * @param {string} selToggles - Selector string for isolating drop down toggle elements within
-	 *     the provided collection of containers.
+	 *   the provided collection of containers.
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
-	 *     causes it to enter an activated state.
+	 *   causes it to enter an activated state.
 	 */
 	function bindKeydownHandlers( $containers, selToggles, activatingClass, selTargets ) {
 		$containers.on( 'keydown', selToggles, function ( e ) {
@@ -350,9 +371,11 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 * During page load, set the expansion state of drop down toggle elements based on previous user
 	 * interactions during the session.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {jquery} $toggles - Collection of the drop down toggle elements within the page.
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
-	 *     causes it to enter an activated state.
+	 *   causes it to enter an activated state.
 	 */
 	function effectToggleStatePermanence( $toggles, activatingClass ) {
 		var $this;
@@ -383,6 +406,8 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	/**
 	 * Handle the process of updating the layout of cascading children of a toggled container.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {jquery} $container - The container that has been toggled.
 	 */
 	function handleCascadingChildren( $container ) {
@@ -399,6 +424,8 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	 * Apply a CSS class that keeps anchor highlighting styles from being applied to drop down
 	 * toggles.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {jquery} $toggles - Collection of the drop down toggle elements within the page.
 	 */
 	function preventAnchorHighlighting( $toggles ) {
@@ -407,6 +434,8 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 
 	/**
 	 * Ensure that drop down toggles are properly included in the web page's tab order.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param {jquery} $toggles - Collection of the drop down toggle elements within the page.
 	 */
@@ -417,9 +446,11 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 	/**
 	 * Cause expansion state of drop down toggles to be remembered during the session.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {jquery} $toggles - Collection of the drop down toggle elements within the page.
 	 * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
-	 *     causes it to enter an activated state.
+	 *   causes it to enter an activated state.
 	 */
 	function setUpToggleStatePermanence( $toggle, activatingClass ) {
 		var state;
@@ -449,6 +480,8 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
 /**
  * Module for fixing event calendar pages on OUE websites.
  *
+ * @since 1.0.0
+ *
  * @todo Refactor to rename class to replace references to OUE with references to DAESA.
  * @class
  */
@@ -461,13 +494,15 @@ var OueEventCalendarFixer = ( function( $, thisFileName ) {
 	/**
 	 * Constructor for OueEventCalendarFixer.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {object} sels - Collection of selectors to event calendar pages and their elements.
 	 * @param {string} sels.singleEventPage - Selector for isolating a tribe events single event
-	 *     viewing page.
+	 *   viewing page.
 	 * @param {string} sels.sepLocationText - Selector for isolating the text describing the
-	 *     location of an event on a single event page.
+	 *   location of an event on a single event page.
 	 * @param {string} sels.sepEventSchedule - Selector for isolating the schedule for an event on a
-	 *     SEP single event page.
+	 *   SEP single event page.
 	 */
 	function OueEventCalendarFixer( sels ) {
 		this.sels = sels;
@@ -480,8 +515,10 @@ var OueEventCalendarFixer = ( function( $, thisFileName ) {
 	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
 	 * appropriately constructed.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
-	 *     typed and appropriately set arguments.
+	 *   typed and appropriately set arguments.
 	 */
 	OueEventCalendarFixer.prototype.fixSingleEventPage = function () {
 		var $elemWithLocation;
@@ -500,8 +537,10 @@ var OueEventCalendarFixer = ( function( $, thisFileName ) {
 	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
 	 * appropriately constructed.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
-	 *     typed and appropriately set arguments.
+	 *   typed and appropriately set arguments.
 	 */
 	OueEventCalendarFixer.prototype.isValid = function () {
 		var stillValid;
@@ -550,7 +589,9 @@ var OueEventCalendarFixer = ( function( $, thisFileName ) {
 /**
  * Module for fixing event calendar pages on OUE websites.
  *
+ * @since 1.0.0
  * @todo Refactor to rename class to replace references to OUE with references to DAESA.
+ *
  * @class
  */
 var OuePrintThisPage = ( function( $, thisFileName ) {
@@ -560,13 +601,15 @@ var OuePrintThisPage = ( function( $, thisFileName ) {
 	  // §2.3.1: Constructor
 
 	/**
-	 * Constructor for OueEventCalendarFixer.
+	 * Construct an instance of OuePrintThisPage.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param {object} sels - Collection of selectors to event calendar pages and their elements.
 	 * @param {string} sels.container - Selector for isolating a tribe events single event
-	 *     viewing page.
+	 *   viewing page.
 	 * @param {string} sels.identifier - Selector by which 'print this page' shortcuts are
-	 *     identified.
+	 *   identified.
 	 */
 	function OuePrintThisPage( sels ) {
 		this.sels = sels;
@@ -579,8 +622,10 @@ var OuePrintThisPage = ( function( $, thisFileName ) {
 	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
 	 * appropriately constructed.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
-	 *     typed and appropriately set arguments.
+	 *   typed and appropriately set arguments.
 	 */
 	OuePrintThisPage.prototype.initOnThisPageLinks = function () {
 		var $containers;
@@ -597,8 +642,10 @@ var OuePrintThisPage = ( function( $, thisFileName ) {
 	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
 	 * appropriately constructed.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @return {boolean} A boolean flag indicating whether the object is valid based on correctly
-	 *     typed and appropriately set arguments.
+	 *   typed and appropriately set arguments.
 	 */
 	OuePrintThisPage.prototype.isValid = function () {
 		var stillValid;
@@ -616,17 +663,6 @@ var OuePrintThisPage = ( function( $, thisFileName ) {
 		}
 
 		return stillValid;
-	}
-
-	  ////////
-	  // §2.3.3: Lexically scoped supporting functions
-
-	function pageHasLinks( selector ) {
-		var $links;
-
-		$links = $( selector );
-
-		return $links.length > 0;
 	}
 
 	return OuePrintThisPage;
@@ -773,15 +809,17 @@ $( window ).resize( function () {
  * Automatically creates and binds events to expand/collapse all buttons designed for improving UX
  * of OUE site definition lists.
  *
+ * @since 1.0.0
+ *
  * @param {string} slctrDefList - Selector string for locating definition list elements within the
- *     DOM that contain collapsible definitions.
+ *   DOM that contain collapsible definitions.
  * @param {string} expandAllClass - CSS class for controlling the layout of expand all buttons.
  * @param {string} collapseAllClass - CSS class for controlling the layout of collapse all buttons.
  * @param {string} btnDisablingClass - CSS class applied to disable expand/collapse all buttons.
  * @param {string} dtActivatingClass - CSS class used to indicate an active/expanded state for
- *     definition terms.
+ *   definition terms.
  * @param {string} ddRevealingClass - CSS class used to realize a revealed, visible state on
- *     definitions.
+ *   definitions.
  */
 function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClass,
 		btnDisablingClass, dtActivatingClass, ddRevealingClass, animSldDrtn ) {
@@ -982,11 +1020,13 @@ function initDefinitionLists( slctrDefList, dtActivatingClass, ddRevealingClass,
 /**
  * Initialize drop down toggle elements to respond to user interaction.
  *
+ * @since 1.0.0
+ *
  * @param {string} selToggles - Selector string for isolating drop down toggle elements.
  * @param {string} selContainers - Selector string for isolating containers that may contain drop
- *     down toggle elements.
+ *   down toggle elements.
  * @param {string} activatingClass - CSS class that, when applied to a drop down toggle element,
- *     causes it to enter an activated state.
+ *   causes it to enter an activated state.
  */
 function initDropDownToggles( selToggles, selContainers, selTargets, activatingClass ) {
 	var dropDownToggles;
@@ -1004,7 +1044,6 @@ function initDropDownToggles( selToggles, selContainers, selTargets, activatingC
 
 function initPrintThisPageLinks( sels ) {
 	var printThisPageLinks = new OuePrintThisPage( sels );
-
 	printThisPageLinks.initOnThisPageLinks();
 }
 
@@ -1117,8 +1156,10 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 /**
  * Display expand/collapse all buttons, which were initially hidden
  *
+ * @since 1.0.0
+ *
  * @param {string} slctrDefList - Selector string for locating definition list elements within the
- *     DOM that contain collapsible definitions.
+ *   DOM that contain collapsible definitions.
  * @param {string} expandAllClass - CSS class for controlling the layout of expand all buttons.
  * @param {string} collapseAllClass - CSS class for controlling the layout of collapse all buttons.
  * @param {number} animFadeInDrtn - The animation speed in ms by which definitions fade into view.

@@ -5,7 +5,7 @@
  *
  * Application of Are-You-Sure jQuery Plugin to WSU DAESA websites.
  *
- * @version 2.1.0
+ * @version 2.1.1
  *
  * @author Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.are-you-sure.js

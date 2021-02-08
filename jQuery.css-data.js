@@ -1,27 +1,28 @@
-/*!
- * jQuery.css-data.js
- * -------------------------------------------------------------------------------------------------
- * SUMMARY: Declares the CssData class for use on OUE websites.
+/*!*************************************************************************************************
+ *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   ▄▀▀▀ ▄▀▀▀ ▄▀▀▀    █▀▀▄ ▄▀▀▄▐▀█▀▌▄▀▀▄      █ ▄▀▀▀
+ * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █    ▀▀▀█ ▀▀▀█ ▀▀ █  █ █▄▄█  █  █▄▄█   ▄  █ ▀▀▀█
+ * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀  ▀▀▀ ▀▀▀  ▀▀▀     ▀▀▀  █  ▀  █  █  ▀ ▀ ▀▄▄█ ▀▀▀ 
  *
- * DESCRIPTION: Provides an interface for interpreting CSS class names as information encodings.
+ * Provides an interface for interpreting CSS class names as information encodings.
  *
- * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
+ * @version 1.0.0
  *
- * REPOSITORY: https://github.com/invokeImmediately/WSU-UE---JS
- *
- * LICENSE: ISC - Copyright (c) 2018 Daniel C. Rieck.
- *
- *   Permission to use, copy, modify, and/or distribute this software for any purpose with or
- *   without fee is hereby granted, provided that the above copyright notice and this permission
- *   notice appear in all copies.
- *
- *   THE SOFTWARE IS PROVIDED "AS IS" AND DANIEL RIECK DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
- *   SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
- *   DANIEL RIECK BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
- *   DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
- *   CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
- *   PERFORMANCE OF THIS SOFTWARE.
- */
+ * @author Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
+ * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.css-data.js
+ * @license MIT - Copyright (c) 2021 Washington State University
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ *     and associated documentation files (the “Software”), to deal in the Software without
+ *     restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ *     distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ *     Software is furnished to do so, subject to the following conditions:
+ *   The above copyright notice and this permission notice shall be included in all copies or
+ *     substantial portions of the Software.
+ *   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *     BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ *     DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **************************************************************************************************/
 
 var CssData = ( function ($) {
 
@@ -29,6 +30,8 @@ var thisFile = 'jQuery.css-data.js';
 
 /**
  * Interface for interpreting CSS class names as information encodings.
+ *
+ * @since 1.0.0
  *
  * @param {object} [$targetObj] - A jQuery object containing a single element representing the
  *     target within the DOM that has data encoded in one or more of its CSS class names.
@@ -57,6 +60,8 @@ ut it did not contain a single element as required.'
 
 	/**
 	 * Returns data embedded in an object's CSS class name based on an indicator prefix.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param {string} dataPrefix - String representing the prefix string that marks a CSS class as
 	 *     an encoding of data (e.g., 'expires-on-').
@@ -111,6 +116,8 @@ Prefix parameter; instead, I was passed something that was typeof ' + typeof dat
 	/**
 	 * Sets a new target for data extraction.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param {object} $targetObj - A jQuery object containing a single element representing the
 	 *     target within the DOM that has data encoded in one or more of its CSS class names.
 	 */
@@ -126,6 +133,8 @@ Prefix parameter; instead, I was passed something that was typeof ' + typeof dat
 	/**
 	 * Get a reference to the class list for the jQuery object this instance is associated with.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @access private
 	 */
 	function _LoadClassList() {
@@ -137,6 +146,8 @@ Prefix parameter; instead, I was passed something that was typeof ' + typeof dat
 	/**
 	 * Provides the user with information about any errors encountered during construction of this
 	 * instance.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @throws {string} A single target element within the DOM was not supplied to the instance via
 	 *     a valid jQuery object representing the element.
@@ -161,6 +172,8 @@ owing problems during an attempt to extract data:';
 
 	/**
 	 * Ensures the arguments passed to this instance during its construction are valid.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @access private
 	 */

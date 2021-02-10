@@ -178,7 +178,7 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 	console.log(newErrorMsg);
 }
 
-} )( jQuery, 'jQuery.oue-custom.js' );
+} )( jQuery, 'jQuery.daesa-custom.js' );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // §2: DAESA WEBSITE INITIALIZATION MODULES
@@ -472,7 +472,7 @@ const OueDropDownToggles = ( function( $, thisFileName ) {
 	}
 
 	return OueDropDownToggles;
-} )( jQuery, 'jQuery.oue-custom.js' );
+} )( jQuery, 'jQuery.daesa-custom.js' );
 
   ////////
   // §2.2: OueEventCalendarFixer class
@@ -581,7 +581,7 @@ const OueEventCalendarFixer = ( function( $, thisFileName ) {
 	}
 
 	return OueEventCalendarFixer;
-} )( jQuery, 'jQuery.oue-custom.js' );
+} )( jQuery, 'jQuery.daesa-custom.js' );
 
   ////////
   // §2.3: OuePrintThisPage class
@@ -666,7 +666,7 @@ const OuePrintThisPage = ( function( $, thisFileName ) {
 	}
 
 	return OuePrintThisPage;
-} )( jQuery, 'jQuery.oue-custom.js' );
+} )( jQuery, 'jQuery.daesa-custom.js' );
 
 ( function( $, thisFileName ) {
 
@@ -1181,4 +1181,4 @@ $( window ).resize( function () {
 	// TODO: Add code as needed.
 } );
 
-} )( jQuery, 'jQuery.oue-custom.js' );
+} )( jQuery, 'jQuery.daesa-custom.js' );

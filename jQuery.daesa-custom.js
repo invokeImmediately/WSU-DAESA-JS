@@ -194,7 +194,7 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
  *
  * @class
  */
-var OueDropDownToggles = ( function( $, thisFileName ) {
+const OueDropDownToggles = ( function( $, thisFileName ) {
 	'use strict';
 
 	/**
@@ -485,7 +485,7 @@ var OueDropDownToggles = ( function( $, thisFileName ) {
  * @todo Refactor to rename class to replace references to OUE with references to DAESA.
  * @class
  */
-var OueEventCalendarFixer = ( function( $, thisFileName ) {
+const OueEventCalendarFixer = ( function( $, thisFileName ) {
 	'use strict';
 
 	  ////////
@@ -594,7 +594,7 @@ var OueEventCalendarFixer = ( function( $, thisFileName ) {
  *
  * @class
  */
-var OuePrintThisPage = ( function( $, thisFileName ) {
+const OuePrintThisPage = ( function( $, thisFileName ) {
 	'use strict';
 
 	  ////////
@@ -902,7 +902,7 @@ function initDefinitionLists( slctrDefList, dtActivatingClass, ddRevealingClass,
  *   causes it to enter an activated state.
  */
 function initDropDownToggles( selToggles, selContainers, selTargets, activatingClass ) {
-	var dropDownToggles;
+	let dropDownToggles;
 
 	dropDownToggles =  new OueDropDownToggles( {
 		toggles: selToggles,

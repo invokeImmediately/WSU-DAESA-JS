@@ -1,54 +1,57 @@
 /*!*************************************************************************************************
- * jQuery.forms.js
- * -------------------------------------------------------------------------------------------------
- * PROJECT SUMMARY: Enhancements mediated by jQuery to dynamic behavior of Gravity Forms and
- *   intended for Washington State University (WSU) websites built in the WSU WordPress platform.
- *   Designed especially for the websites of the WSU Office of Undergraduate Education.
+ *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▀ ▄▀▀▄ █▀▀▄ ▐▀▄▀▌▄▀▀▀      █ ▄▀▀▀
+ * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █▀▀▀ █  █ █▄▄▀ █ ▀ ▌▀▀▀█   ▄  █ ▀▀▀█
+ * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀     ▀▀  ▀  ▀▄█   ▀▀▀▀  ▀ ▀▄▄█ ▀▀▀ 
  *
- * AUTHOR: Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
+ * Enhancements mediated by jQuery to dynamic behavior of Gravity Forms and intended for Washington
+ *   State University (WSU) websites built in the WSU WordPress platform. Designed especially for
+ *   the websites of the Division of Academic Engagement and Student Achivement.
  *
- * REPOSITORY: https://github.com/invokeImmediately/WSU-UE---JS
+ * @version 1.0.0
  *
- * LICENSE: ISC - Copyright (c) 2020 Daniel C. Rieck.
- *
- *   Permission to use, copy, modify, and/or distribute this software for any purpose with or
- *   without fee is hereby granted, provided that the above copyright notice and this permission
- *   notice appear in all copies.
- *
- *   THE SOFTWARE IS PROVIDED "AS IS" AND DANIEL RIECK DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
- *   SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
- *   DANIEL RIECK BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
- *   DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
- *   CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
- *   PERFORMANCE OF THIS SOFTWARE.
+ * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
+ * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.forms.js
+ * @license MIT - Copyright (c) 2021 Washington State University
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ *     and associated documentation files (the “Software”), to deal in the Software without
+ *     restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ *     distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ *     Software is furnished to do so, subject to the following conditions:
+ *   The above copyright notice and this permission notice shall be included in all copies or
+ *     substantial portions of the Software.
+ *   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *     BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ *     DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **************************************************************************************************/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: Gravity Forms enhancement modules........................................................48
-//     §1.1: EmailConfirmations class...........................................................51
-//         §1.1.1: Public properties............................................................75
-//         §1.1.2: Public methods...............................................................91
-//     §1.2: OueGFs class......................................................................123
-//         §1.2.1: Public properties...........................................................140
-//         §1.2.2: Public methods..............................................................169
-//         §1.2.3: Lexically scoped supporting functions.......................................196
-//     §1.2: WsuIdInputs class.................................................................223
-//         §1.3.1: Public properties...........................................................243
-//         §1.3.2: Public methods..............................................................258
-//         §1.3.3: Lexically scoped supporting functions.......................................355
-// §2: Application of OUE-wide Gravity Forms enhancements......................................380
-//     §2.1: Application of OueGFs module......................................................386
-//     §2.2: Binding of handlers to Gravity Forms post-render event............................394
-//     §2.3: Function declarations.............................................................413
+// §1: Gravity Forms enhancement modules........................................................51
+//   §1.1: EmailConfirmations class.............................................................54
+//     §1.1.1: Public properties................................................................78
+//     §1.1.2: Public methods...................................................................95
+//   §1.2: OueGFs class........................................................................127
+//     §1.2.1: Public properties...............................................................144
+//     §1.2.2: Public methods..................................................................173
+//     §1.2.3: Lexically scoped supporting functions...........................................200
+//   §1.2: WsuIdInputs class...................................................................227
+//     §1.3.1: Public properties...............................................................247
+//     §1.3.2: Public methods..................................................................262
+//     §1.3.3: Lexically scoped supporting functions...........................................359
+// §2: Application of OUE-wide Gravity Forms enhancements......................................384
+//   §2.1: Application of OueGFs module........................................................390
+//   §2.2: Binding of handlers to Gravity Forms post-render event..............................398
+//   §2.3: Function declarations...............................................................417
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // §1: Gravity Forms enhancement modules
 
-/////////////////////////////////
-// §1.1: EmailConfirmations class
+//////////
+//// §1.1: EmailConfirmations class
 
 /**
  * Gravity Forms enhancement module for preventing the user from pasting input into email
@@ -71,8 +74,8 @@ var EmailConfirmations = ( function( $ ) {
 	 */
 	function EmailConfirmations( selGfield ) {
 
-		////////////////////////////
-		// §1.1.1: Public properties
+//////////////
+////// §1.1.1: Public properties
 
 		/**
 		 * The collection of selectors used to find inputs accepting emails and email confirmations
@@ -85,10 +88,11 @@ var EmailConfirmations = ( function( $ ) {
 			gfield: selGfield,
 			inputs: ".ginput_right input[type='text']"
 		};
+
 	}
 
-	/////////////////////////
-	// §1.1.2: Public methods
+//////////////
+////// §1.1.2: Public methods
 
 	/**
 	 * Initializes the event handling that will prevent misuse of the email confirmation field.
@@ -119,8 +123,8 @@ var EmailConfirmations = ( function( $ ) {
 	return EmailConfirmations;
 } )( jQuery );
 
-///////////////
-// §1.2: OueGFs
+//////////
+//// §1.2: OueGFs
 
 /**
  * Module for adding enhancements to Gravity Forms found on OUE websites.
@@ -136,8 +140,8 @@ var OueGFs = ( function( $ ) {
 	 */
 	function OueGFs() {
 
-		////////////////////////////
-		// §1.2.1: Public properties
+//////////////
+////// §1.2.1: Public properties
 
 		/**
 		 * Collection of selectors used to find form elements in the DOM.
@@ -165,8 +169,8 @@ var OueGFs = ( function( $ ) {
 		this.emailConfirmations = null;
 	}
 
-	/////////////////////////
-	// §1.2.2: Public methods
+//////////////
+////// §1.2.2: Public methods
 
 	/**
 	 * Initialize Gravity Forms found on the page.
@@ -192,8 +196,8 @@ var OueGFs = ( function( $ ) {
 		} );
 	};
 
-	////////////////////////////////////////////////
-	// §1.2.3: Lexically scoped supporting functions
+//////////////
+////// §1.2.3: Lexically scoped supporting functions
 
 	/**
 	 * Initialize inputs accepting WSU ID numbers.
@@ -219,8 +223,8 @@ var OueGFs = ( function( $ ) {
 
 } )( jQuery );
 
-////////////////////
-// §1.3: WsuIdInputs
+//////////
+//// §1.3: WsuIdInputs
 
 /**
  * Provides RegEx mediated validation of gravity form inputs that accept WSU ID numbers.
@@ -239,8 +243,8 @@ var WsuIdInputs = ( function ( $ ) {
 	 */
 	function WsuIdInputs( selGfield ) {
 
-		////////////////////////////
-		// §1.3.1: Public properties
+//////////////
+////// §1.3.1: Public properties
 
 		/**
 		 * The collection of selectors used to find inputs accepting WSU ID numbers in the DOM.
@@ -254,8 +258,8 @@ var WsuIdInputs = ( function ( $ ) {
 		};
 	}
 
-	/////////////////////////
-	// §1.3.2: Public methods
+//////////////
+////// §1.3.2: Public methods
 
 	/**
 	 * Initializes RegEx mediated validation of inputs accepting WSU ID numbers.
@@ -351,8 +355,8 @@ var WsuIdInputs = ( function ( $ ) {
 		}
 	};
 
-	////////////////////////////////////////////////
-	// §1.3.3: Lexically scoped supporting functions
+//////////////
+////// §1.3.3: Lexically scoped supporting functions
 
 	/**
 	 * Obtains the regular expression pattern representing valid complete or incomple WSU ID input.
@@ -382,16 +386,16 @@ var WsuIdInputs = ( function ( $ ) {
 ( function ( $ ) {
 	'use strict';
 
-	/////////////////////////////////////
-	// §2.1: Application of OueGFs module
+//////////
+//// §2.1: Application of OueGFs module
 
 	var oueGfs;
 
 	oueGfs = new OueGFs();
 	oueGfs.init();
 
-	///////////////////////////////////////////////////////////////
-	// §2.2: Binding of handlers to Gravity Forms post-render event
+//////////
+//// §2.2: Binding of handlers to Gravity Forms post-render event
 
 	$( document ).on( 'gform_post_render', function () {
 		setupActvtrChckbxs( '.oue-gf-actvtr-checkbox' );
@@ -409,8 +413,8 @@ var WsuIdInputs = ( function ( $ ) {
 	} );
 
 
-	//////////////////////////////
-	// §2.3: Function declarations
+//////////
+//// §2.3: Function declarations
 
 	/**
 	 * Check each input element within a required gravity form field to determine if an entry has

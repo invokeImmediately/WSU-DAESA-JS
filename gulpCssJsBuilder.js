@@ -5,6 +5,8 @@
  *
  * Node module used to build CSS and JS modules via gulp task automation.
  *
+ * @version 1.0.1
+ *
  * @author Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/gulpCssJsBuilder.js
  * @license MIT - Copyright (c) 2021 Washington State University
@@ -25,19 +27,19 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-// §1: Importing of Node modules...............................................................46
-// §2: Exported Class Declarations.............................................................63
-//   §2.1: module.exports.CssBuildSettings.....................................................66
-//   §2.2: module.exports.JsBuildSettings.....................................................200
-// §3: Exported Function Declarations.........................................................209
-//   §3.1: module.exports.fixFileHeaderComments...............................................212
-//   §3.2: module.exports.getDaesaFontImportStr...............................................238
-//   §3.3: module.exports.setUpCssBuildTask...................................................257
-//   §3.4: module.exports.setUpDefaultTask....................................................363
-//   §3.5: module.exports.setUpHelpTask.......................................................370
-//   §3.6: module.exports.setUpJsBuildTask....................................................391
-// §4: Support functions......................................................................432
-//   §4.1: logUpdate..........................................................................435
+// §1: Importing of Node modules...............................................................48
+// §2: Exported Class Declarations.............................................................65
+//   §2.1: module.exports.CssBuildSettings.....................................................68
+//   §2.2: module.exports.JsBuildSettings.....................................................202
+// §3: Exported Function Declarations.........................................................211
+//   §3.1: module.exports.fixFileHeaderComments...............................................214
+//   §3.2: module.exports.getDaesaFontImportStr...............................................240
+//   §3.3: module.exports.setUpCssBuildTask...................................................260
+//   §3.4: module.exports.setUpDefaultTask....................................................366
+//   §3.5: module.exports.setUpHelpTask.......................................................373
+//   §3.6: module.exports.setUpJsBuildTask....................................................394
+// §4: Support functions......................................................................435
+//   §4.1: logUpdate..........................................................................438
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 'use strict';
@@ -248,9 +250,10 @@ module.exports.fixFileHeaderComments = function ( match, p1, offset, string ) {
  */
 module.exports.getDaesaFontImportStr = function () {
 	return '@import url(\'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400' +
-		';0,600;0,700;1,300;1,400;1,600;1,700&family=Open+Sans:ital,wght@0,300;0,700&family=PT+Serif:' +
-		'ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400;1,700&' +
-		'family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap\');\r\n'
+		';0,600;0,700;1,300;1,400;1,600;1,700&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,80' +
+		'0;1,300;1,400;1,600;1,700;1,800&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Rob' +
+		'oto+Condensed:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Mono:ital,wght@0,400;0,700;1,4' +
+		'00;1,700&display=swap\');\r\n';
 }
 
   ////////

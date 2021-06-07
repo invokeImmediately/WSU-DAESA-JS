@@ -11,7 +11,7 @@
  * Toggle the expansion or collapse of Page Builder sections when working with pages in WSUWP that
  *   were created using the Builder Template of the Spine Theme.
  *
- * @version 1.0.0
+ * @version 1.0.0-rc0.1.0
  *
  * @author Daniel C. Rieck <danielcrieck@gmail.com> (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/Chrome-Snippets/…
@@ -31,14 +31,124 @@
  *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **************************************************************************************************/
 
-( function($) {
-    'use strict';
+( function( $ ) {
 
-    $( '.ttfmake-section' ).each( function() {
-        let $this = $( this );
-        if ( !$this.hasClass( 'ttfmake-section-open' ) ) {
-            let $toggle = $this.find( '.ttfmake-section-toggle' );
-            $toggle.click();
+  /////////////
+  // Snippet §1: Proceed in strict mode
+
+  'use strict';
+
+  /////////////
+  // Snippet §2: Messaging
+
+  const scriptName = 'Chrome Snippet wsuwp-add-page-header.js';
+
+  function logMsg( msg ) {
+    if ( typeof msg !== 'string' ) {
+      throw new TypeError( 'I was called with a message argument that was not typed as a string.' );
+    }
+    console.log( scriptName + ': ' + msg );
+  }
+
+  /////////////
+  // Snippet §3: Interfaces
+
+  class RowToggler {
+
+    //////////////////
+    //// RowToggler §1: Constructor
+
+    constructor( msgLogger ) {
+      this.msgLogger = msgLogger;
+      this.sels = {
+        body: 'body.wp-admin.ttfmake-builder-active',
+        row: '.ttfmake-section',
+        accordionToggle: '.ttfmake-section-toggle'
+      };
+      this.classes = {
+        open: 'ttfmake-section-open'
+      };
+      this.hasJQuery = this.isJQueryPresent();
+      this.hasPBIntf = this.isPageBuilder();
+    }
+
+    //////////////////
+    //// RowToggler §2: Page status checks
+
+    isJQueryPresent() {
+      const hasJQuery = window.jQuery;
+      if ( !hasJQuery ) {
+        this.msgLogger( 'I am aborting because I found that jQuery has not been loaded.' );
+      }
+      return hasJQuery;
+    }
+
+    isPageBuilder() {
+      if ( !this.hasJQuery ) {
+        return;
+      }
+      this.$body = $( this.sels.body );
+      const passesCheck = this.$body.length === 1;
+      if ( !passesCheck ) {
+        this.msgLogger( 'I am aborting because the page is not a WSUWP page editor that is utilizing the Builder Template.' );
+      }
+      return passesCheck;
+    }
+
+    //////////////////
+    //// RowToggler §3: Page modifications
+
+    toggleRows() {
+      if ( !this.hasJQuery || !this.hasPBIntf ) {
+        return;
+      }
+      const rowsAllOpened = this.areAllRowsOpen();
+      if ( !rowsAllOpened ) {
+        this.expandAllRows();
+      } else {
+        this.collapseAllRows();
+      }
+    }
+
+    areAllRowsOpen() {
+      let rowsAllOpened = true;
+      const inst = this;
+      $( this.sels.row ).each( function() {
+        if ( rowsAllOpened ) {
+          let $this = $( this );
+          rowsAllOpened = $this.hasClass( inst.classes.open );
         }
-    } );
+      } );
+      return rowsAllOpened;
+    }
+
+    expandAllRows() {
+      const inst = this;
+      $( this.sels.row ).each( function() {
+        let $this = $( this );
+        if ( !$this.hasClass( inst.classes.open ) ) {
+          let $toggle = $this.find( inst.sels.accordionToggle );
+          $toggle.click();
+        }
+      } );
+    }
+
+    collapseAllRows() {
+       const inst = this;
+     $( this.sels.row ).each( function() {
+        let $this = $( this );
+        if ( $this.hasClass( inst.classes.open ) ) {
+          let $toggle = $this.find( inst.sels.accordionToggle );
+          $toggle.click();
+        }
+      } );
+    }
+  }
+
+  /////////////
+  // Snippet §4: Execution entry point
+
+  const rowToggler = new RowToggler( logMsg );
+  rowToggler.toggleRows();
+
 } )( jQuery );

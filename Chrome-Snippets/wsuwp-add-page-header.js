@@ -90,11 +90,7 @@
         return;
       }
       this.$body = $( this.sels.body );
-      const passesCheck = this.$body.length === 1;
-      if ( !passesCheck ) {
-        this.msgLogger( 'I am aborting because the page is not a WSUWP page editor that is utilizing the Builder Template.' );
-      }
-      return passesCheck;
+      return this.$body.length === 1;
     }
 
     ///////////////////////

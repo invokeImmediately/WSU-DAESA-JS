@@ -1,13 +1,13 @@
 /*!*************************************************************************************************
  *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▀ ▄▀▀▄ █▀▀▄ ▐▀▄▀▌▄▀▀▀      █ ▄▀▀▀
  * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █▀▀▀ █  █ █▄▄▀ █ ▀ ▌▀▀▀█   ▄  █ ▀▀▀█
- * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀     ▀▀  ▀  ▀▄█   ▀▀▀▀  ▀ ▀▄▄█ ▀▀▀ 
+ * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀     ▀▀  ▀  ▀▄█   ▀▀▀▀  ▀ ▀▄▄█ ▀▀▀
  *
  * Enhancements mediated by jQuery to dynamic behavior of Gravity Forms and intended for Washington
  *   State University (WSU) websites built in the WSU WordPress platform. Designed especially for
- *   the websites of the Division of Academic Engagement and Student Achivement.
+ *   the websites of the Division of Academic Engagement and Student Achievement.
  *
- * @version 1.0.0
+ * @version 1.0.1
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.forms.js
@@ -103,7 +103,7 @@ var EmailConfirmations = ( function( $ ) {
 		var $forms = $( this.sels.gform );
 		var inputSel = this.sels.gfield + ' ' + this.sels.inputs;
 
-		if ( $forms.length ) {	
+		if ( $forms.length ) {
 			$forms.on( 'paste', inputSel, this.onPaste );
 		}
 	};
@@ -132,7 +132,7 @@ var EmailConfirmations = ( function( $ ) {
  * @class
  */
 var OueGFs = ( function( $ ) {
-	
+
 	'use strict';
 
 	/**
@@ -232,7 +232,7 @@ var OueGFs = ( function( $ ) {
  * @class
  */
 var WsuIdInputs = ( function ( $ ) {
-	
+
 	'use strict';
 
 	/**
@@ -431,12 +431,14 @@ var WsuIdInputs = ( function ( $ ) {
 			var $thisInput = $( this );
 			if ( $thisInput.val() == '' ) {
 				$thisInput.removeClass( 'gf-value-entered' );
+			} else if ( $thisInput.hasClass( 'chosen-search-input' ) && $thisInput.val() == 'Click to select...' ) {
+				$thisInput.removeClass( 'gf-value-entered' );
 			} else {
 				$thisInput.addClass( 'gf-value-entered' );
 			}
 		} );
 	}
-	
+
 	/**
 	 * Highlight input elements within required gravity form fields until a value has been properly
 	 * entered by the user.
@@ -452,6 +454,8 @@ var WsuIdInputs = ( function ( $ ) {
 			var $thisInput = $( this );
 			$thisInput.blur( function () {
 				if ( $thisInput.val() == '' ) {
+					$thisInput.removeClass( 'gf-value-entered' );
+				} else if ( $thisInput.hasClass( 'chosen-search-input' ) && $thisInput.val() == 'Click to select...' ) {
 					$thisInput.removeClass( 'gf-value-entered' );
 				} else {
 					$thisInput.addClass( 'gf-value-entered' );

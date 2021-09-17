@@ -10,7 +10,7 @@
  * Custom JS code common to all websites of the Division of Academic Engagement and Student
  *   Achievement (DAESA) in the Office of the Provost at Washington State University (WSU).
  *
- * @version 1.0.1
+ * @version 1.0.2
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.daesa-custom.js
@@ -33,28 +33,28 @@
 // TABLE OF CONTENTS
 // -----------------
 //   §1: Addition of functions to jQuery........................................................70
-//     §1.1: jQuery.isCssClass..................................................................73
-//     §1.2: jQuery.isJQueryObj.................................................................93
-//     §1.3: jQuery.logError...................................................................107
+//     §1.1:  jQuery.isCssClass.................................................................73
+//     §1.2:  jQuery.isJQueryObj................................................................93
+//     §1.3:  jQuery.logError..................................................................107
 //   §2: DAESA website initilization modules...................................................184
 //     §2.1: OueDropDownToggle class...........................................................187
 //     §2.2: OueEventCalendarFixer class.......................................................478
 //       §2.2.1: Constructor...................................................................492
 //       §2.2.2: Public members................................................................512
 //       §2.2.3: Lexically scoped supporting functions.........................................566
-//     §2.3: OuePrintThisPage class............................................................587
+//     §2.3:  OuePrintThisPage class...........................................................587
 //       §2.3.1: Constructor...................................................................601
 //       §2.3.2: Public members................................................................619
 //   §3: Function declarations.................................................................676
-//     §3.1: addDefinitionListButtons..........................................................679
-//     §3.2: fixDogears........................................................................797
-//     §3.3: fixEventCalendars.................................................................822
-//     §3.4: initContentFlippers...............................................................831
-//     §3.5: initDefinitionLists...............................................................847
-//     §3.6: initDropDownToggles...............................................................891
-//     §3.7: initPrintThisPageLinks............................................................916
-//     §3.8: initQuickTabs.....................................................................924
-//     §3.9: initReadMoreToggles...............................................................988
+//     §3.1:  addDefinitionListButtons.........................................................679
+//     §3.2:  fixDogears.......................................................................797
+//     §3.3:  fixEventCalendars................................................................822
+//     §3.4:  initContentFlippers..............................................................831
+//     §3.5:  initDefinitionLists..............................................................847
+//     §3.6:  initDropDownToggles..............................................................891
+//     §3.7:  initPrintThisPageLinks...........................................................916
+//     §3.8:  initQuickTabs....................................................................924
+//     §3.9:  initReadMoreToggles..............................................................988
 //     §3.10: initTriggeredByHover............................................................1008
 //     §3.11: showDefinitionListButtons.......................................................1027
 //   §4: DOM-Ready execution sequence.........................................................1058
@@ -69,8 +69,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // §1: ADDITION OF FUNCTIONS to jQuery
 
-  ////////
-  // §1.1: jQuery.isCssClass
+////////
+// §1.1: jQuery.isCssClass
 
 /**
  * Checking function to verify that the passed argument is a valid CSS class.
@@ -89,8 +89,8 @@ $.isCssClass = function ( possibleClass ) {
 	return isClass;
 }
 
-  ////////
-  // §1.2: jQuery.isJQueryObj
+////////
+// §1.2: jQuery.isJQueryObj
 
 /**
  * Checking function to verify that the passed argument is a valid jQuery object.
@@ -103,8 +103,8 @@ $.isJQueryObj = function ( $obj ) {
 	return ( $obj && ( $obj instanceof $ || $obj.constructor.prototype.jquery ) );
 }
 
-  ////////
-  // §1.3: jQuery.logError
+////////
+// §1.3: jQuery.logError
 
 /**
  * Log an error using the browser console in JSON notation.
@@ -183,8 +183,8 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // §2: DAESA WEBSITE INITIALIZATION MODULES
 
-  ////////
-  // §2.1: OueDropDownToggle class
+////////
+// §2.1: OueDropDownToggle class
 
 /**
  * Module for initializing drop down toggles on OUE websites.
@@ -474,8 +474,8 @@ const OueDropDownToggles = ( function( $, thisFileName ) {
 	return OueDropDownToggles;
 } )( jQuery, 'jQuery.daesa-custom.js' );
 
-  ////////
-  // §2.2: OueEventCalendarFixer class
+////////
+// §2.2: OueEventCalendarFixer class
 
 /**
  * Module for fixing event calendar pages on OUE websites.
@@ -488,8 +488,8 @@ const OueDropDownToggles = ( function( $, thisFileName ) {
 const OueEventCalendarFixer = ( function( $, thisFileName ) {
 	'use strict';
 
-	  ////////
-	  // §2.2.1: Constructor
+//////////
+//// §2.2.1: Constructor
 
 	/**
 	 * Constructor for OueEventCalendarFixer.
@@ -508,8 +508,8 @@ const OueEventCalendarFixer = ( function( $, thisFileName ) {
 		this.sels = sels;
 	}
 
-	  ////////
-	  // §2.2.2: Public members
+//////////
+//// §2.2.2: Public members
 
 	/**
 	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
@@ -562,8 +562,8 @@ const OueEventCalendarFixer = ( function( $, thisFileName ) {
 		return stillValid;
 	}
 
-	////////
-	// §2.2.3: Lexically scoped supporting functions
+//////////
+//// §2.2.3: Lexically scoped supporting functions
 
 	function copyLocationIntoEventTitle( $page, selLocationText, selSchedule ) {
 		var $location;
@@ -583,8 +583,8 @@ const OueEventCalendarFixer = ( function( $, thisFileName ) {
 	return OueEventCalendarFixer;
 } )( jQuery, 'jQuery.daesa-custom.js' );
 
-  ////////
-  // §2.3: OuePrintThisPage class
+////////
+// §2.3: OuePrintThisPage class
 
 /**
  * Module for fixing event calendar pages on OUE websites.
@@ -597,8 +597,8 @@ const OueEventCalendarFixer = ( function( $, thisFileName ) {
 const OuePrintThisPage = ( function( $, thisFileName ) {
 	'use strict';
 
-	  ////////
-	  // §2.3.1: Constructor
+//////////
+//// §2.3.1: Constructor
 
 	/**
 	 * Construct an instance of OuePrintThisPage.
@@ -615,8 +615,8 @@ const OuePrintThisPage = ( function( $, thisFileName ) {
 		this.sels = sels;
 	}
 
-	  ////////
-	  // §2.3.2: Public members
+//////////
+//// §2.3.2: Public members
 
 	/**
 	 * Check the state of the OueEventCalendarFixer object's paremeters to ensure it was
@@ -675,8 +675,8 @@ const OuePrintThisPage = ( function( $, thisFileName ) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // §3: Function declarations
 
-  ////////
-  // §3.1: addDefinitionListButtons
+////////
+// §3.1: addDefinitionListButtons
 
 /**
  * Automatically creates and binds events to expand/collapse all buttons designed for improving UX
@@ -793,8 +793,8 @@ parental definition list within the DOM."
 	} );
 }
 
-  ////////
-  // §3.2: fixDogears
+////////
+// §3.2: fixDogears
 
 function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 	// Fix bug wherein the wrong items in the spine become dogeared
@@ -818,8 +818,8 @@ function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 	}
 }
 
-  ////////
-  // §3.3: fixEventCalendars
+////////
+// §3.3: fixEventCalendars
 
 function fixEventCalendars( sels ) {
 	var fixer = new OueEventCalendarFixer( sels );
@@ -827,8 +827,8 @@ function fixEventCalendars( sels ) {
 	fixer.fixSingleEventPage();
 }
 
-  ////////
-  // §3.4: initContentFlippers
+////////
+// §3.4: initContentFlippers
 
 function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, animDuration ) {
 	$( slctrCntntFlppr ).click( function () {
@@ -843,8 +843,8 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 	} );
 }
 
-  ////////
-  // §3.5: initDefinitionLists
+////////
+// §3.5: initDefinitionLists
 
 // TODO: Add inline documentation in JSDoc3 format.
 function initDefinitionLists( slctrDefList, dtActivatingClass, ddRevealingClass, animHghtDrtn ) {
@@ -887,8 +887,8 @@ function initDefinitionLists( slctrDefList, dtActivatingClass, ddRevealingClass,
 	$( slctrDefList + " dd" ).removeClass( ddRevealingClass );
 }
 
-  ////////
-  // §3.6: initDropDownToggles
+////////
+// §3.6: initDropDownToggles
 
 /**
  * Initialize drop down toggle elements to respond to user interaction.
@@ -912,16 +912,16 @@ function initDropDownToggles( selToggles, selContainers, selTargets, activatingC
 	dropDownToggles.initialize();
 }
 
-  ////////
-  // §3.7: initPrintThisPageLinks
+////////
+// §3.7: initPrintThisPageLinks
 
 function initPrintThisPageLinks( sels ) {
 	var printThisPageLinks = new OuePrintThisPage( sels );
 	printThisPageLinks.initOnThisPageLinks();
 }
 
-  ////////
-  // §3.8: initQuickTabs
+////////
+// §3.8: initQuickTabs
 
 // TODO: Convert to a class-based initialization module
 function initQuickTabs( slctrQtSctn ) {
@@ -984,8 +984,8 @@ function initQuickTabs( slctrQtSctn ) {
 	} );
 }
 
-  ////////
-  // §3.9: initReadMoreToggles
+////////
+// §3.9: initReadMoreToggles
 
 function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDuration ) {
 	$( slctrToggleIn ).click( function () {
@@ -1004,8 +1004,8 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 	} );
 }
 
-  ////////
-  // §3.10: initTriggeredByHover
+////////
+// §3.10: initTriggeredByHover
 
 function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration ) {
 	$( slctrTrggrdOnHvr ).mouseenter( function () {
@@ -1023,8 +1023,8 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 	} );
 }
 
-  ////////
-  // §3.11: showDefinitionListButtons
+////////
+// §3.11: showDefinitionListButtons
 
 /**
  * Display expand/collapse all buttons, which were initially hidden

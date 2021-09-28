@@ -1,16 +1,16 @@
 /*!*************************************************************************************************
- *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄    ▄▀▀▀ █  █ ▄▀▀▀      
- * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █  █ █▄▄█ █▀▀  ▀▀▀█ █▄▄█ ▀▀ █    █  █ ▀▀▀█      
- * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀     ▀▀▀  ▀▀  ▀▀▀  ▀ ▀ ▀
+ *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄    ▄▀▀▀ █  █ ▄▀▀▀  
+ * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █  █ █▄▄█ █▀▀  ▀▀▀█ █▄▄█ ▀▀ █    █  █ ▀▀▀█ ▀
+ * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀     ▀▀▀  ▀▀  ▀▀▀   
  *
- *             ▐▀█▀▌▄▀▀▄ ▐▀▄▀▌      █ ▄▀▀▀
- *               █  █  █ █ ▀ ▌   ▄  █ ▀▀▀█
- *       ▀ ▀ ▀   █   ▀▀  █   ▀ ▀ ▀▄▄█ ▀▀▀ 
+ *        ▐▀█▀▌▄▀▀▄ ▐▀▄▀▌      █ ▄▀▀▀
+ *       ▀  █  █  █ █ ▀ ▌   ▄  █ ▀▀▀█
+ *          █   ▀▀  █   ▀ ▀ ▀▄▄█ ▀▀▀ 
  *
  * Custom JS code common to all websites of the Division of Academic Engagement and Student
  *   Achievement (DAESA) in the Office of the Provost at Washington State University (WSU).
  *
- * @version 1.0.2
+ * @version 1.1.0
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.daesa-custom.js
@@ -32,34 +32,36 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-//   §1: Addition of functions to jQuery........................................................70
-//     §1.1:  jQuery.isCssClass.................................................................73
-//     §1.2:  jQuery.isJQueryObj................................................................93
-//     §1.3:  jQuery.logError..................................................................107
-//   §2: DAESA website initilization modules...................................................184
-//     §2.1: OueDropDownToggle class...........................................................187
-//     §2.2: OueEventCalendarFixer class.......................................................478
-//       §2.2.1: Constructor...................................................................492
-//       §2.2.2: Public members................................................................512
-//       §2.2.3: Lexically scoped supporting functions.........................................566
-//     §2.3:  OuePrintThisPage class...........................................................587
-//       §2.3.1: Constructor...................................................................601
-//       §2.3.2: Public members................................................................619
-//   §3: Function declarations.................................................................676
-//     §3.1:  addDefinitionListButtons.........................................................679
-//     §3.2:  fixDogears.......................................................................797
-//     §3.3:  fixEventCalendars................................................................822
-//     §3.4:  initContentFlippers..............................................................831
-//     §3.5:  initDefinitionLists..............................................................847
-//     §3.6:  initDropDownToggles..............................................................891
-//     §3.7:  initPrintThisPageLinks...........................................................916
-//     §3.8:  initQuickTabs....................................................................924
-//     §3.9:  initReadMoreToggles..............................................................988
-//     §3.10: initTriggeredByHover............................................................1008
-//     §3.11: showDefinitionListButtons.......................................................1027
-//   §4: DOM-Ready execution sequence.........................................................1058
-//   §5: Window-loaded event bindings.........................................................1151
-//   §6: Window-resized event bindings........................................................1178
+//   §1: Addition of functions to jQuery........................................................72
+//     §1.1: jQuery.isCssClass..................................................................75
+//     §1.2: jQuery.isJQueryObj.................................................................95
+//     §1.3: jQuery.logError...................................................................109
+//   §2: DAESA website initilization modules...................................................183
+//     §2.1: OueDropDownToggle class...........................................................186
+//     §2.2: OueEventCalendarFixer class.......................................................475
+//       §2.2.1:  Constructor..................................................................489
+//       §2.2.2:  Public members...............................................................509
+//       §2.2.3:  Lexically scoped supporting functions........................................563
+//     §2.3: OuePrintThisPage class............................................................584
+//       §2.3.1:  Constructor..................................................................598
+//       §2.3.2:  Public members...............................................................616
+//     §2.4: DaesaAbAddin class................................................................669
+//   §3: Execution entry point.................................................................680
+//     §3.1: Function declarations.............................................................687
+//       §3.1.1:  addDefinitionListButtons.....................................................690
+//       §3.1.2:  fixDogears...................................................................801
+//       §3.1.3:  fixEventCalendars............................................................827
+//       §3.1.4:  initContentFlippers..........................................................837
+//       §3.1.5:  initDefinitionLists..........................................................909
+//       §3.1.6:  initDropDownToggles..........................................................953
+//       §3.1.7:  initPrintThisPageLinks.......................................................978
+//       §3.1.8:  initQuickTabs................................................................986
+//       §3.1.9:  initReadMoreToggles.........................................................1050
+//       §3.1.10: initTriggeredByHover........................................................1070
+//       §3.1.11: showDefinitionListButtons...................................................1089
+//     §3.2: DOM-Ready execution sequence.....................................................1120
+//     §3.3: Window-loaded event bindings.....................................................1213
+//     §3.4: Window-resized event bindings....................................................1240
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -149,14 +151,11 @@ $.logError = function ( fileName, fnctnName, fnctnDesc, errorMsg ) {
 
 	// Construct a new error message
 	if ( incorrectTypings == 1 ) {
-		newErrorMsg = "Unfortunately, a call to jQuery.error was made with an incorrectly typed" +
-			" argument.\n"
+		newErrorMsg = "Unfortunately, a call to jQuery.error was made with an incorrectly typed argument.\n"
 	} else {
-		newErrorMsg = "Unfortunately, a call to jQuery.error was made with incorrectly typed" +
-			" arguments.\n"
+		newErrorMsg = "Unfortunately, a call to jQuery.error was made with incorrectly typed arguments.\n"
 	}
-	newErrorMsg += "Here are the arguments that were passed to jQuery.logError:\n" +
-		"\t\tfileName = " + fileName + "\n";
+	newErrorMsg += "Here are the arguments that were passed to jQuery.logError:\n\t\tfileName = " + fileName + "\n";
 	if ( !( ( bitMask & 8 ) >> 3 ) ) {
 		newErrorMsg += "\t\ttypeof filename = " + ( typeof fileName ) + "\n";
 		fileName = thisFileName;
@@ -381,8 +380,7 @@ const OueDropDownToggles = ( function( $, thisFileName ) {
 		var $this;
 		var state;
 		var thisFuncName = "effectDropDownTogglePermanence";
-		var thisFuncDesc = "Upon page load, sets the expansion state of a drop down toggle" +
-			" element based on previous user interactions during the session.";
+		var thisFuncDesc = "Upon page load, sets the expansion state of a drop down toggle element based on previous user interactions during the session.";
 
 		$toggles.each( function() {
 			$this = $( this );
@@ -397,8 +395,7 @@ const OueDropDownToggles = ( function( $, thisFileName ) {
 				}
 			} else {
 				$.logError( thisFileName, thisFuncName, thisFuncDesc,
-					"No ID was set for this drop down toggle element; thus, expansion state" +
-					" permanence cannot be effected." );
+					"No ID was set for this drop down toggle element; thus, expansion state permanence cannot be effected." );
 			}
 		} );
 	}
@@ -668,15 +665,29 @@ const OuePrintThisPage = ( function( $, thisFileName ) {
 	return OuePrintThisPage;
 } )( jQuery, 'jQuery.daesa-custom.js' );
 
+////////
+// §2.4: DaesaAbAddin class
+
+// const DaesaAbAddin = ( function( $, thisFileName ) {
+// 	class DaesaAbAddin {
+
+// 	}
+
+// 	return DaesaAbAddin;
+// } )( jQuery, 'jQuery.daesa-custom.js' );
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// §3: Execution entry point
+
 ( function( $, thisFileName ) {
 
 'use strict';
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// §3: Function declarations
-
 ////////
-// §3.1: addDefinitionListButtons
+// §3.1: Function declarations
+
+//////////
+//// §3.1.1: addDefinitionListButtons
 
 /**
  * Automatically creates and binds events to expand/collapse all buttons designed for improving UX
@@ -697,8 +708,7 @@ const OuePrintThisPage = ( function( $, thisFileName ) {
 function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClass,
 		btnDisablingClass, dtActivatingClass, ddRevealingClass, animSldDrtn ) {
 	var thisFuncName = "addDefinitionListButtons";
-	var thisFuncDesc = "Automatically creates and binds events to expand/collapse all buttons "
-		+ "designed for improving UX of OUE site definition lists";
+	var thisFuncDesc = "Automatically creates and binds events to expand/collapse all buttons designed for improving UX of OUE site definition lists";
 
 	// Find and remove any pre-existing expand/collapse all buttons
 	var $lists = $( slctrDefList );
@@ -708,18 +718,14 @@ function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClas
 		$existingExpandAlls.remove();
 		$.logError(
 			thisFileName, thisFuncName, thisFuncDesc,
-			"Expand all buttons were already discovered in the DOM upon document initialization; "
-				+ "please remove all buttons from the HTML source code to avoid wasting "
-				+ "computational resources."
+			"Expand all buttons were already discovered in the DOM upon document initialization; please remove all buttons from the HTML source code to avoid wasting computational resources."
 		);
 	}
 	if ( $existingCollapseAlls.length > 0 ) {
 		$existingCollapseAlls.remove();
 		$.logError(
 			thisFileName, thisFuncName, thisFuncDesc,
-			"Collapse all buttons were already discovered in the DOM upon document initialization; "
-				+ "please remove all buttons from the HTML source code to avoid wasting "
-				+ "computational resources."
+			"Collapse all buttons were already discovered in the DOM upon document initialization; please remove all buttons from the HTML source code to avoid wasting computational resources."
 		);
 	}
 
@@ -755,8 +761,7 @@ function addDefinitionListButtons( slctrDefList, expandAllClass, collapseAllClas
 			} else {
 				$.logError(
 					thisFileName, thisFuncName, thisFunDesc,
-					"When trying to bind a click event on an expand all button to a handling \
-function, could not locate the parental definition list within DOM."
+					"When trying to bind a click event on an expand all button to a handling function, could not locate the parental definition list within DOM."
 				);
 			}
 		}
@@ -785,17 +790,17 @@ function, could not locate the parental definition list within DOM."
 				$.logError(
 					thisFileName, thisFuncName, thisFunDesc,
 					"When trying to bind a click event on collapse all button #" +
-						$thisCollapse.index() + "to a handling function, could not locate the \
-parental definition list within the DOM."
+						$thisCollapse.index() + "to a handling function, could not locate the parental definition list within the DOM."
 				);
 			}
 		}
 	} );
 }
 
-////////
-// §3.2: fixDogears
+//////////
+//// §3.1.2: fixDogears
 
+// TODO: Add inline documentation in JSDoc3 format.
 function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 	// Fix bug wherein the wrong items in the spine become dogeared
 	var $dogearedItems = $( slctrSiteNav ).find( slctrDogeared );
@@ -818,33 +823,109 @@ function fixDogears( slctrSiteNav, slctrDogeared, removedClasses ) {
 	}
 }
 
-////////
-// §3.3: fixEventCalendars
+//////////
+//// §3.1.3: fixEventCalendars
 
+// TODO: Add inline documentation in JSDoc3 format.
 function fixEventCalendars( sels ) {
 	var fixer = new OueEventCalendarFixer( sels );
 
 	fixer.fixSingleEventPage();
 }
 
-////////
-// §3.4: initContentFlippers
+//////////
+//// §3.1.4: initContentFlippers
 
+// TODO: Add inline documentation in JSDoc3 format.
+// TODO: Convert to class-based implementation.
 function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, animDuration ) {
-	$( slctrCntntFlppr ).click( function () {
-		var $this = $( this );
-		$this.next( slctrFlppdFront ).toggle( animDuration );
-		$this.next( slctrFlppdFront ).next( slctrFlppdBack ).fadeToggle( animDuration );
+	// Set up initial state of content flippers and front and back panels.
+	$( slctrCntntFlppr ).each( function() {
+		// Set tabindex on flipper control.
+		let $flipper = $( this );
+		if ( !$flipper.attr( 'tabindex' ) || $flipper.attr( 'tabindex' ) != '0' ) {
+			$flipper.attr( 'tabindex', '0' );
+		}
+
+		// Set role of flipper to button and pressed state to false.
+		if ( !$flipper.attr( 'role' ) || !$flipper.attr( 'role' ) != 'button' ) {
+			$flipper.attr( 'role', 'button' );
+		}
+		if ( !$flipper.attr( 'aria-pressed' ) || !$flipper.attr( 'aria-pressed' ) != 'false' ) {
+			$flipper.attr( 'aria-pressed', 'false' );
+		}
+
+		// Set expansion state of front panel to expanded.
+		let $front = $flipper.next( slctrFlppdFront );
+		if ( !$front.attr( 'aria-expanded' ) || !$front.attr( 'aria-expanded' ) != 'true' ) {
+			$front.attr( 'aria-expanded', 'true' );
+		}
+
+		// Set expansion state of back panel to collapsed.
+		let $back = $front.next( slctrFlppdBack );
+		if ( !$back.attr( 'aria-expanded' ) || !$back.attr( 'aria-expanded' ) != 'false' ) {
+			$back.attr( 'aria-expanded', 'false' );
+		}
 	} );
+
+	// Set up mouse handler for content flippers.
+	$( slctrCntntFlppr ).click( function () {	
+		// Toggle flipper's aria-pressed state.
+		let $flipper = $( this );
+		if( $flipper.attr( 'aria-pressed' ) == 'false' ) {
+			$flipper.attr( 'aria-pressed', 'true' );
+		} else {
+			$flipper.attr( 'aria-pressed', 'false' );
+		}
+
+		// Toggle the front panel's state.
+		let $front = $flipper.next( slctrFlppdFront );
+		$front.toggle( animDuration );
+		if( $front.attr( 'aria-expanded' ) == 'false' ) {
+			$front.attr( 'aria-expanded', 'true' );
+		} else {
+			$front.attr( 'aria-expanded', 'false' );
+		}
+
+		// Toggle the back panel's state.
+		let $back = $front.next( slctrFlppdBack );
+		$back.fadeToggle( animDuration );
+		if( $back.attr( 'aria-expanded' ) == 'false' ) {
+			$back.attr( 'aria-expanded', 'true' );
+		} else {
+			$back.attr( 'aria-expanded', 'false' );
+		}
+	} );
+
+	// Set up mouse handler for content flippers' front panels, if appropriate.
 	$( slctrFlppdFront ).click( function () {
-		var $this = $( this );
-		$this.toggle( animDuration );
-		$this.next( slctrFlppdBack ).fadeToggle( animDuration );
+		let $front = $( this );
+		$front.toggle( animDuration );
+		if( $front.attr( 'aria-expanded' ) == 'false' ) {
+			$front.attr( 'aria-expanded', 'true' );
+		} else {
+			$front.attr( 'aria-expanded', 'false' );
+		}
+
+		let $back = $front.next( slctrFlppdBack );
+		$back.fadeToggle( animDuration );
+		if( $back.attr( 'aria-expanded' ) == 'false' ) {
+			$back.attr( 'aria-expanded', 'true' );
+		} else {
+			$back.attr( 'aria-expanded', 'false' );
+		}
+
+		let $flipper = $front.prev(slctrCntntFlppr);
+		if( $flipper.attr( 'aria-pressed' ) == 'false' ) {
+			$flipper.attr( 'aria-pressed', 'true' );
+		} else {
+			$flipper.attr( 'aria-pressed', 'false' );
+		}
 	} );
 }
 
-////////
-// §3.5: initDefinitionLists
+//////////
+//// §3.1.5: initDefinitionLists
 
 // TODO: Add inline documentation in JSDoc3 format.
 function initDefinitionLists( slctrDefList, dtActivatingClass, ddRevealingClass, animHghtDrtn ) {
@@ -887,8 +968,8 @@ function initDefinitionLists( slctrDefList, dtActivatingClass, ddRevealingClass,
 	$( slctrDefList + " dd" ).removeClass( ddRevealingClass );
 }
 
-////////
-// §3.6: initDropDownToggles
+//////////
+//// §3.1.6: initDropDownToggles
 
 /**
  * Initialize drop down toggle elements to respond to user interaction.
@@ -912,16 +993,16 @@ function initDropDownToggles( selToggles, selContainers, selTargets, activatingC
 	dropDownToggles.initialize();
 }
 
-////////
-// §3.7: initPrintThisPageLinks
+//////////
+//// §3.1.7: initPrintThisPageLinks
 
 function initPrintThisPageLinks( sels ) {
 	var printThisPageLinks = new OuePrintThisPage( sels );
 	printThisPageLinks.initOnThisPageLinks();
 }
 
-////////
-// §3.8: initQuickTabs
+//////////
+//// §3.1.8: initQuickTabs
 
 // TODO: Convert to a class-based initialization module
 function initQuickTabs( slctrQtSctn ) {
@@ -984,8 +1065,8 @@ function initQuickTabs( slctrQtSctn ) {
 	} );
 }
 
-////////
-// §3.9: initReadMoreToggles
+//////////
+//// §3.1.9: initReadMoreToggles
 
 function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDuration ) {
 	$( slctrToggleIn ).click( function () {
@@ -1004,8 +1085,8 @@ function initReadMoreToggles( slctrToggleIn, slctrToggleOut, slctrPanel, animDur
 	} );
 }
 
-////////
-// §3.10: initTriggeredByHover
+//////////
+//// §3.1.10: initTriggeredByHover
 
 function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn, animDuration ) {
 	$( slctrTrggrdOnHvr ).mouseenter( function () {
@@ -1023,8 +1104,8 @@ function initTriggeredByHover( slctrTrggrdOnHvr, slctrCntntRvld, slctrCntntHddn,
 	} );
 }
 
-////////
-// §3.11: showDefinitionListButtons
+//////////
+//// §3.1.11: showDefinitionListButtons
 
 /**
  * Display expand/collapse all buttons, which were initially hidden
@@ -1054,8 +1135,8 @@ function showDefinitionListButtons( slctrDefList, expandAllClass, collapseAllCla
 	} );
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// §4: DOM-Ready execution sequence
+////////
+// §3.2: DOM-Ready execution sequence
 
 $( function () {
 	var argsList = new Object(); // List of arguments that will be passed to functions
@@ -1147,8 +1228,8 @@ $( function () {
 		args.animDuration );
 } );
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// §5: Window-loaded event binding
+////////
+// §3.3: Window-loaded event binding
 
 $( window ).on( "load", function () {
 	var argsList = new Object();
@@ -1174,8 +1255,8 @@ $( window ).on( "load", function () {
 	initPrintThisPageLinks( args.sels );
 } );
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// §6: Window-resized event binding
+////////
+// §3.4: Window-resized event binding
 
 $( window ).resize( function () {
 	// TODO: Add code as needed.

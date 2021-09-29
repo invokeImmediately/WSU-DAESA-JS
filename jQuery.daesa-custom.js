@@ -10,7 +10,7 @@
  * Custom JS code common to all websites of the Division of Academic Engagement and Student
  *   Achievement (DAESA) in the Office of the Provost at Washington State University (WSU).
  *
- * @version 1.1.1
+ * @version 1.1.2
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.daesa-custom.js
@@ -924,7 +924,7 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 	} );
 
 	// Set up keydown handler for content flippers.
-	$( slctrFlppdFront ).on( 'keydown', function( e ) {
+	$( slctrCntntFlppr ).on( 'keydown', function( e ) {
 		let regExActKeys = /Enter| /g;
 		if( regExActKeys.test( e.key ) ) {
 			e.preventDefault();
@@ -956,7 +956,7 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 		}
 	} );
 
-	$( slctrFlppdFront ).on( 'mouseleave', function( e ) {
+	$( slctrCntntFlppr ).on( 'mouseleave', function( e ) {
 		let $flipper = $( this );
 		$flipper.trigger( 'blur' );
 	} );

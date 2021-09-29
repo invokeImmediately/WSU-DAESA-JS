@@ -10,7 +10,7 @@
  * Custom JS code common to all websites of the Division of Academic Engagement and Student
  *   Achievement (DAESA) in the Office of the Provost at Washington State University (WSU).
  *
- * @version 1.1.0
+ * @version 1.1.1
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.daesa-custom.js
@@ -52,16 +52,16 @@
 //       §3.1.2:  fixDogears...................................................................801
 //       §3.1.3:  fixEventCalendars............................................................827
 //       §3.1.4:  initContentFlippers..........................................................837
-//       §3.1.5:  initDefinitionLists..........................................................909
-//       §3.1.6:  initDropDownToggles..........................................................953
-//       §3.1.7:  initPrintThisPageLinks.......................................................978
-//       §3.1.8:  initQuickTabs................................................................986
-//       §3.1.9:  initReadMoreToggles.........................................................1050
-//       §3.1.10: initTriggeredByHover........................................................1070
-//       §3.1.11: showDefinitionListButtons...................................................1089
-//     §3.2: DOM-Ready execution sequence.....................................................1120
-//     §3.3: Window-loaded event bindings.....................................................1213
-//     §3.4: Window-resized event bindings....................................................1240
+//       §3.1.5:  initDefinitionLists..........................................................966
+//       §3.1.6:  initDropDownToggles.........................................................1010
+//       §3.1.7:  initPrintThisPageLinks......................................................1035
+//       §3.1.8:  initQuickTabs...............................................................1043
+//       §3.1.9:  initReadMoreToggles.........................................................1107
+//       §3.1.10: initTriggeredByHover........................................................1127
+//       §3.1.11: showDefinitionListButtons...................................................1146
+//     §3.2: DOM-Ready execution sequence.....................................................1177
+//     §3.3: Window-loaded event bindings.....................................................1270
+//     §3.4: Window-resized event bindings....................................................1297
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ( function ( $, thisFileName ) {
@@ -868,7 +868,7 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 		}
 	} );
 
-	// Set up mouse handler for content flippers.
+	// Set up mouse click handler for content flippers.
 	$( slctrCntntFlppr ).click( function () {	
 		// Toggle flipper's aria-pressed state.
 		let $flipper = $( this );
@@ -897,7 +897,7 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 		}
 	} );
 
-	// Set up mouse handler for content flippers' front panels, if appropriate.
+	// Set up mouse click handler for content flippers' front panels, if appropriate.
 	$( slctrFlppdFront ).click( function () {
 		let $front = $( this );
 		$front.toggle( animDuration );
@@ -921,6 +921,44 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 		} else {
 			$flipper.attr( 'aria-pressed', 'false' );
 		}
+	} );
+
+	// Set up keydown handler for content flippers.
+	$( slctrFlppdFront ).on( 'keydown', function( e ) {
+		let regExActKeys = /Enter| /g;
+		if( regExActKeys.test( e.key ) ) {
+			e.preventDefault();
+			// Toggle flipper's aria-pressed state.
+			let $flipper = $( this );
+			if( $flipper.attr( 'aria-pressed' ) == 'false' ) {
+				$flipper.attr( 'aria-pressed', 'true' );
+			} else {
+				$flipper.attr( 'aria-pressed', 'false' );
+			}
+
+			// Toggle the front panel's state.
+			let $front = $flipper.next( slctrFlppdFront );
+			$front.toggle( animDuration );
+			if( $front.attr( 'aria-expanded' ) == 'false' ) {
+				$front.attr( 'aria-expanded', 'true' );
+			} else {
+				$front.attr( 'aria-expanded', 'false' );
+			}
+
+			// Toggle the back panel's state.
+			let $back = $front.next( slctrFlppdBack );
+			$back.fadeToggle( animDuration );
+			if( $back.attr( 'aria-expanded' ) == 'false' ) {
+				$back.attr( 'aria-expanded', 'true' );
+			} else {
+				$back.attr( 'aria-expanded', 'false' );
+			}
+		}
+	} );
+
+	$( slctrFlppdFront ).on( 'mouseleave', function( e ) {
+		let $flipper = $( this );
+		$flipper.trigger( 'blur' );
 	} );
 }
 

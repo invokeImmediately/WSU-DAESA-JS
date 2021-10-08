@@ -7,7 +7,7 @@
  *   State University (WSU) websites built in the WSU WordPress platform. Designed especially for
  *   the websites of the Division of Academic Engagement and Student Achievement.
  *
- * @version 1.0.1
+ * @version 1.0.2
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.forms.js
@@ -516,7 +516,7 @@ var WsuIdInputs = ( function ( $ ) {
 					var $thisParent;
 					var inputReady = false;
 
-					$thisParent = $thisChild.parents( 'ul.gfield_checkbox, ul.gfield_radio' );
+					$thisParent = $thisChild.parents( '.gfield_checkbox, .gfield_radio' );
 					$parentsInputs = $thisParent.find( 'input' );
 					$parentsInputs.each(function () {
 						if ( $( this ).prop( 'checked' ) == true && !inputReady ) {

@@ -1,16 +1,16 @@
 /*!*************************************************************************************************
- *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄    ▄▀▀▀ █  █ ▄▀▀▀  
+ *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄    ▄▀▀▀ █  █ ▄▀▀▀
  * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █  █ █▄▄█ █▀▀  ▀▀▀█ █▄▄█ ▀▀ █    █  █ ▀▀▀█ ▀
- * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀     ▀▀▀  ▀▀  ▀▀▀   
+ * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀     ▀▀▀  ▀▀  ▀▀▀
  *
  *        ▐▀█▀▌▄▀▀▄ ▐▀▄▀▌      █ ▄▀▀▀
  *       ▀  █  █  █ █ ▀ ▌   ▄  █ ▀▀▀█
- *          █   ▀▀  █   ▀ ▀ ▀▄▄█ ▀▀▀ 
+ *          █   ▀▀  █   ▀ ▀ ▀▄▄█ ▀▀▀
  *
  * Custom JS code common to all websites of the Division of Academic Engagement and Student
  *   Achievement (DAESA) in the Office of the Provost at Washington State University (WSU).
  *
- * @version 1.1.2
+ * @version 1.1.3
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.daesa-custom.js
@@ -869,7 +869,7 @@ function initContentFlippers( slctrCntntFlppr, slctrFlppdFront, slctrFlppdBack, 
 	} );
 
 	// Set up mouse click handler for content flippers.
-	$( slctrCntntFlppr ).click( function () {	
+	$( slctrCntntFlppr ).click( function () {
 		// Toggle flipper's aria-pressed state.
 		let $flipper = $( this );
 		if( $flipper.attr( 'aria-pressed' ) == 'false' ) {

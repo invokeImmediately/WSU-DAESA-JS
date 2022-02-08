@@ -5,11 +5,11 @@
  *
  * Node module used to build CSS and JS modules via gulp task automation.
  *
- * @version 1.0.1
+ * @version 1.1.0
  *
  * @author Daniel Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/gulpCssJsBuilder.js
- * @license MIT - Copyright (c) 2021 Washington State University
+ * @license MIT - Copyright (c) 2022 Washington State University
  *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *     and associated documentation files (the “Software”), to deal in the Software without
  *     restriction, including without limitation the rights to use, copy, modify, merge, publish,
@@ -51,6 +51,7 @@
 const cleanCss = require( 'gulp-clean-css' );
 const concat = require( 'gulp-concat' );
 const extName = require( 'gulp-extname' );
+const gap = require( 'gulp-append-prepend' )
 const gcmq = require( 'gulp-group-css-media-queries' );
 const gulp = require( 'gulp' );
 const insert = require( 'gulp-insert' );
@@ -340,8 +341,7 @@ module.exports.setUpCssBuildTask = function ( settings ) {
 					insert.prepend( settings.fontImportStr ).on( 'end', () => {
 						logUpdate( 'Prepended font import string (if any) to build.' );
 					} ),
-					gulp.src( settings.staffAddinsFile ),
-					concat( cssFileName ).on( 'end', () => {
+					gap.prependFile( settings.staffAddinsFile ).on( 'end', () => {
 						logUpdate( 'Appended staff CSS add-ins to the build.' );
 					} ),
 					gulp.dest( settings.destFolder ).on( 'end', () => {

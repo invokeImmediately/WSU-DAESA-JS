@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WSUWP Editor Enhancements
 // @namespace    http://tampermonkey.net/
-// @version      0.3.1
+// @version      0.3.2
 // @description  Add UI enhancements to the WSUWP editor.
 // @author       Daniel Rieck <danielcrieck@gmail.com> (https://github.com/invokeImmediately)
 // @match        https://*.wsu.edu/*
@@ -19,7 +19,7 @@
  *
  * JavaScript for contextually adding enhancements to the WSUWP dashboard interface.
  *
- * @version 0.3.1
+ * @version 0.3.2
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/TamperMonkey/wsuwp-editor-enhan
@@ -42,7 +42,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // ----------------------------------------------------------------------------------------------
-// §1: Invoke a function expression for enhancing WSUWP editor interface.......................71
+// §1: Invoke IIFE to enhance WSUWP MCE editor interfaces......................................71
 //   §1.1: Declare IIFE's behaviors............................................................78
 //     §1.1.1: Script messaging................................................................82
 //     §1.1.2: General loading of WSUWP page editing enhancements..............................89
@@ -68,7 +68,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*****************
- * §1: Invoke a function expression for enhancing WSUWP editor interface.
+ * §1: Invoke IIFE to enhance WSUWP MCE editor interfaces
  */
 
 ( function() {

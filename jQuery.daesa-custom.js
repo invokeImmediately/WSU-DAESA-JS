@@ -1,4 +1,4 @@
-/***************************************************************************************************
+/*-*************************************************************************************************
  *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄    ▄▀▀▀ █  █ ▄▀▀▀
  * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █  █ █▄▄█ █▀▀  ▀▀▀█ █▄▄█ ▀▀ █    █  █ ▀▀▀█ ▀
  * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀     ▀▀▀  ▀▀  ▀▀▀
@@ -10,7 +10,7 @@
  * Custom JS code common to all websites of the Division of Academic Engagement and Student
  *   Achievement (DAESA) in the Office of the Provost at Washington State University (WSU).
  *
- * @version 1.1.5-rc1.0.0
+ * @version 1.1.5-rc1.0.1
  *
  * @todo Move modular scripting into dedicated source files. For example, OueEventCalendarFixer
  *   class, initContentFlippers, initQuickTabs, etc.

@@ -7,11 +7,11 @@
  *   State University (WSU) websites built in the WSU WordPress platform. Designed especially for
  *   the websites of the Division of Academic Engagement and Student Achievement.
  *
- * @version 1.0.2
+ * @version 1.1.0
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/master/jQuery.forms.js
- * @license MIT - Copyright (c) 2021 Washington State University
+ * @license MIT - Copyright (c) 2022 Washington State University
  *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *     and associated documentation files (the “Software”), to deal in the Software without
  *     restriction, including without limitation the rights to use, copy, modify, merge, publish,
@@ -569,19 +569,17 @@ var WsuIdInputs = ( function ( $ ) {
 					var $editorForm = $( this ).find( 'iframe' );
 					$editorForm.each( function () {
 						var $editorBody = $( this ).contents().find( '#tinymce' );
-						$editorBody.css( 'fontFamily', '"Open sans", sans-serif' );
+						$editorBody.css( 'fontFamily', '"Montserrat", sans-serif' );
 						if ( $editorBody.text().replace( /\n|\uFEFF/g, '' ) == ''  ) {
-							$editorBody.css( 'background', '#fff linear-gradient(to bottom,' +
-								' rgba(255,0,0,0.1), rgba(255,0,0,0)) no-repeat' );
+							$editorBody.css( 'border-left', '2px solid #a60f2d' );
 						}
 						$editorBody.focus( function () {
-							$( this ).css( 'background', '#fff' );
+							$( this ).css( 'border-left', '2px solid transparent' );
 						} );
 						$editorBody.blur( function () {
 							var $this = $( this );
 							if ( $this.text().replace( /\n|\uFEFF/g, '' ) == '' ) {
-								$this.css( 'background', '#fff linear-gradient(to bottom,' +
-									' rgba(255,0,0,0.1), rgba(255,0,0,0)) no-repeat' );
+								$this.css( 'border-left', '2px solid #a60f2d' );
 							}
 						} );
 					} );

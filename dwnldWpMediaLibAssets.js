@@ -9,7 +9,7 @@
  *
  * Browser dev tools script for extracting URLs to media library assets.
  *
- * @version 0.0.1
+ * @version 0.1.0
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/jQuery.daesa-custom.js
@@ -29,31 +29,9 @@
  **************************************************************************************************/
 
 ( function( $, iifeArgs ) {
-  function findMediaTiles( slctr ) {
-    if ( typeof slctr !== 'string' ) {
-      throw new TypeError( `I was expecting a string for the selector used to find the media tiles in the DOM but received a parameter of type ${typeof slctr}.` );
-    }
-    return $( slctr );
-  }
-
-  async function printUrlsForTiles( $tiles ) {
-    for( let idx = 0; idx < $tiles.length; idx++ ) {
-      await activateModal4Tile( $tiles.eq( idx ) );
-      const $modal = $( '.media-modal .media-modal-content' );
-      console.log( `URL to media file #${idx + 1} of ${$tiles.length}: ${$modal.find( '#attachment-details-two-column-copy-link' ).val()}` );
-      await closeModal( $modal );
-    }
-  }
-
   async function activateModal4Tile( $tile ) {
       $tile.trigger( 'click' );
       await wait4Modal2Act( iifeArgs.waitTime );
-  }
-
-  async function wait4Modal2Act( waitTime ) {
-    return new Promise( resolve => {
-      setTimeout( () => { resolve() }, waitTime );
-    } );
   }
 
   async function closeModal( $modal ) {
@@ -61,10 +39,37 @@
       await wait4Modal2Act( iifeArgs.waitTime );
   }
 
+  function findMediaTiles( slctr ) {
+    if ( typeof slctr !== 'string' ) {
+      throw new TypeError( `I was expecting a string for the selector used to find the media tiles in the DOM but received a parameter of type ${typeof slctr}.` );
+    }
+    const $wpMediaGrid = $( '#wp-media-grid' );
+    if ( $wpMediaGrid.length !== 1 ) {
+      throw new Error( `Before scanning, I am not finding a DOM component I was expecting to see if we are on a WordPress media library page.` );
+    }
+    return $( slctr );
+  }
+
   async function iifeMain() {
+    console.log( `Scanning page at ${window.location.href} for information useful for downloading WordPress media library assets.` );
     const $tiles = findMediaTiles( 'ul.attachments li.attachment' );
     await printUrlsForTiles( $tiles );
     console.log( `All ${$tiles.length} media files have now been processed.` );
+  }
+
+  async function printUrlsForTiles( $tiles ) {
+    for( let idx = 0; idx < $tiles.length; idx++ ) {
+      await activateModal4Tile( $tiles.eq( idx ) );
+      const $modal = $( '.media-modal .media-modal-content' );
+      console.log( `URL to media file #${idx + 1} of ${$tiles.length}: ${$modal.find( '#attachment-details-two-column-copy-link' ).val()} | Properties of media asset → « ${$modal.find( '.details .uploaded' ).text() }; ${$modal.find( '.details .file-size' ).text() }; Uploaded by: ${$modal.find( '.details .uploaded-by a' ).text() }»` );
+      await closeModal( $modal );
+    }
+  }
+
+  async function wait4Modal2Act( waitTime ) {
+    return new Promise( resolve => {
+      setTimeout( () => { resolve() }, waitTime );
+    } );
   }
 
   iifeMain();

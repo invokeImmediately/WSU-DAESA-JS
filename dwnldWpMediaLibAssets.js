@@ -9,7 +9,7 @@
  *
  * Browser dev tools script for extracting URLs to media library assets.
  *
- * @version 0.0.0
+ * @version 0.0.1
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/jQuery.daesa-custom.js
@@ -28,7 +28,7 @@
  *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **************************************************************************************************/
 
-( function( $ ) {
+( function( $, iifeArgs ) {
   function findMediaTiles( slctr ) {
     if ( typeof slctr !== 'string' ) {
       throw new TypeError( `I was expecting a string for the selector used to find the media tiles in the DOM but received a parameter of type ${typeof slctr}.` );
@@ -47,7 +47,7 @@
 
   async function activateModal4Tile( $tile ) {
       $tile.trigger( 'click' );
-      await wait4Modal2Act( 333 );
+      await wait4Modal2Act( iifeArgs.waitTime );
   }
 
   async function wait4Modal2Act( waitTime ) {
@@ -58,7 +58,7 @@
 
   async function closeModal( $modal ) {
       $modal.find( '.media-modal-close' ).trigger( 'click' );
-      await wait4Modal2Act( 333 );
+      await wait4Modal2Act( iifeArgs.waitTime );
   }
 
   async function iifeMain() {
@@ -68,4 +68,4 @@
   }
 
   iifeMain();
-} )( jQuery );
+} )( jQuery, { waitTime: 333 } );

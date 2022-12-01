@@ -6,7 +6,7 @@
  * Browser dev tools script for automating the rapidly specifying settings in the customizer of a
  *   DAESA website newly running the WDS theme.
  *
- * @version 0.0.0
+ * @version 0.1.0
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/setupWdsCustomizer.js
@@ -54,6 +54,7 @@
     const $themeCstmzr = findThemeCstmzr( iifeArgs.sels.themeCstmzr );
     await specThemeStgs( $themeCstmzr );
     // ...
+    // await specContactInfo( $themeCstmzr );
     // await publishStgs( $themeCstmzr );
     console.log( `Theme settings have been published.` );
   }
@@ -89,7 +90,15 @@
   }
 
   async function setSiteNavOpts( $themeCstmzr ) {
-    // ...
+    const $custSctn = $themeCstmzr.find( iifeArgs.sels.cpsSiteNav );
+    $custSctn.find( iifeArgs.sels.sectTitle ).trigger( 'click' );
+    await wait4Browser( iifeArgs.dfltWaitTime );
+    const $custSctnOpts = $themeCstmzr.find( iifeArgs.sels.cpsSiteNavOpts );
+    $custSctnOpts.find( iifeArgs.sels.optCtrlNavColor )
+      .val( iifeArgs.stgs.navColor )
+      .trigger( 'change' );
+    await wait4Browser( iifeArgs.dfltWaitTime * 5 );
+    await goBack2PanelSctn( $custSctnOpts );
   }
 
   async function specThemeStgs( $themeCstmzr ) {
@@ -98,7 +107,7 @@
     await wait4Browser( iifeArgs.dfltWaitTime );
     await setSiteHdrOpts( $themeCstmzr );
     await setSiteFtrOpts( $themeCstmzr );
-    //await setSiteNavOpts( $custPanel );
+    await setSiteNavOpts( $themeCstmzr );
     const $custPanel = $themeCstmzr.find( iifeArgs.sels.cpThemeStgs );
     await goBack2ThemeCstmzr( $custPanel );
   }
@@ -126,6 +135,7 @@
     optCtrlFtrCapt: '#_customize-input-wsu_wds_site_footer_caption_control',
     cpsSiteNav: '#accordion-section-wsu_site_navigation_section',
     cpsSiteNavOpts: '#accordion-section-wsu_site_navigation_section',
+    optCtrlNavColor: '#_customize-input-wsu_wds_site_navigation_color_control',
     wdsTemplates: '#accordion-panel-wds_template_panel',
     wdsAdvStgs: '#accordion-section-wsu_advanced_options',
     custPanelBack: '.customize-panel-back',
@@ -137,12 +147,17 @@
     hideSiteSubtitle: true,
     siteFtrHead: 'Transfer Center for Policy & Resources',
     siteFtrCapt: 'Division of Academic Engagement and Student Achievement, Office of the Provost and Executive Vice President',
-    contactTitle: '…',
-    contactAddrL1: '…',
-    contactCity: '…',
-    contactState: '…',
-    contactZip: '…',
-    contactPhone: '…',
-    contactEmail: '…',
+    navColor: 'horizontal', // WDS bug; should be "Dark"
+    twitterUrl: 'https://twitter.com/WSU_DAESA',
+    facebookUrl: 'https://www.facebook.com/WSUDAESA',
+    instagramUrl: 'https://www.instagram.com/wsu_daesa/',
+    youtubeUrl: 'https://www.youtube.com/@wsudaesacommunications7832',
+    contactTitle: 'DAESA, Washington State University',
+    contactAddrL1: 'P.O. Box 641046',
+    contactCity: 'Pullman',
+    contactState: 'WA',
+    contactZip: '99164-1046',
+    contactPhone: undefined,
+    contactEmail: 'daesa.provost@wsu.edu',
   },
 } );

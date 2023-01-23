@@ -9,7 +9,7 @@
  *
  * Browser dev tools script for extracting data about the page-type posts that are present in a WSUWP website's administration area.
  *
- * @version 0.0.0
+ * @version 0.0.1
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/jQuery.daesa-custom.js
@@ -84,10 +84,11 @@
   }
 
   function printSessionDataOnPages( dataOnPages ) {
-    console.log( 'Page ID\tAuthor\tDate Type\tDate Value\tLast Updated By\tLast Updated When' );
+    let printedOutput = 'Page ID\tTitle\tAuthor\tDate Type\tDate Value\tLast Updated By\tLast Updated When\n';
     for( i = 0; i < dataOnPages.length; i++ ) {
-      console.log( `${dataOnPages[i].postId}\t${dataOnPages[i].pageTitle}\t${dataOnPages[i].author}\t${dataOnPages[i].dateType}\t${dataOnPages[i].dateValue}\t${dataOnPages[i].lastUpdatedBy}\t${dataOnPages[i].lastUpdatedDate}` )
+      printedOutput += `${dataOnPages[i].postId}\t${dataOnPages[i].pageTitle}\t${dataOnPages[i].author}\t${dataOnPages[i].dateType}\t${dataOnPages[i].dateValue}\t${dataOnPages[i].lastUpdatedBy}\t${dataOnPages[i].lastUpdatedDate}`;
     }
+    console.log( printedOutput );
   }
 
   function scanPageListForData( $pageList, dataOnPages ) {

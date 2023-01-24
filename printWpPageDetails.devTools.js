@@ -10,7 +10,7 @@
  * @version 0.1.0
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
- * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/jQuery.daesa-custom.js
+ * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/printWpPageDetails.devTools.js
  * @license MIT - Copyright (c) 2023 Washington State University
  *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.

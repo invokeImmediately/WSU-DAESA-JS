@@ -1,13 +1,14 @@
-/*!*************************************************************************************************
- * █▀▀▄ █▀▀▄ ▀█▀ ▐▀▀▄▐▀█▀▌▐   ▌█▀▀▄ █▀▀▄ ▄▀▀▄ █▀▀▀ █▀▀▀ █▀▀▄ █▀▀▀▐▀█▀▌▄▀▀▄ ▀█▀ █    ▄▀▀▀      █ ▄▀▀▀
- * █▄▄▀ █▄▄▀  █  █  ▐  █  ▐ █ ▌█▄▄▀ █▄▄▀ █▄▄█ █ ▀▄ █▀▀  █  █ █▀▀   █  █▄▄█  █  █  ▄ ▀▀▀█   ▄  █ ▀▀▀█
- * █    ▀  ▀▄▀▀▀ ▀  ▐  █   ▀ ▀ █    █    █  ▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀  ▀▀▀▀  █  █  ▀ ▀▀▀ ▀▀▀  ▀▀▀  ▀ ▀▄▄█ ▀▀▀
+/*!*****************************************************************************
+ * PrintWp █▀▀▄ ▄▀▀▄ █▀▀▀ █▀▀▀ █▀▀▄ █▀▀▀▐▀█▀▌▄▀▀▄ ▀█▀ █    ▄▀▀▀ · · · · · · · ·
+ *  · · ·  █▄▄▀ █▄▄█ █ ▀▄ █▀▀  █  █ █▀▀   █  █▄▄█  █  █  ▄ ▀▀▀█  · · · · · · ·
+ * · · · · █    █  ▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀  ▀▀▀▀  █  █  ▀ ▀▀▀ ▀▀▀  ▀▀▀  .devTools.js  ·
+ * ·············································································
  *
  * Browser dev tools script that leverages jQuery to quickly extract data about the page-type posts that are present in a WSUWP website's administration area.
  *
  * To run the script, first navigate to the "All Pages" section of a WordPress admin dashboard, and then the paste it in the JavaScript console of your browser's client and hit enter. The script will start keeping its own record of data of interest about the pages being maintained in WordPress. (The data is stored in the web browser's interface and is therefore a temporary copy associated only with your current browsing session.) Moreover, the script will initially navigate to the first page of the "All Pages" interface if not already there, and when it is done scanning a page, it will automatically move to the next page of the table. Once the next pages loads, simply press Up + Enter to run the script again for that new page; repeat until each page of the table has been scanned. Finally, note that once the last page is reached, the output will be printed to the JavaScript console as a tab separated value table that can be pasted into a text editor and imported to Excel for further analysis.
  *
- * @version 0.1.0
+ * @version 0.1.1
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/printWpPageDetails.devTools.js
@@ -15,7 +16,7 @@
  *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  *   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- **************************************************************************************************/
+ ******************************************************************************/
 
 ( function( $, iifeArgs ) {
 
@@ -165,7 +166,7 @@
       totalPagesIndicator: '.total-pages',
       wpListTable: '#wpbody-content #posts-filter .wp-list-table',
     },
-    sessionDataKey: 'wsuwpDataOnSitePages',
+    sessionDataKey: 'printWpPageDetails.devTools.js.wsuwpDataOnSitePages',
     waitTime: 333,
   },
 );

@@ -1,64 +1,70 @@
-/***************************************************************************************************
- *    █ ▄▀▀▄ █  █ █▀▀▀ █▀▀▄ █  █   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄    ▄▀▀▀ █  █ ▄▀▀▀
- * ▄  █ █  █ █  █ █▀▀  █▄▄▀ ▀▄▄█   █  █ █▄▄█ █▀▀  ▀▀▀█ █▄▄█ ▀▀ █    █  █ ▀▀▀█ ▀
- * ▀▄▄█  ▀█▄  ▀▀  ▀▀▀▀ ▀  ▀▄▄▄▄▀ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀     ▀▀▀  ▀▀  ▀▀▀
+/**
+ * ▓▓▓ jQuery ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+ * ▓▓▒ ─────────────────────────────────────────────────────────── ▒▒▒▒▒▒▒▒▒▒▒▒▒
+ * ▓▒▒   █▀▀▄ ▄▀▀▄ █▀▀▀ ▄▀▀▀ ▄▀▀▄    ▄▀▀▀ █  █ ▄▀▀▀▐▀█▀▌▄▀▀▄ ▐▀▄▀▌ ▒▒▒▒▒▒▒▒▒▒▒▒▓
+ * ▒▒▒   █  █ █▄▄█ █▀▀  ▀▀▀█ █▄▄█ ▀▀ █    █  █ ▀▀▀█  █  █  █ █ ▀ ▌ ▒▒▒▒▒▒▒▒▒▒▒▓▓
+ * ▒▒▒ ▀ ▀▀▀  █  ▀ ▀▀▀▀ ▀▀▀  █  ▀     ▀▀▀  ▀▀  ▀▀▀   █   ▀▀  █   ▀.js ▒▒▒▒▒▒▒▓▓▓
  *
- *        ▐▀█▀▌▄▀▀▄ ▐▀▄▀▌      █ ▄▀▀▀
- *       ▀  █  █  █ █ ▀ ▌   ▄  █ ▀▀▀█
- *          █   ▀▀  █   ▀ ▀ ▀▄▄█ ▀▀▀
+ * Script for implementing the interactive and persistent behaviors of DAESA
+ *  accordions. Meant to be included on DAESA websites as needed.
  *
- * Script for implementing the interactive and persistent behaviors of DAESA accordions. Meant to be
- *   included on DAESA websites as needed.
- *
- * @version 1.0.0
+ * @version 1.0.1
  *
  * @todo Create a variant of this module that works in vanilla JS.
  * @todo Check ID of accordion and update it as needed.
- * @todo Use ARIA's role, aria-pressed, and aria-expanded attributes to support better usability
- *   with screen readers.
+ * @todo Use ARIA's role, aria-pressed, and aria-expanded attributes to support
+ *  better usability with screen readers.
  *
  * @author Daniel C. Rieck [daniel.rieck@wsu.edu] (https://github.com/invokeImmediately)
  * @link https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/jQuery.daesa-custom.js
  * @license MIT - Copyright (c) 2022 Washington State University
- *   Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- *     and associated documentation files (the “Software”), to deal in the Software without
- *     restriction, including without limitation the rights to use, copy, modify, merge, publish,
- *     distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
- *     Software is furnished to do so, subject to the following conditions:
- *   The above copyright notice and this permission notice shall be included in all copies or
- *     substantial portions of the Software.
- *   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
- *     BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
- *     DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- **************************************************************************************************/
+ *  Permission is hereby granted, free of charge, to any person obtaining a
+ *   copy of this software and associated documentation files
+ *   (the “Software”), to deal in the Software without restriction, including
+ *   without limitation the rights to use, copy, modify, merge, publish,
+ *   distribute, sublicense, and/or sell copies of the Software, and to permit
+ *   persons to whom the Software is furnished to do so, subject to the
+ *   following conditions:
+ *  The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
+ *  THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ *   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ *   DEALINGS IN THE SOFTWARE.
+ */
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 // -----------------
-//   §1: Persistent documentation for final output..............................................45
-//   §2: DaesaAccordion class...................................................................59
-//   §3: Initialization of accordions..........................................................343
-//   §4: Code execution triggered by DOM loading...............................................368
-//   §5: Closure of IIFE.......................................................................384
-////////////////////////////////////////////////////////////////////////////////////////////////////
+//   §1: Persistent documentation for final output..........................45
+//   §2: DaesaAccordion class...............................................59
+//   §3: Initialization of accordions......................................343
+//   §4: Code execution triggered by DOM loading...........................368
+//   §5: Closure of IIFE...................................................384
+////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // §1: PERSISTENT DOCUMENTATION for final output
 
-/*!***
- * jQuery.DaesaAccordions.js - v1.0.0
- * Script for implementing the interactive and persistent behaviors of DAESA accordions.
- * By Daniel C. Rieck (daniel.rieck@wsu.edu). See [GitHub](https://github.com/invokeImmediately/WSU-DAESA-JS/blob/main/jQuery.daesa-custom.js) for more info.
- * Copyright (c) 2022 Washington State University and governed by the MIT license.
- ****/
+/*!*
+ * jQuery.DaesaAccordions.js — v1.0.1
+ * Script for implementing the interactive and persistent behaviors of DAESA
+ *  accordions.
+ * By Daniel C. Rieck (daniel.rieck@wsu.edu). See [GitHub](https://github.com/
+ *  invokeImmediately/WSU-DAESA-JS/blob/main/jQuery.daesa-custom.js) for more
+ *  info.
+ * Copyright (c) 2023 Washington State University and governed by the MIT
+ *  license.
+ */
 
 ( function ( $, thisFileName ) {
 
 'use strict';
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // §2: DAESAACCORDION class
 
 /**
@@ -342,7 +348,7 @@ const DaesaAccordions = ( function( $, thisFileName ) {
   return DaesaAccordions;
 } )( jQuery, 'jQuery.DaesaAccordions.js' );
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // §3: INITIALIZATION of accordions
 
 /**
@@ -357,9 +363,7 @@ const DaesaAccordions = ( function( $, thisFileName ) {
  *   causes it to enter an activated state.
  */
 function initDaesaAccordions( selToggles, selContainers, selTargets, activatingClass ) {
-  let dropDownToggles;
-
-  daesaAccordions =  new DaesaAccordions( {
+  const daesaAccordions = new DaesaAccordions( {
     toggles: selToggles,
     containers: selContainers,
     targets: selTargets
@@ -367,7 +371,7 @@ function initDaesaAccordions( selToggles, selContainers, selTargets, activatingC
   daesaAccordions.initialize();
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // §4: Code execution TRIGGERED BY DOM LOADING
 
 $( function () {
@@ -383,7 +387,7 @@ $( function () {
   initDaesaAccordions( args.selToggles, args.selContainers, args.selTargets, args.activatingClass );
 } );
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // §5: Closure of IIFE
 
 } )( jQuery, 'jQuery.DaesaAccordions.js' );

@@ -9,6 +9,8 @@
  *  lists of WSU Web Design System elements, components, and modules from the
  *  project's repository on GitHub.
  *
+ * @version 0.1.0
+ *
  * @author danielcrieck@gmail.com
  *  <danielcrieck@gmail.com>
  *  (https://github.com/invokeImmediately)
@@ -53,7 +55,7 @@
     const onGitHub = curLocation.match( /https:\/\/github.com/ );
     if( !onGitHub ) {
       console.log( 'Navigating to the GitHub domain for data extraction.' );
-      await waitFor( 667 );
+      await waitForTime( 667 );
       window.location = ghDomainDest6n;
     }
     return onGitHub;
@@ -120,22 +122,41 @@
 
   async function outputWdsConstituents( wdsConstituents ) {
     console.log(
-`Ready to write output to clipboard. Please close DevTools within 1.5 seconds.`
+`Ready to write output to clipboard. Please close DevTools and focus on the
+document when you are ready.`
     );
-    await waitFor( 1500 );
+    await waitForDoc4tFocus();
     wdsConstituents =
 `Constituents of @github/wsuwebteam/web-design-system as of ${Date()}:\n\n`
       + wdsConstituents;
     await navigator.clipboard.writeText( wdsConstituents );
-    console.log(
-`The following output was stored to clipboard via the Clipboard API:
-──────────────────────────────────────────────────────────────────
 
+    window.alert(
+`Constituents of @github/wsuwebteam/web-design-system have
+ been extracted and output to the clipboard. Check the JS
+ console for more information.`
+    );
+
+    console.log(
+`The following output was stored to clipboard via the [Clipboard API]
+ (https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API):
+─────────────────────────────────────────────────────────────────\n
 ${wdsConstituents}`
     );
   }
 
-  function waitFor( timeInMs ) {
+  async function waitForDoc4tFocus() {
+    const checkDoc4tFocus = ( resolve ) => {
+      if ( document.hasFocus() ) {
+        resolve();
+      } else {
+        setTimeout( () => checkDoc4tFocus( resolve ), 250 );
+      }
+    }
+    return new Promise( checkDoc4tFocus );
+  }
+
+  function waitForTime( timeInMs ) {
     return new Promise( ( resolve ) => {
       setTimeout( () => {
         resolve( '' );

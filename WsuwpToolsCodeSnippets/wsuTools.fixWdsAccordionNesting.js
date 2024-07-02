@@ -5,7 +5,7 @@
  * ▓▓▒▒  █  ▀  ▀▀▀  ▀▀▀  ▀▀  ▀  ▀▄▀▀▀  ▀▀▀  ▀▀  ▀  ▐ ▒▒▒▓▒▒▓▒▒▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▓▓▓
  * ▓▓▓▒  Nesting.mjs ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▒▒▓▒▒▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▓▓▓
  *
- * wsuTools.fixWdsAccordionNesting.js - v0.0.2
+ * wsuTools.fixWdsAccordionNesting.js - v0.0.3
  *
  * Provide missing collapse functionality to nested accordions used on WDS 2 or
  *   3 themed WSUWP websites.
@@ -47,16 +47,6 @@
   }
 
   /**
-   * Signal to screen readers that a tested accordion has been expanded via
-   *   WAI-ARIA.
-   */
-  function sgnlExpandedNestedAccrdn($toggle) {
-    if ($toggle.attr('aria-expanded') != 'true') {
-      $toggle.attr('aria-expanded', 'true');
-    }
-  }
-
-  /**
    * Enhance event handling to fix issues with collapsible behavior of WDS
    *   accordion components controlled by user click interactions. (Based on
    *   testing, it is only click events that are broken.)
@@ -90,6 +80,29 @@
   }
 
   /**
+   * Begin IIFE execution by waiting for the DOM to load and then fixing the
+   *   interactive behavior of any nested accordions present in the document.
+   */
+  function iifeMain() {
+    $(document).ready(function() {
+      $('#wsu-content').each(function() {
+        const $main = $(this);
+        fixNestedAccrdnTggls($main);
+      });
+    });
+  }
+
+  /**
+   * Signal to screen readers that a tested accordion has been expanded via
+   *   WAI-ARIA.
+   */
+  function sgnlExpandedNestedAccrdn($toggle) {
+    if ($toggle.attr('aria-expanded') != 'true') {
+      $toggle.attr('aria-expanded', 'true');
+    }
+  }
+
+  /**
    * Handle click events targeting elements contained in the toggle button of an
    *   accordion.
    */
@@ -113,18 +126,5 @@
     }
   }
   
-  /**
-   * Begin IIFE execution by waiting for the DOM to load and then fixing the
-   *   interactive behavior of any nested accordions present in the document.
-   */
-  function iifeMain() {
-    $(document).ready(function() {
-      $('#wsu-content').each(function() {
-        const $main = $(this);
-        fixNestedAccrdnTggls($main);
-      });
-    });
-  }
-
   iifeMain();
 })(jQuery);

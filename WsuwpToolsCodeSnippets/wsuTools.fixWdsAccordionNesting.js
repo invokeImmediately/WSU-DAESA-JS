@@ -5,7 +5,7 @@
  * ▓▓▒▒  █  ▀  ▀▀▀  ▀▀▀  ▀▀  ▀  ▀▄▀▀▀  ▀▀▀  ▀▀  ▀  ▐ ▒▒▒▓▒▒▓▒▒▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▓▓▓
  * ▓▓▓▒  Nesting.mjs ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▒▒▓▒▒▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▓▓▓
  *
- * wsuTools.fixWdsAccordionNesting.js - v0.0.3
+ * wsuTools.fixWdsAccordionNesting.js - v0.1.0
  *
  * Provide missing collapse functionality to nested accordions used on WDS 2 or
  *   3 themed WSUWP websites.
@@ -47,6 +47,56 @@
   }
 
   /**
+   * Update the ID attributes of the HTML elements that make up WDS accordion
+   *   blocks so they are unique. (This fixes is an upstream issue where where
+   *   ID attributes associated with the title, toggle button, and content
+   *   container are the incorrectly same between all accordions.)
+   */
+  function fixDuplicateIdsInAccordions($main) {
+    const $accordions = $main.find('.wsu-accordion');
+    const numAccordions = $accordions.length;
+    $accordions.each(function(index) {
+      // ·> Only accordions beyond the first one that appears within the
+      // ·    document have a possibility of containing duplicate IDs.
+      if (index==0) {
+        return;
+      }
+
+      // Isolate the element serving as the title of the accordion.
+      const $accordion = $(this);
+      const $title = $accordion.find('.wsu-accordion__title').first();
+      const titleId = $title.attr('id');
+
+      // ·> Return early if the ID attribute of the accordion title is not
+      // ·<   showing the expected duplicate value.
+      if (titleId != 'unique-id-1__title') {
+        return;
+      }
+
+      // ·> Reform the ID attribute for the title so it is unique. Follow the
+      // ·<   originally intended but unimplemented naming pattern.
+      const titleNewId = titleId.replace(/[0-9]+/, index + 1);
+      $title.attr('id', titleNewId);
+
+      // ·> Reform the ID attribute for the element serving as the content
+      // ·    container for the accordion so it is unique. Follow the originally // ·<   intended but unimplemented naming pattern.
+      const $content = $accordion.find('.wsu-accordion__content').first();
+      const contentId = $content.attr('id');
+      const contentNewId = contentId.replace(/[0-9]+/, index + 1);
+      $content.attr('id', contentNewId);
+
+      // ·> Update the setting for the container's aria-labelledby attribute to
+      // ·<   match the title's new, unique ID.
+      $content.attr('aria-labelledby', titleNewId);
+
+      // ·> Update the setting for the accordion toggle button's aria-controls
+      // ·<   attribute to match the content container's new, unique ID.
+      const $button = $accordion.find('.wsu-accordion--toggle').first();
+      $button.attr('aria-controls', contentNewId);
+    });
+  }
+
+  /**
    * Enhance event handling to fix issues with collapsible behavior of WDS
    *   accordion components controlled by user click interactions. (Based on
    *   testing, it is only click events that are broken.)
@@ -80,13 +130,16 @@
   }
 
   /**
-   * Begin IIFE execution by waiting for the DOM to load and then fixing the
-   *   interactive behavior of any nested accordions present in the document.
+   * Begin IIFE execution by waiting for the DOM to load and then fixing issues
+   *   with accordions. First, fix any duplicate ID attributes of the HTML
+   *   elements that make up accordions. Then fix the interactive behavior of
+   *   any nested accordions present in the document.
    */
   function iifeMain() {
     $(document).ready(function() {
       $('#wsu-content').each(function() {
         const $main = $(this);
+        fixDuplicateIdsInAccordions($main);
         fixNestedAccrdnTggls($main);
       });
     });

@@ -5,7 +5,7 @@
  * ▓▓▒▒  █  ▀  ▀▀▀  ▀▀▀  ▀▀  ▀  ▀▄▀▀▀  ▀▀▀  ▀▀  ▀  ▐ ▒▒▒▓▒▒▓▒▒▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▓▓▓
  * ▓▓▓▒  Nesting.mjs ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▒▒▓▒▒▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▓▓▓
  *
- * wsuTools.fixWdsAccordionNesting.js - v0.0.1
+ * wsuTools.fixWdsAccordionNesting.js - v0.0.2
  *
  * Provide missing collapse functionality to nested accordions used on WDS 2 or
  *   3 themed WSUWP websites.
@@ -114,13 +114,15 @@
   }
   
   /**
-   * Begin IIFE execution by checking for nested accordions, whose interactive
-   *  behavior currently needs to be fixed through JS intervention.
+   * Begin IIFE execution by waiting for the DOM to load and then fixing the
+   *   interactive behavior of any nested accordions present in the document.
    */
   function iifeMain() {
-    $('#wsu-content').each(function() {
+    $(document).ready(function() {
+      $('#wsu-content').each(function() {
         const $main = $(this);
         fixNestedAccrdnTggls($main);
+      });
     });
   }
 

@@ -5,7 +5,7 @@
  * ▓▓▒▒  █  ▀  ▀▀▀  ▀▀▀  ▀▀  ▀  ▀▄▀▀▀  ▀▀▀  ▀▀  ▀  ▐ ▒▒▒▓▒▒▓▒▒▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▓▓▓
  * ▓▓▓▒  Nesting.mjs ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▒▒▓▒▒▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▓▓▓
  *
- * wsuTools.fixWdsAccordionNesting.js - v0.0.0
+ * wsuTools.fixWdsAccordionNesting.js - v0.0.1
  *
  * Provide missing collapse functionality to nested accordions used on WDS 2 or
  *   3 themed WSUWP websites.
@@ -37,7 +37,8 @@
 (function($) {
 
   /**
-   * Use CSS classes to collapse an expanded WDS accordion component.
+   * If necessary, use CSS classes to collapse an expanded WDS accordion
+   *   component.
    */
   function collapseNestedAccrdn($accordion) {
     if ($accordion.hasClass('wsu-accordion--open')) {
@@ -57,8 +58,8 @@
 
   /**
    * Enhance event handling to fix issues with collapsible behavior of WDS
-   *   accordion components. Based on testing, it is only click events that are
-   *   broken in WDS 2 or 3.
+   *   accordion components controlled by user click interactions. (Based on
+   *   testing, it is only click events that are broken.)
    */
   function fixNestedAccrdnTggls($main) {
     // ·> Set up click event handling on WDS accordions nested inside of other
@@ -66,15 +67,7 @@
     $main.on(
       'click',
       '.wsu-accordion .wsu-accordion .wsu-accordion--toggle',
-      function() {
-        const $toggle = $(this);
-        $prntAccrdn = $toggle.parents('.wsu-accordion').first();
-        if ($prntAccrdn.hasClass('wsu-accordion--open')) {
-            setTimeout(collapseNestedAccrdn, 200, $prntAccrdn);
-        } else {
-            setTimeout(sgnlExpandedNestedAccrdn, 200, $toggle);
-        }
-      }
+      toggleNestedAccordionGracefully
     );
 
     // ·> Set up click event handling on accordions nested inside of WDS card
@@ -82,28 +75,42 @@
     $main.on(
       'click',
       '.wsu-card .wsu-accordion .wsu-accordion--toggle',
-      function() {
-        const $toggle = $(this);
-        $prntAccrdn = $toggle.parents('.wsu-accordion').first();
-        if ($prntAccrdn.hasClass('wsu-accordion--open' )) {
-            setTimeout(collapseNestedAccrdn, 200, $prntAccrdn);
-        } else {
-            setTimeout(sgnlExpandedNestedAccrdn, 200, $toggle);
-        }
-      }
+      toggleNestedAccordionGracefully
     );
 
     // ·> Set up click event handling on child elements of accordion toggle
-    // ·<   buttons.
+    // ·    buttons. (Testing has shown that the upstream event handling on such
+    // ·    “container buttons” will not be applied to elements contained by the
+    // ·<   button.)
     $main.on(
       'click',
       '.wsu-accordion .wsu-accordion--toggle strong',
-      function() {
-        const $toggle = $(this).parents('.wsu-accordion--toggle').first();
-        $prntAccrdn = $toggle.parents('.wsu-accordion').first();
-        $toggle.trigger('click');
-      }
+      toggleAccordionWithContainerButton
     );
+  }
+
+  /**
+   * Handle click events targeting elements contained in the toggle button of an
+   *   accordion.
+   */
+  function toggleAccordionWithContainerButton() {
+    const $toggle = $(this).parents('.wsu-accordion--toggle').first();
+    $prntAccrdn = $toggle.parents('.wsu-accordion').first();
+    $toggle.trigger('click');
+  }
+
+  /**
+   * Handle a click event targeting the toggle button of a nested accordion.
+   *   Only modify the expansion state of the accordion if necessary.
+   */
+  function toggleNestedAccordionGracefully() {
+    const $toggle = $(this);
+    $prntAccrdn = $toggle.parents('.wsu-accordion').first();
+    if ($prntAccrdn.hasClass('wsu-accordion--open')) {
+        setTimeout(collapseNestedAccrdn, 200, $prntAccrdn);
+    } else {
+        setTimeout(sgnlExpandedNestedAccrdn, 200, $toggle);
+    }
   }
   
   /**
